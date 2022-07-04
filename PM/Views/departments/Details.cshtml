@@ -1,0 +1,26 @@
+﻿@model PM.Models.department
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>department</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.departmentname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.departmentname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.departementid }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<PM.Models.department>
+
+
+@{ ViewBag.Title = "Departments Types";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h2>Departments Types</h2>
+<p>
+    @Html.ActionLink("New Department Type", "Create", "Departments", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="departmentsTypes" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Type name</th>
+      
+
+
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#departmentsTypes").DataTable({
+                ajax: {
+                    url: "/api/departments",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "departementname",
+                        render: function (data, type, department) {
+                           
+                            return "<a href='/departments/edit/" + department.departementid + "'>" + department.departmentname + "</a>";
+                        }
+                    },
+
+
+
+                    {
+                        data: "departementid",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-department-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+
+            $("#departmentsTypes").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this department Type?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/departments/" + button.attr("data-department-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });</script>
+}

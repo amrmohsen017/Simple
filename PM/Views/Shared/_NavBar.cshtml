@@ -1,0 +1,27 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("PM", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse" style="font-size:2rem">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("الهيئات", "Index", "Institutes")</li>
+
+                <li>@Html.ActionLink("الادارات", "Index", "Departments")</li>
+                <li>@Html.ActionLink("انواع الهيئات", "Index", "Institute_type")</li>
+
+                <li>@Html.ActionLink("المستخدمين", "Index", "Users")</li>
+
+                <li>@Html.ActionLink("الاقسام", "section_panel", "Admin")</li>
+
+            </ul>
+          
+        </div>
+    </div>
+</div>
+

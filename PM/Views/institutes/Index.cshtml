@@ -1,0 +1,132 @@
+﻿@model IEnumerable<PM.Models.institute>
+
+
+@{ ViewBag.Title = "Institutes";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h2>Institutes</h2>
+<p>
+    @Html.ActionLink("New Institute", "Create", "Institutes", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="institutes" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Institute name</th>
+            <th>Institute fullAddress</th>
+            <th>telephone</th>
+            <th>email</th>
+            <th>department</th>
+            <th>station name</th>
+            <th>city name</th>
+            <th>government name</th>
+            <th>Institute address</th>
+
+
+
+
+
+
+
+
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+            var table = $("#institutes").DataTable({
+                ajax: {
+                    url: "/api/institutes",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "institute_fulladdress",
+                        render: function (data, type, institute) {
+                            return "<a href='/institutes/edit/" + institute.institute_id + "'>" + institute.institutename + "</a>";
+                        }
+                    },
+
+                    {
+                        data: "institute_fulladdress",
+
+                    },
+                    {
+                        data: "telephone",
+
+                    },
+                    {
+                        data: "email",
+
+                    },
+                    {
+                        data: "departmentname",
+                        render: function (data, type, department) {
+                            console.log(department)
+                            return data ? data : "لا يوجد ";
+                        }
+
+                    },
+                 
+                   
+                    {
+                        data: "stationname",
+
+                    },
+                    
+
+                    {
+                        data: "cityname",
+
+                    },
+                    {
+                        data: "governmentname",
+
+                    },
+                   
+
+                   
+
+
+                    {
+                        data: "adress_id",
+                        render: function (data, type, institute) {
+                            return "<a href='/institute_address/edit/" + institute.adress_id + "'>" + institute.institutename + "</a>";
+                        }
+
+                    },
+
+
+                    {
+                        data: "institute_id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-institute-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+
+        $("#institutes").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this institute?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/institutes/" + button.attr("data-institute-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });</script>
+}

@@ -1,0 +1,66 @@
+﻿@model PM.Models.institute
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>institute</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.institutename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.institutename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.institute_fulladdress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.institute_fulladdress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.department.departmentname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.department.departmentname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.institute_address.institute_adress_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.institute_address.institute_adress_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.institute_type.typename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.institute_type.typename)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.institute_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

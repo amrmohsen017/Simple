@@ -1,0 +1,66 @@
+﻿@model PM.Models.user
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>user</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pass)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pass)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.level_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.level_code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.institute.institutename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.institute.institutename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.job.jobname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.job.jobname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.user_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

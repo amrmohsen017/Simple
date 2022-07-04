@@ -1,0 +1,86 @@
+﻿@model IEnumerable<PM.Models.user>
+
+
+@{ ViewBag.Title = "Users";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h2>Users</h2>
+<p>
+    @Html.ActionLink("New User", "Create", "Users", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="users" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>username</th>
+            <th>telephone</th>
+            <th>email</th>
+            <th>job</th>
+            <th>institute</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>$(document).ready(function () {
+            var table = $("#users").DataTable({
+                ajax: {
+                    url: "/api/users",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "username",
+                        render: function(data, type, user) {
+                            return "<a href='/users/edit/" + user.user_id + "'>" + user.username + "</a>";
+                        }
+                    },
+                    {
+                        data: "telephone",
+                     
+                    },
+                    {
+                        data: "email",
+
+                    },
+                    {
+                        data: "jobname",
+
+                    },
+                    {
+                        data: "institutename",
+
+                    },
+                    
+
+                    {
+                        data: "user_id",
+                        render: function(data) {
+                            return "<button class='btn-link js-delete' data-user-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+
+            $("#users").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this user?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/users/" + button.attr("data-user-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });</script>
+}
