@@ -1,0 +1,60 @@
+﻿@*@model PM.Models.stationdetail
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Ind</title>
+    <script>
+        $(function () {
+                 $("#dropDownListdiv").on("change", "select", function () {
+                       var value = $(this).val();
+                       var id = $(this).attr("id");
+                       $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
+                             switch (id) {
+                                 case "governmentcode":
+                                     PopulateDropDown("#citycode", data.cities);
+                                         PopulateDropDown("#stationcode", data.stations);
+                                         break;
+                                 case "citycode":
+                                     PopulateDropDown("#stationcode", data.stations);
+                                         break;
+                              }
+                     });
+                 });
+             });
+             function PopulateDropDown(dropDownId, list) {
+                 $(dropDownId).empty();
+                 $(dropDownId).append("<option>Please select</option>")
+                 $.each(list, function (index, row) {
+                     if (index == 0) {
+                         $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
+                     } else {
+                         $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>")
+                     }
+                 });
+             }
+    </script>
+</head>
+<body>
+    <br /><br />
+    <div id="dropDownListdiv">
+        @using (Html.BeginForm("Ind", "Admin", FormMethod.Post))
+        {
+            @Html.LabelFor(model => model.governmentname, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(m => m.governmentcode, Model.governments, "Please select", new { @class = "form-control" })
+            @Html.LabelFor(model => model.cityname, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(m => m.citycode, Model.cities, "Please select", new { @class = "form-control" })
+            @Html.LabelFor(model => model.stationname, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.DropDownListFor(m => m.stationcode, Model.stations, "Please select", new { @class = "form-control" })
+            <br /><br />
+            <input type="submit" value="Submit" />
+        }
+    </div>
+</body>
+</html>*@

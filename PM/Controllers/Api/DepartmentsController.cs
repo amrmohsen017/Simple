@@ -15,11 +15,11 @@ namespace PM.Controllers.Api
 {
     public class DepartmentsController : ApiController
     {
-        private project_managementEntities _context;
+        private project_managementEntities1 _context;
 
         public DepartmentsController()
         {
-            _context = new project_managementEntities();
+            _context = new project_managementEntities1();
         }
 
 
@@ -28,9 +28,9 @@ namespace PM.Controllers.Api
         {
 
             // LOL THE TARGET PROPERTY NOT THE NAVIGATING PROPERTY 
-            var departmentsQuery = _context.departments.Select(i => new { i.departementid , i.departmentname}); 
-          
-         
+            var departmentsQuery = _context.departments.Select(i => new { i.departementid, i.departmentname });
+
+
 
             return Ok(departmentsQuery);
 
@@ -39,12 +39,12 @@ namespace PM.Controllers.Api
         // GET api/<controller>/5
         public IHttpActionResult GetDepartment(int id)
         {
-            
+
             var user = _context.departments.SingleOrDefault(c => c.departementid == id);
 
             if (user == null)
                 return NotFound();
-           
+
             return Ok(user);
         }
 
@@ -74,7 +74,7 @@ namespace PM.Controllers.Api
             if (departmentInDb == null)
                 return NotFound();
 
-            
+
 
             _context.SaveChanges();
 
@@ -85,14 +85,14 @@ namespace PM.Controllers.Api
         public IHttpActionResult DeleteDepartment(int id)
         {
 
-           
+
 
 
             //constraints again
             var referred_institutes = _context.institutes.Where(i => i.department_id == id);
 
             referred_institutes.ForEach(i => i.department_id = null);
-     
+
             //_context.Entry(institute).Property("department_id").IsModified = true; // didn't work idk why :(
             // had to do a little trick here to bypass my custom validations >> further reading on EF context tracking...
             _context.SaveChanges();
@@ -103,7 +103,7 @@ namespace PM.Controllers.Api
             if (departmentInDb == null)
                 return NotFound();
 
-  
+
 
             _context.departments.Remove(departmentInDb);
             _context.SaveChanges();

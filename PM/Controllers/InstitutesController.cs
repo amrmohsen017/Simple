@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -15,7 +16,7 @@ namespace PM.Controllers
 {
     public class InstitutesController : Controller
     {
-        private project_managementEntities db = new project_managementEntities();
+        private project_managementEntities1 db = new project_managementEntities1();
 
         // GET: institutes
         public ActionResult Index()
@@ -43,51 +44,58 @@ namespace PM.Controllers
         public ActionResult Create()
         {
             ViewBag.department_id = new SelectList(db.departments, "departementid", "departmentname");
-            ViewBag.stationName = new SelectList(db.stations, "stationcode", "stationname");
-            ViewBag.cityName = new SelectList(db.cities, "citycode", "cityname");
+
+            //ViewBag.stationName = new SelectList(db.stations, "stationcode", "stationname");
+            //ViewBag.cityName = new SelectList(db.cities, "citycode", "cityname");
             ViewBag.governmentName = new SelectList(db.governmnets, "governmentcode", "governmentname");
+            ViewBag.stationName = new SelectList(new ArrayList { }, "stationcode", "stationname");
+            ViewBag.cityName = new SelectList(new ArrayList { }, "citycode", "cityname");
+            //ViewBag.governmentName = new SelectList(new ArrayList { }, "governmentcode", "governmentname");
+
+
             ViewBag.type_id = new SelectList(db.institute_type, "type_id", "typename");
             return View();
         }
 
         // POST: institutes/Create
-    
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "institute_id,institutename,telephone , institute_fulladdress,email,type_id,department_id ")] institute institute)
         {
 
-          
+
 
 
             if (ModelState.IsValid)
             {
 
-                int? governmentName = null ;
-                int? cityName = null ;
+                int? governmentName = null;
+                int? cityName = null;
                 int? stationName = null;
 
-                var shit = Request["cityName"]; 
+                var shit = Request["cityName"];
                 if (Request["governmentName"] != "")
                 {
                     governmentName = int.Parse(Request["governmentName"]);
                 }
-                if (Request["cityName"] != "" && Request["cityName"] != null )
+                if (Request["cityName"] != "" && Request["cityName"] != null)
                 {
                     cityName = int.Parse(Request["cityName"]);
                 }
 
 
-                if (Request["stationName"] != "" && Request["stationName"] != null) {
+                if (Request["stationName"] != "" && Request["stationName"] != null)
+                {
                     stationName = int.Parse(Request["stationName"]);
                 }
-              
-             
 
 
 
 
-                db.institute_address.Add(new institute_address { stationcode = stationName, citycode = cityName , governmnetcode = governmentName });
+
+
+                db.institute_address.Add(new institute_address { stationcode = stationName, citycode = cityName, governmnetcode = governmentName });
                 db.SaveChanges();
 
 
@@ -100,8 +108,8 @@ namespace PM.Controllers
 
 
 
-              
-            
+
+
 
                 return RedirectToAction("Index");
             }
@@ -139,10 +147,11 @@ namespace PM.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "institute_id,institutename,institute_fulladdress,telephone,email,type_id,department_id,adress_id")] institute institute)
+        public ActionResult Edit([Bind(Include = "institute_id,institutename,institute_fulladdress,telephone,email,type_id,department_id ,adress_id")] institute institute)
         {
             if (ModelState.IsValid)
             {
+
                 db.Entry(institute).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

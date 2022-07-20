@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PM.Models;
+using PM.ViewModels;
 using PagedList;
 using System.Data.Entity.Validation;
 
@@ -11,7 +12,9 @@ namespace PM.Controllers
 {
     public class AdminController : Controller
     {
-        project_managementEntities pm = new project_managementEntities();
+                
+        project_managementEntities1 pm = new project_managementEntities1();
+        Jobsection dbVM = new Jobsection();
 
         // GET: Admin
         public ActionResult Index()
@@ -30,6 +33,7 @@ namespace PM.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult add_section(int sectiontype_id, string sectionname)
         {
             if (sectionname != null)
@@ -404,10 +408,10 @@ namespace PM.Controllers
                 if (updatedP != null)
                 {
                     updatedP.projectname = p.projectname;
-                    updatedP.startdate = p.startdate;
-                    updatedP.enddatte = p.enddatte;
+                    updatedP.plannedstartdate = p.plannedstartdate;
+                    updatedP.plannedenddate = p.plannedenddate;
                     updatedP.cost = updatedP.cost;
-                    updatedP.details = p.details;
+                    updatedP.description = p.description;
                     updatedP.institute_id = p.institute_id;
 
                     pm.SaveChanges();
@@ -421,6 +425,551 @@ namespace PM.Controllers
             else
             {
                 return RedirectToAction("project_panel");
+            }
+
+        }
+
+        public ActionResult Cities(int? pageNumber)
+        {
+            var list = pm.cities.OrderBy(x => x.cityname).ToList();
+            ViewBag.deleteCitySuccess = TempData["deleteCitySuccess"];
+            ViewBag.updateCitySuccess = TempData["updateCitySuccess"];
+            return View(list.ToPagedList(pageNumber ?? 1, 10));
+        }
+        public ActionResult AddCity()
+        {
+            List<governmnet> govs = new List<governmnet>();
+            govs = pm.governmnets.ToList();
+            ViewBag.governmentname = new SelectList(govs, "governmentcode", "governmentname");
+            ViewBag.addCitySuccess = TempData["addCitySuccess"];
+            return View("");
+        }
+
+        [HttpPost]
+        public ActionResult AddCity(city model)
+        {
+            var cities = pm.cities.Where(x => x.cityname == model.cityname).ToList();
+            var governments = pm.governmnets.Where(x => x.governmentcode == model.governmentcode).ToList();
+
+            if (ModelState.IsValid)
+            {
+
+                city obj = new city();
+                if (cities.Count > 0)
+                {
+                    ViewBag.Duplicate = "City Name " + model.cityname + " already exist !";
+                    List<governmnet> govs = new List<governmnet>();
+                    govs = pm.governmnets.ToList();
+                    ViewBag.governmentname = new SelectList(govs, "governmentcode", "governmentname");
+                    return View("AddCity");
+                }
+
+
+                obj.citycode = model.citycode;
+                obj.cityname = model.cityname;
+                obj.governmentcode = model.governmentcode;
+                obj.governmnet = model.governmnet;
+
+                pm.cities.Add(obj);
+                pm.SaveChanges();
+                TempData["addSCitySuccess"] = "تم اضافة مدينة " + model.cityname + " بنجاح";
+
+
+
+
+
+            }
+            TempData["addCitySuccess"] = "ادخل اسم المدينة صحيح ";
+            return RedirectToAction("Addcity");
+        }
+        public ActionResult DeleteCity(int id)
+        {
+
+            try
+            {
+
+                var obj = pm.cities.Find(id);
+                var stations = pm.stations.Where(x => x.citycode == obj.citycode).ToList();
+
+
+
+                pm.stations.RemoveRange(stations);
+                pm.cities.Remove(obj);
+                pm.SaveChanges();
+                return RedirectToAction("Governments");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+        public ActionResult EditCity(int id)
+        {
+
+            List<governmnet> gov = new List<governmnet>();
+            gov = pm.governmnets.ToList();
+            ViewBag.governmentname = new SelectList(gov, "governmentcode", "governmentname");
+
+            //getting the record the user want to edit by id
+            city s = pm.cities.Find(id);
+            return View(s);
+        }
+        [HttpPost]
+        public ActionResult EditCity(city cityy)
+        {
+            var cities = pm.cities.Where(x => x.cityname == cityy.cityname).ToList();
+            var govs = pm.governmnets.Where(x => x.governmentcode == cityy.governmentcode).ToList();
+            if (cityy != null)
+            {
+
+
+                if (ModelState.IsValid)
+                {
+
+                    station obj = new station();
+                    if (cities.Count > 0)
+                    {
+                        ViewBag.Duplicate = "اسم المدينة" + cityy.cityname + "موجود بالفعل";
+                        List<governmnet> gov = new List<governmnet>();
+                        gov = pm.governmnets.ToList();
+                        ViewBag.governmentname = new SelectList(gov, "governmentcode", "governmentname");
+                        return View(cityy);
+                    }
+
+                    city updatedS = pm.cities.SingleOrDefault(x => x.citycode == cityy.citycode);
+                    if (updatedS != null)
+                    {
+                        updatedS.cityname = cityy.cityname;
+                        updatedS.governmentcode = cityy.governmentcode;
+                        pm.SaveChanges();
+                        TempData["updateCitySuccess"] = "تم التعديل";
+                    }
+
+                }
+                else
+                {
+                    TempData["updateCitySuccess"] = "لا يمكن تعديله";
+
+                }
+                return RedirectToAction("EditCity");
+
+            }
+            else
+            {
+                return RedirectToAction("Cities");
+            }
+
+        }
+
+        public ActionResult Governments(int? pageNumber)
+        {
+            var list = pm.governmnets.OrderBy(x => x.governmentname).ToList();
+            ViewBag.deletegovernmentSuccess = TempData["deletegovernmentSuccess"];
+            ViewBag.updategovernmentSuccess = TempData["updategovernmentSuccess"];
+            return View(list.ToPagedList(pageNumber ?? 1, 10));
+        }
+
+        public ActionResult AddGovernment()
+        {
+            ViewBag.addGovernmentSuccess = TempData["addGovernmentSuccess"];
+            return View("");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult AddGovernment(governmnet model)
+        {
+            var governments = pm.governmnets.Where(x => x.governmentname == model.governmentname).ToList();
+            if (ModelState.IsValid)
+            {
+
+                governmnet obj = new governmnet();
+                if (governments.Count > 0)
+                {
+                    ViewBag.Duplicate = "اسم المخافظة " + model.governmentname + " موجود بالفعل";
+                    return View("AddGovernment");
+                }
+
+                obj.governmentcode = model.governmentcode;
+                obj.governmentname = model.governmentname;
+                pm.governmnets.Add(obj);
+                pm.SaveChanges();
+                TempData["addGovernmentSuccess"] = "تم اضافة مركز " + model.governmentname + " بنجاح";
+                return RedirectToAction("Governments");
+
+
+
+
+            }
+            TempData["addGovernmentSuccess"] = "ادخل اسم المحافظة صحيح ";
+            return RedirectToAction("AddGovernment");
+        }
+
+
+        public ActionResult DeleteGovernment(int id)
+        {
+
+            try
+            {
+
+                var obj = pm.governmnets.Find(id);
+                var cities = pm.cities.Where(x => x.governmentcode == obj.governmentcode).ToList();
+                var citiescode = pm.cities.Where(x => x.governmentcode == obj.governmentcode).Distinct().ToList();
+                foreach (var city in citiescode)
+                {
+                    var stations = pm.stations.Where(x => x.citycode == city.citycode).ToList();
+                    pm.stations.RemoveRange(stations);
+                }
+
+                pm.cities.RemoveRange(cities);
+                pm.governmnets.Remove(obj);
+                pm.SaveChanges();
+                return RedirectToAction("Governments");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+        public ActionResult EditGovernment(int id)
+        {
+            governmnet gov = pm.governmnets.Find(id);
+            ViewBag.addGovernmentSuccess = TempData["addGovernmentSuccess"];
+            return View(gov);
+        }
+        [HttpPost]
+        public ActionResult EditGovernment(governmnet gov)
+        {
+            if (gov != null)
+            {
+
+
+                var governments = pm.governmnets.Where(x => x.governmentname == gov.governmentname).ToList();
+                if (ModelState.IsValid)
+                {
+                    if (governments.Count > 0)
+                    {
+                        ViewBag.Duplicate = "اسم المخافظة " + gov.governmentname + " موجود بالفعل";
+                        return View(gov);
+                    }
+
+
+                    governmnet updatedgov = pm.governmnets.SingleOrDefault(x => x.governmentcode == gov.governmentcode);
+                    if (updatedgov != null)
+                    {
+                        updatedgov.governmentname = gov.governmentname;
+
+                        pm.SaveChanges();
+                    }
+                }
+                TempData["updateGovernmentSuccess"] = "لا يمكن تعديله";
+                return RedirectToAction("EditGovernment");
+            }
+            else
+            {
+                return RedirectToAction("Governments");
+            }
+
+        }
+
+
+
+        public ActionResult Stations(int? pageNumber)
+        {
+            var list = pm.stations.OrderBy(x => x.stationname).ToList();
+            ViewBag.deleteStationSuccess = TempData["deleteStationSuccess"];
+            ViewBag.updateStationSuccess = TempData["updateStationSuccess"];
+            return View(list.ToPagedList(pageNumber ?? 1, 10));
+        }
+        public ActionResult AddStation()
+        {
+            List<city> cities = new List<city>();
+            cities = pm.cities.ToList();
+            ViewBag.cityname = new SelectList(cities, "citycode", "cityname");
+            ViewBag.addStationSuccess = TempData["addStationSuccess"];
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddStation(station model)
+        {
+            var stationss = pm.stations.Where(x => x.stationname == model.stationname).ToList();
+            var cities = pm.cities.Where(x => x.citycode == model.citycode).ToList();
+
+            if (ModelState.IsValid)
+            {
+
+                station obj = new station();
+                if (stationss.Count > 0)
+                {
+                    ViewBag.Duplicate = "اسم المركز" + model.stationname + "موجود بالفعل";
+                    List<city> cit = new List<city>();
+                    cities = pm.cities.ToList();
+                    ViewBag.cityname = new SelectList(cit, "citycode", "cityname");
+                    return View("AddStation");
+                }
+
+
+
+
+                obj.stationname = model.stationname;
+                obj.citycode = model.citycode;
+                pm.stations.Add(obj);
+                pm.SaveChanges();
+                TempData["addStationSuccess"] = "تم اضافة مركز " + model.stationname + " بنجاح";
+
+
+
+
+
+
+
+            }
+            else
+            {
+                TempData["addStationSuccess"] = "ادخل اسم المركز صحيح ";
+
+            }
+            return RedirectToAction("Addstation");
+
+        }
+
+        public ActionResult DeleteStation(int id)
+        {
+
+            try
+            {
+
+                var obj = pm.stations.Find(id);
+
+                pm.stations.Remove(obj);
+                pm.SaveChanges();
+                TempData["addStationSuccess"] = "تم مسح مركز " + obj.stationname + " بنجاح";
+                return RedirectToAction("Stations");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+        public ActionResult EditStation(int id)
+        {
+
+            List<city> cit = new List<city>();
+            cit = pm.cities.ToList();
+            ViewBag.cityname = new SelectList(cit, "citycode", "cityname");
+
+            //getting the record the user want to edit by id
+            station s = pm.stations.Find(id);
+            return View(s);
+        }
+        [HttpPost]
+        public ActionResult EditStation(station s)
+        {
+            var stationss = pm.stations.Where(x => x.stationname == s.stationname).ToList();
+            var cities = pm.cities.Where(x => x.citycode == s.citycode).ToList();
+            if (s != null)
+            {
+
+
+                if (ModelState.IsValid)
+                {
+
+                    station obj = new station();
+                    if (stationss.Count > 0)
+                    {
+                        ViewBag.Duplicate = "اسم المركز" + s.stationname + "موجود بالفعل";
+                        List<city> cit = new List<city>();
+                        cities = pm.cities.ToList();
+                        ViewBag.cityname = new SelectList(cit, "citycode", "cityname");
+                        return View(s);
+                    }
+
+                    station updatedS = pm.stations.SingleOrDefault(x => x.stationcode == s.stationcode);
+                    if (updatedS != null)
+                    {
+                        updatedS.stationname = s.stationname;
+                        updatedS.citycode = s.citycode;
+                        pm.SaveChanges();
+                        TempData["updateStationSuccess"] = "تم التعديل";
+                    }
+
+                }
+                else
+                {
+                    TempData["updateStationSuccess"] = "لا يمكن تعديله";
+
+                }
+                return RedirectToAction("EditStation");
+
+            }
+            else
+            {
+                return RedirectToAction("Stations");
+            }
+
+        }
+
+        public ActionResult Jobs(int? pageNumber)
+        {
+
+            //dbVM.jobs = pm.jobs.OrderBy(x => x.jobname).ToList();
+            var y = (from x in pm.jobs join s in pm.job_section on x.job_id equals s.job_id join w in pm.sections on s.section_id equals w.section_id orderby x.jobname select new Jobsection { jobs = x, sections = w });
+            ViewBag.deleteJobSuccess = TempData["deleteJobSuccess"];
+            ViewBag.updateJobSuccess = TempData["updateJobSuccess"];
+            return View(y.ToPagedList(pageNumber ?? 1, 10));
+
+
+        }
+
+        public ActionResult AddJob()
+        {
+            dbVM.jobs2 = pm.jobs.ToList();
+            dbVM.sections2 = pm.sections.ToList();
+            ViewBag.sectionnames = new SelectList(dbVM.sections2, "section_id", "sectionname");
+
+            ViewBag.jobnames = new SelectList(dbVM.jobs2, "job_id", "jobname");
+            ViewBag.addJobSuccess = TempData["addJobSuccess"];
+
+            return View(dbVM);
+        }
+
+        [HttpPost]
+        public ActionResult AddJob(Jobsection model)
+        {
+            var jobs = pm.jobs.Where(x => x.jobname == model.jobs.jobname).ToList();
+
+            if (ModelState.IsValid)
+            {
+
+                Jobsection obj = new Jobsection();
+                if (jobs.Count > 0)
+                {
+                    ViewBag.Duplicate = "اسم الوظيفة" + model.jobs.jobname + "موجود بالفعل";
+
+                    dbVM.jobs2 = pm.jobs.ToList();
+
+                    ViewBag.jobnames = new SelectList(dbVM.jobs2, "job_id", "jobname");
+                    return View("AddJob");
+                }
+
+
+
+
+                pm.jobs.Add(model.jobs);
+                pm.job_section.Add(new job_section { job_id=model.jobs.job_id,section_id=model.section_id});
+                pm.SaveChanges();
+                TempData["addJobSuccess"] = "تم اضافة وظيفة " + model.jobs.jobname + " بنجاح";
+
+          
+
+
+
+
+
+
+            }
+            else
+            {
+                TempData["addJobSuccess"] = "ادخل اسم القسم صحيح ";
+
+            }
+            return RedirectToAction("AddJob");
+
+        }
+
+        public ActionResult DeleteJob(int id)
+        {
+
+            try
+            {
+
+                dbVM.jobs = pm.jobs.Find(id);
+
+
+                pm.job_section.Remove(pm.job_section.Where(x => x.job_id == dbVM.jobs.job_id).FirstOrDefault());
+                pm.jobs.Remove(dbVM.jobs);
+                pm.SaveChanges();
+                TempData["addStationSuccess"] = "تم مسح وظيفة " + dbVM.jobs.jobname + " بنجاح";
+                return RedirectToAction("Jobs");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+        public ActionResult EditJob(int id)
+        {
+
+
+            dbVM.jobs2 = pm.jobs.ToList();
+            dbVM.sections2 = pm.sections.ToList();
+            ViewBag.sectionnames = new SelectList(dbVM.sections2, "section_id", "sectionname");
+
+            ViewBag.jobnames = new SelectList(dbVM.jobs2, "job_id", "jobname");
+            ViewBag.addJobSuccess = TempData["addJobSuccess"];
+            dbVM.jobs = pm.jobs.Where(x => x.job_id == id).FirstOrDefault();
+            return View(dbVM);
+
+
+        }
+        [HttpPost]
+        public ActionResult EditJob(Jobsection model)
+        {
+            var jobs = pm.jobs.Where(x => x.jobname == model.jobs.jobname).ToList();
+            if (model != null)
+            {
+
+
+                if (ModelState.IsValid)
+                {
+
+
+                    if (jobs.Count > 0)
+                    {
+                        ViewBag.Duplicate = "اسم الوظيفة" + model.jobs.jobname + "موجود بالفعل";
+                        dbVM.jobs2 = pm.jobs.ToList();
+
+                        ViewBag.jobnames = new SelectList(dbVM.jobs2, "job_id", "jobname");
+                        return View("EditJob");
+                    }
+
+                    Jobsection updatedmodel = new Jobsection();
+                    updatedmodel.jobs = pm.jobs.SingleOrDefault(x => x.job_id == model.jobs.job_id);
+                    updatedmodel.sections = pm.sections.SingleOrDefault(x => x.section_id == model.sections.section_id);
+                    if (updatedmodel != null)
+                    {
+                        updatedmodel.jobs.jobname = model.jobs.jobname;
+                        updatedmodel.sections.sectionname = model.sections.sectionname;
+                        updatedmodel.jobs.followupcode = model.jobs.followupcode;
+                        pm.SaveChanges();
+                        TempData["updateStationSuccess"] = "تم التعديل";
+                    }
+
+                }
+                else
+                {
+                    TempData["updateStationSuccess"] = "لا يمكن تعديله";
+
+                }
+                return RedirectToAction("EditStation");
+
+            }
+            else
+            {
+                return RedirectToAction("Jobs");
             }
 
         }

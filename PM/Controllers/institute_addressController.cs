@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -12,7 +13,7 @@ namespace PM.Controllers
 {
     public class institute_addressController : Controller
     {
-        private project_managementEntities db = new project_managementEntities();
+        private project_managementEntities1 db = new project_managementEntities1();
 
         // GET: institute_address
         public ActionResult Index()
@@ -77,9 +78,13 @@ namespace PM.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.citycode = new SelectList(db.cities, "citycode", "cityname", institute_address.citycode);
+
+
+            ViewBag.citycode = new SelectList(new ArrayList { }, "citycode", "cityname", institute_address.citycode);
             ViewBag.governmnetcode = new SelectList(db.governmnets, "governmentcode", "governmentname", institute_address.governmnetcode);
-            ViewBag.stationcode = new SelectList(db.stations, "stationcode", "stationname", institute_address.stationcode);
+            ViewBag.stationcode = new SelectList(new ArrayList { }, "stationcode", "stationname", institute_address.stationcode);
+
+
             return View(institute_address);
         }
 
@@ -94,12 +99,12 @@ namespace PM.Controllers
             {
                 db.Entry(institute_address).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index" , "Institutes");
+                return RedirectToAction("Index", "Institutes");
             }
             ViewBag.citycode = new SelectList(db.cities, "citycode", "cityname", institute_address.citycode);
             ViewBag.governmnetcode = new SelectList(db.governmnets, "governmentcode", "governmentname", institute_address.governmnetcode);
             ViewBag.stationcode = new SelectList(db.stations, "stationcode", "stationname", institute_address.stationcode);
-            return View(institute_address );
+            return View(institute_address);
         }
 
         // GET: institute_address/Delete/5

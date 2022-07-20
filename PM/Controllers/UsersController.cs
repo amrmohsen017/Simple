@@ -12,7 +12,7 @@ namespace PM.Controllers
 {
     public class UsersController : Controller
     {
-        private project_managementEntities db = new project_managementEntities();
+        private project_managementEntities1 db = new project_managementEntities1();
 
         // GET: Users
         public ActionResult Index()
@@ -45,7 +45,7 @@ namespace PM.Controllers
         }
 
         // POST: Users/Create
-      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "user_id,username,pass,telephone,email,job_id,institute_id,level_code")] user user)
@@ -54,7 +54,7 @@ namespace PM.Controllers
             {
 
                 user.pass = Hash.Hash_this(user.pass);
-               
+
                 db.users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -83,13 +83,14 @@ namespace PM.Controllers
         }
 
         // POST: Users/Edit/5
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "user_id,username,pass,telephone,email,job_id,institute_id,level_code")] user user)
         {
             if (ModelState.IsValid)
             {
+                user.pass = Hash.Hash_this(user.pass);
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

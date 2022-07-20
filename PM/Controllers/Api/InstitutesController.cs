@@ -8,18 +8,46 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
+using RoutePrefixAttribute = System.Web.Http.RoutePrefixAttribute;
 
 namespace PM.Controllers.Api
 {
+
+
     public class InstitutesController : ApiController
     {
-        private project_managementEntities _context;
+        private project_managementEntities1 _context;
 
         public InstitutesController()
         {
-            _context = new project_managementEntities();
+            _context = new project_managementEntities1();
         }
 
+
+        //public IHttpActionResult GetCities(int id)
+        //{
+
+
+        //    var institutesQuery = _context.cities.Where( i => i.governmentcode == id)
+        //        .Select(i => new {  i.cityname });
+
+
+        //    return Ok(institutesQuery);
+
+        //}
+        //[System.Web.Http.Route("api/station")]
+        //public IHttpActionResult GetStation(int id)
+        //{
+
+
+        //    var institutesQuery = _context.stations.Where(i => i.citycode == id)
+        //        .Select(i => new { i.stationname });
+
+
+        //    return Ok(institutesQuery);
+
+        //}
 
         // GET api/<controller>
         public IHttpActionResult GetInstitutes()
@@ -27,9 +55,9 @@ namespace PM.Controllers.Api
 
             // LOL THE TARGET PROPERTY NOT THE NAVIGATING PROPERTY 
             var institutesQuery = _context.institutes
-                .Include(i => i.institute_address).ThenInclude( i=> i.station).ThenInclude( i => i.city).ThenInclude(i=> i.governmnet)
-                .Include(i =>i.department).ToList().Select( i=> new {  i.institute_id , i.institutename , i.institute_fulladdress , i.email , i.telephone , i.department?.departmentname , i.adress_id , i.institute_address?.station?.stationname , i.institute_address?.city?.cityname ,i.institute_address?.governmnet?.governmentname  });
-         
+                .Include(i => i.institute_address).ThenInclude(i => i.station).ThenInclude(i => i.city).ThenInclude(i => i.governmnet)
+                .Include(i => i.department).ToList().Select(i => new { i.institute_id, i.institutename, i.institute_fulladdress, i.email, i.telephone, i.department?.departmentname, i.adress_id, i.institute_address?.station?.stationname, i.institute_address?.city?.cityname, i.institute_address?.governmnet?.governmentname });
+
 
             return Ok(institutesQuery);
 
@@ -38,12 +66,12 @@ namespace PM.Controllers.Api
         // GET api/<controller>/5
         public IHttpActionResult GetUser(int id)
         {
-            
+
             var user = _context.users.SingleOrDefault(c => c.user_id == id);
 
             if (user == null)
                 return NotFound();
-           
+
             return Ok(user);
         }
 
@@ -73,12 +101,14 @@ namespace PM.Controllers.Api
             if (userInDb == null)
                 return NotFound();
 
-            
+
 
             _context.SaveChanges();
 
             return Ok();
         }
+
+
 
         // DELETE api/<controller>/5
         public IHttpActionResult DeleteInstitute(int id)

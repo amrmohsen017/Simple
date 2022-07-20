@@ -13,11 +13,11 @@ namespace PM.Controllers.Api
 {
     public class UsersController : ApiController
     {
-        private project_managementEntities _context;
+        private project_managementEntities1 _context;
 
         public UsersController()
         {
-            _context = new project_managementEntities();
+            _context = new project_managementEntities1();
         }
 
 
@@ -27,8 +27,8 @@ namespace PM.Controllers.Api
 
             // LOL THE TARGET PROPERTY NOT THE NAVIGATING PROPERTY 
             var usersQuery = _context.users
-                .Include(u => u.institute) 
-                .Include(u => u.job).ToList().Select( u=> new { u.user_id , u.username , u.telephone  ,u.email , u.institute.institutename , u.job.jobname});
+                .Include(u => u.institute)
+                .Include(u => u.job).ToList().Select(u => new { u.user_id, u.username, u.telephone, u.email, u.institute.institutename, u.job.jobname });
             //.Include(u => u.level_code)
 
 
@@ -41,12 +41,12 @@ namespace PM.Controllers.Api
         // GET api/<controller>/5
         public IHttpActionResult GetUser(int id)
         {
-            
+
             var user = _context.users.SingleOrDefault(c => c.user_id == id);
 
             if (user == null)
                 return NotFound();
-           
+
             return Ok(user);
         }
 
@@ -76,7 +76,7 @@ namespace PM.Controllers.Api
             if (userInDb == null)
                 return NotFound();
 
-            
+
 
             _context.SaveChanges();
 

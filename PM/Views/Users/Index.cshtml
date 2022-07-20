@@ -2,31 +2,41 @@
 
 
 @{ ViewBag.Title = "Users";
-                Layout = "~/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Views/Shared/new_layout.cshtml"; }
 
-<h2>Users</h2>
-<p>
-    @Html.ActionLink("New User", "Create", "Users", null, new { @class = "btn btn-primary" })
-</p>
 
-<table id="users" class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>username</th>
-            <th>telephone</th>
-            <th>email</th>
-            <th>job</th>
-            <th>institute</th>
-            <th></th>
+<div class="container" data-layout="container">
 
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h2>Users</h2>
+            <p>
+                @Html.ActionLink("New User", "Create", "Users", null, new { @class = "btn btn-primary" })
+            </p>
+
+            <table id="users" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>username</th>
+                        <th>telephone</th>
+                        <th>email</th>
+                        <th>job</th>
+                        <th>institute</th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 @section scripts
 {
-    <script>$(document).ready(function () {
+    <script>
+        $(document).ready(function () {
             var table = $("#users").DataTable({
                 ajax: {
                     url: "/api/users",
@@ -35,13 +45,13 @@
                 columns: [
                     {
                         data: "username",
-                        render: function(data, type, user) {
+                        render: function (data, type, user) {
                             return "<a href='/users/edit/" + user.user_id + "'>" + user.username + "</a>";
                         }
                     },
                     {
                         data: "telephone",
-                     
+
                     },
                     {
                         data: "email",
@@ -55,11 +65,11 @@
                         data: "institutename",
 
                     },
-                    
+
 
                     {
                         data: "user_id",
-                        render: function(data) {
+                        render: function (data) {
                             return "<button class='btn-link js-delete' data-user-id=" + data + ">Delete</button>";
                         }
                     }

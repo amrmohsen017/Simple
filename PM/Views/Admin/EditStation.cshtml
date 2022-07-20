@@ -1,0 +1,59 @@
+﻿@model PM.Models.station
+
+@{ ViewBag.Title = "EditStation";
+    Layout = "~/Views/Shared/new_layout.cshtml"; }
+
+
+<div class="container" data-layout="container">
+
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h2>EditStation</h2>
+            @if (ViewBag.addStationSuccess != null)
+            {
+@ViewBag.addStationSuccess}
+
+            @using (Html.BeginForm())
+            {
+@Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>station</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.stationcode)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.stationname, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.stationname, "المركز", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.stationname, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.citycode, "citycode", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("citycode", ViewBag.cityname as SelectList, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.citycode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>}
+            <p style="color:red">
+                @Html.Label("", Convert.ToString((string)ViewBag.Duplicate))
+
+            </p>
+
+            <div>
+                @Html.ActionLink("Back to List", "Stations")
+            </div>
+        </div>
+    </div>
+</div>

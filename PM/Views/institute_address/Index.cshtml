@@ -1,29 +1,36 @@
 ﻿@model IEnumerable<PM.Models.institute_address>
 
-@{
-    ViewBag.Title = "Index";
-}
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/new_layout.cshtml"; }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.city.cityname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.governmnet.governmentname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.station.stationname)
-        </th>
-        <th></th>
-    </tr>
+<div class="container" data-layout="container">
 
-@foreach (var item in Model) {
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+
+            <h2>Index</h2>
+
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.city.cityname)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.governmnet.governmentname)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.station.stationname)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.city.cityname)
@@ -35,11 +42,15 @@
             @Html.DisplayFor(modelItem => item.station.stationname)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.institute_adress_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.institute_adress_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.institute_adress_id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.institute_adress_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.institute_adress_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.institute_adress_id })
         </td>
-    </tr>
-}
+    </tr>}
 
-</table>
+            </table>
+
+        </div>
+
+    </div>
+</div>

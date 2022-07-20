@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.EntityFrameworkCore.Design.3.1.26\build\net461\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('..\packages\Microsoft.EntityFrameworkCore.Design.3.1.26\build\net461\Microsoft.EntityFrameworkCore.Design.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -273,9 +273,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="ChatHub.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Api\citiesController.cs" />
     <Compile Include="Controllers\Api\DepartmentsController.cs" />
-    <Compile Include="Controllers\Api\InstitutesTypesController.cs" />
     <Compile Include="Controllers\Api\InstitutesController.cs" />
+    <Compile Include="Controllers\Api\InstitutesTypesController.cs" />
+    <Compile Include="Controllers\Api\stationsController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -286,15 +288,367 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ModelValidators\ValidateMe.cs" />
-    <Compile Include="ModelValidators\Institute_addreess.cs" />
+    <Compile Include="Models\attachemnt.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\blocklist_tasks.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\city.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\department.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\governmnet.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\gross_marign.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\institute.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\institute_address.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\institute_type.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\job.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\job_section.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\log.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\milestone.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\project.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\project_attachment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\project_log.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\project_stage.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\project_tag.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\project_updates.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\section.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\section_institute.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\section_type.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\station.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\stationdetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\status.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tag.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\task.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\task_assignedemployee.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\task_attachments.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\task_logs.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\task_tags.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\user.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="ModelValidators\Email.cs" />
+    <Compile Include="ModelValidators\Institute_addreess.cs" />
     <Compile Include="ModelValidators\Institute_name.cs" />
+    <Compile Include="ModelValidators\ValidateMe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Hash.cs" />
+    <Compile Include="ViewModels\Jobsection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\assets\css\theme-rtl.min.css" />
+    <Content Include="Content\assets\css\theme.min.css" />
+    <Content Include="Content\assets\css\user-rtl.min.css" />
+    <Content Include="Content\assets\css\user.min.css" />
+    <Content Include="Content\assets\data\usa.js" />
+    <Content Include="Content\assets\data\world.js" />
+    <Content Include="Content\assets\img\chat\1.jpg" />
+    <Content Include="Content\assets\img\chat\10.jpg" />
+    <Content Include="Content\assets\img\chat\11.jpg" />
+    <Content Include="Content\assets\img\chat\12.jpg" />
+    <Content Include="Content\assets\img\chat\2.jpg" />
+    <Content Include="Content\assets\img\chat\3.jpg" />
+    <Content Include="Content\assets\img\chat\4.jpg" />
+    <Content Include="Content\assets\img\chat\5.jpg" />
+    <Content Include="Content\assets\img\chat\6.jpg" />
+    <Content Include="Content\assets\img\chat\7.jpg" />
+    <Content Include="Content\assets\img\chat\8.jpg" />
+    <Content Include="Content\assets\img\chat\9.jpg" />
+    <Content Include="Content\assets\img\crm\call.svg" />
+    <Content Include="Content\assets\img\crm\email.svg" />
+    <Content Include="Content\assets\img\crm\india.png" />
+    <Content Include="Content\assets\img\crm\nepal.png" />
+    <Content Include="Content\assets\img\crm\other.svg" />
+    <Content Include="Content\assets\img\crm\social.svg" />
+    <Content Include="Content\assets\img\crm\uae.png" />
+    <Content Include="Content\assets\img\ecommerce\1.jpg" />
+    <Content Include="Content\assets\img\ecommerce\2.jpg" />
+    <Content Include="Content\assets\img\ecommerce\3.jpg" />
+    <Content Include="Content\assets\img\ecommerce\4.jpg" />
+    <Content Include="Content\assets\img\ecommerce\5.jpg" />
+    <Content Include="Content\assets\img\ecommerce\6.jpg" />
+    <Content Include="Content\assets\img\ecommerce\7.jpg" />
+    <Content Include="Content\assets\img\favicons\apple-touch-icon.png" />
+    <Content Include="Content\assets\img\favicons\favicon-16x16.png" />
+    <Content Include="Content\assets\img\favicons\favicon-32x32.png" />
+    <Content Include="Content\assets\img\favicons\favicon.ico" />
+    <Content Include="Content\assets\img\favicons\mstile-150x150.png" />
+    <Content Include="Content\assets\img\gallery\2.jpg" />
+    <Content Include="Content\assets\img\gallery\3.jpg" />
+    <Content Include="Content\assets\img\gallery\4.jpg" />
+    <Content Include="Content\assets\img\gallery\5.jpg" />
+    <Content Include="Content\assets\img\generic\1.jpg" />
+    <Content Include="Content\assets\img\generic\10.jpg" />
+    <Content Include="Content\assets\img\generic\11.jpg" />
+    <Content Include="Content\assets\img\generic\12.jpg" />
+    <Content Include="Content\assets\img\generic\13.jpg" />
+    <Content Include="Content\assets\img\generic\14.jpg" />
+    <Content Include="Content\assets\img\generic\16.jpg" />
+    <Content Include="Content\assets\img\generic\17.jpg" />
+    <Content Include="Content\assets\img\generic\18.jpg" />
+    <Content Include="Content\assets\img\generic\19.jpg" />
+    <Content Include="Content\assets\img\generic\2.jpg" />
+    <Content Include="Content\assets\img\generic\20.jpg" />
+    <Content Include="Content\assets\img\generic\3.jpg" />
+    <Content Include="Content\assets\img\generic\4.jpg" />
+    <Content Include="Content\assets\img\generic\5.jpg" />
+    <Content Include="Content\assets\img\generic\6.jpg" />
+    <Content Include="Content\assets\img\generic\7.jpg" />
+    <Content Include="Content\assets\img\generic\8.jpg" />
+    <Content Include="Content\assets\img\generic\9.jpg" />
+    <Content Include="Content\assets\img\generic\bg-1.jpg" />
+    <Content Include="Content\assets\img\generic\bg-2.jpg" />
+    <Content Include="Content\assets\img\generic\bg-navbar.png" />
+    <Content Include="Content\assets\img\generic\card.png" />
+    <Content Include="Content\assets\img\generic\dashboard-alt.jpg" />
+    <Content Include="Content\assets\img\generic\default.png" />
+    <Content Include="Content\assets\img\generic\falcon-mode-dark.jpg" />
+    <Content Include="Content\assets\img\generic\falcon-mode-default.jpg" />
+    <Content Include="Content\assets\img\generic\image-file-2.png" />
+    <Content Include="Content\assets\img\generic\inverted.png" />
+    <Content Include="Content\assets\img\generic\vibrant.png" />
+    <Content Include="Content\assets\img\icons\arrows-h.svg" />
+    <Content Include="Content\assets\img\icons\chrome-logo.png" />
+    <Content Include="Content\assets\img\icons\cloud-download.svg" />
+    <Content Include="Content\assets\img\icons\cloud-upload.svg" />
+    <Content Include="Content\assets\img\icons\connect-circle.png" />
+    <Content Include="Content\assets\img\icons\cookie-1.png" />
+    <Content Include="Content\assets\img\icons\docs.png" />
+    <Content Include="Content\assets\img\icons\edit-alt.svg" />
+    <Content Include="Content\assets\img\icons\firefox-logo.png" />
+    <Content Include="Content\assets\img\icons\free.svg" />
+    <Content Include="Content\assets\img\icons\icon-payment-methods-grid.png" />
+    <Content Include="Content\assets\img\icons\icon-payment-methods.png" />
+    <Content Include="Content\assets\img\icons\icon-paypal-full.png" />
+    <Content Include="Content\assets\img\icons\left-arrow-from-left.svg" />
+    <Content Include="Content\assets\img\icons\paragraph.svg" />
+    <Content Include="Content\assets\img\icons\pro.svg" />
+    <Content Include="Content\assets\img\icons\safari-logo.png" />
+    <Content Include="Content\assets\img\icons\shield.png" />
+    <Content Include="Content\assets\img\icons\signal.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\16.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\21.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\41.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\45.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\47.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\48.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\49.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\50.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\authentication-corner.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\bg-shape.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\calendar.svg" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\comment-active.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\comment-inactive.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\corner-1.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\corner-2.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\corner-3.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\corner-4.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\corner-5.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\falcon.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\half-circle.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\image.svg" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\international-women-s-day-2.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\like-active.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\like-inactive.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\location.svg" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\navbar-vertical.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\shape-1.png" />
+    <Content Include="Content\assets\img\icons\spot-illustrations\share-inactive.png" />
+    <Content Include="Content\assets\img\icons\star_on.svg" />
+    <Content Include="Content\assets\img\icons\visa.png" />
+    <Content Include="Content\assets\img\icons\weather-icon.png" />
+    <Content Include="Content\assets\img\icons\weather-sm.jpg" />
+    <Content Include="Content\assets\img\icons\zip.png" />
+    <Content Include="Content\assets\img\illustrations\crm-bar-chart.png" />
+    <Content Include="Content\assets\img\illustrations\crm-line-chart.png" />
+    <Content Include="Content\assets\img\illustrations\ecommerce-bg.png" />
+    <Content Include="Content\assets\img\kanban\1.jpg" />
+    <Content Include="Content\assets\img\kanban\2.jpg" />
+    <Content Include="Content\assets\img\kanban\3.jpg" />
+    <Content Include="Content\assets\img\kanban\4.jpg" />
+    <Content Include="Content\assets\img\logos\adobe-creative-cloud.png" />
+    <Content Include="Content\assets\img\logos\apple.png" />
+    <Content Include="Content\assets\img\logos\asana-logo.png" />
+    <Content Include="Content\assets\img\logos\atlassian.png" />
+    <Content Include="Content\assets\img\logos\b&amp;w\1.png" />
+    <Content Include="Content\assets\img\logos\b&amp;w\10.png" />
+    <Content Include="Content\assets\img\logos\b&amp;w\11.png" />
+    <Content Include="Content\assets\img\logos\b&amp;w\12.png" />
+    <Content Include="Content\assets\img\logos\b&amp;w\2.png" />
+    <Content Include="Content\assets\img\logos\b&amp;w\4.png" />
+    <Content Include="Content\assets\img\logos\b&amp;w\6.png" />
+    <Content Include="Content\assets\img\logos\bs-5.png" />
+    <Content Include="Content\assets\img\logos\coursera.png" />
+    <Content Include="Content\assets\img\logos\digitalocean.png" />
+    <Content Include="Content\assets\img\logos\facebook.png" />
+    <Content Include="Content\assets\img\logos\g.png" />
+    <Content Include="Content\assets\img\logos\github.png" />
+    <Content Include="Content\assets\img\logos\gmail.png" />
+    <Content Include="Content\assets\img\logos\goodreads.png" />
+    <Content Include="Content\assets\img\logos\google.png" />
+    <Content Include="Content\assets\img\logos\harvard.png" />
+    <Content Include="Content\assets\img\logos\hp.png" />
+    <Content Include="Content\assets\img\logos\hubstaff.png" />
+    <Content Include="Content\assets\img\logos\intel-2.png" />
+    <Content Include="Content\assets\img\logos\logo-invoice.png" />
+    <Content Include="Content\assets\img\logos\mailbluster.png" />
+    <Content Include="Content\assets\img\logos\medium.png" />
+    <Content Include="Content\assets\img\logos\netflix.png" />
+    <Content Include="Content\assets\img\logos\nike.png" />
+    <Content Include="Content\assets\img\logos\nvidia.png" />
+    <Content Include="Content\assets\img\logos\oxford.png" />
+    <Content Include="Content\assets\img\logos\paypal.png" />
+    <Content Include="Content\assets\img\logos\pinterest.png" />
+    <Content Include="Content\assets\img\logos\spectrum.jpg" />
+    <Content Include="Content\assets\img\logos\spotify.png" />
+    <Content Include="Content\assets\img\logos\staten.png" />
+    <Content Include="Content\assets\img\logos\stripe.png" />
+    <Content Include="Content\assets\img\logos\tj-heigh-school.png" />
+    <Content Include="Content\assets\img\logos\unsplash.png" />
+    <Content Include="Content\assets\img\logos\youtube.png" />
+    <Content Include="Content\assets\img\management\activity-1.png" />
+    <Content Include="Content\assets\img\management\activity-2.png" />
+    <Content Include="Content\assets\img\management\activity-3.png" />
+    <Content Include="Content\assets\img\management\activity-4.png" />
+    <Content Include="Content\assets\img\management\activity-5.png" />
+    <Content Include="Content\assets\img\management\activity-6.png" />
+    <Content Include="Content\assets\img\management\activity-7.png" />
+    <Content Include="Content\assets\img\management\activity-8.png" />
+    <Content Include="Content\assets\img\management\activity-9.png" />
+    <Content Include="Content\assets\img\products\1-2.jpg" />
+    <Content Include="Content\assets\img\products\1-3.jpg" />
+    <Content Include="Content\assets\img\products\1-4.jpg" />
+    <Content Include="Content\assets\img\products\1-5.jpg" />
+    <Content Include="Content\assets\img\products\1-6.jpg" />
+    <Content Include="Content\assets\img\products\1.jpg" />
+    <Content Include="Content\assets\img\products\10.png" />
+    <Content Include="Content\assets\img\products\11.png" />
+    <Content Include="Content\assets\img\products\12.png" />
+    <Content Include="Content\assets\img\products\13.png" />
+    <Content Include="Content\assets\img\products\14.png" />
+    <Content Include="Content\assets\img\products\2-thumb.png" />
+    <Content Include="Content\assets\img\products\2.jpg" />
+    <Content Include="Content\assets\img\products\3-thumb.png" />
+    <Content Include="Content\assets\img\products\3.jpg" />
+    <Content Include="Content\assets\img\products\4.jpg" />
+    <Content Include="Content\assets\img\products\5-thumb.png" />
+    <Content Include="Content\assets\img\products\5.jpg" />
+    <Content Include="Content\assets\img\products\6.jpg" />
+    <Content Include="Content\assets\img\products\7.jpg" />
+    <Content Include="Content\assets\img\products\8.jpg" />
+    <Content Include="Content\assets\img\products\9.jpg" />
+    <Content Include="Content\assets\img\team\1-thumb.png" />
+    <Content Include="Content\assets\img\team\1.jpg" />
+    <Content Include="Content\assets\img\team\10.jpg" />
+    <Content Include="Content\assets\img\team\11.jpg" />
+    <Content Include="Content\assets\img\team\12.jpg" />
+    <Content Include="Content\assets\img\team\13.jpg" />
+    <Content Include="Content\assets\img\team\14.jpg" />
+    <Content Include="Content\assets\img\team\15.jpg" />
+    <Content Include="Content\assets\img\team\16.jpg" />
+    <Content Include="Content\assets\img\team\17.jpg" />
+    <Content Include="Content\assets\img\team\18.jpg" />
+    <Content Include="Content\assets\img\team\19.jpg" />
+    <Content Include="Content\assets\img\team\2-thumb.png" />
+    <Content Include="Content\assets\img\team\2.jpg" />
+    <Content Include="Content\assets\img\team\20.jpg" />
+    <Content Include="Content\assets\img\team\21.jpg" />
+    <Content Include="Content\assets\img\team\22.jpg" />
+    <Content Include="Content\assets\img\team\23.jpg" />
+    <Content Include="Content\assets\img\team\24.jpg" />
+    <Content Include="Content\assets\img\team\25.jpg" />
+    <Content Include="Content\assets\img\team\3-thumb.png" />
+    <Content Include="Content\assets\img\team\3.jpg" />
+    <Content Include="Content\assets\img\team\4-thumb.png" />
+    <Content Include="Content\assets\img\team\4.jpg" />
+    <Content Include="Content\assets\img\team\5-thumb.png" />
+    <Content Include="Content\assets\img\team\5.jpg" />
+    <Content Include="Content\assets\img\team\6.jpg" />
+    <Content Include="Content\assets\img\team\7.jpg" />
+    <Content Include="Content\assets\img\team\8.jpg" />
+    <Content Include="Content\assets\img\team\9.jpg" />
+    <Content Include="Content\assets\img\team\avatar.png" />
+    <Content Include="Content\assets\js\config.js" />
+    <Content Include="Content\assets\js\echarts-example.js" />
+    <Content Include="Content\assets\js\emoji-button.js" />
+    <Content Include="Content\assets\js\flatpickr.js" />
+    <Content Include="Content\assets\js\theme.js" />
+    <Content Include="Content\assets\video\beach.jpg" />
+    <Content Include="Content\assets\video\beach.mp4" />
+    <Content Include="Content\assets\video\beach.webm" />
     <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
@@ -304,6 +658,49 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="Content\typeahead.css" />
+    <Content Include="Content\vendors\anchorjs\anchor.min.js" />
+    <Content Include="Content\vendors\bootstrap\bootstrap.min.js" />
+    <Content Include="Content\vendors\chart\chart.min.js" />
+    <Content Include="Content\vendors\choices\choices.min.css" />
+    <Content Include="Content\vendors\choices\choices.min.js" />
+    <Content Include="Content\vendors\countup\countUp.umd.js" />
+    <Content Include="Content\vendors\dayjs\dayjs.min.js" />
+    <Content Include="Content\vendors\draggable\draggable.bundle.legacy.js" />
+    <Content Include="Content\vendors\dropzone\dropzone.min.css" />
+    <Content Include="Content\vendors\dropzone\dropzone.min.js" />
+    <Content Include="Content\vendors\echarts\echarts.min.js" />
+    <Content Include="Content\vendors\flatpickr\flatpickr.min.css" />
+    <Content Include="Content\vendors\fontawesome\all.min.js" />
+    <Content Include="Content\vendors\fullcalendar\main.min.css" />
+    <Content Include="Content\vendors\fullcalendar\main.min.js" />
+    <Content Include="Content\vendors\glightbox\glightbox.min.css" />
+    <Content Include="Content\vendors\glightbox\glightbox.min.js" />
+    <Content Include="Content\vendors\is\is.min.js" />
+    <Content Include="Content\vendors\leaflet.markercluster\leaflet.markercluster.js" />
+    <Content Include="Content\vendors\leaflet.markercluster\MarkerCluster.css" />
+    <Content Include="Content\vendors\leaflet.markercluster\MarkerCluster.Default.css" />
+    <Content Include="Content\vendors\leaflet.tilelayer.colorfilter\leaflet-tilelayer-colorfilter.min.js" />
+    <Content Include="Content\vendors\leaflet\images\layers-2x.html" />
+    <Content Include="Content\vendors\leaflet\images\layers.html" />
+    <Content Include="Content\vendors\leaflet\images\marker-icon.html" />
+    <Content Include="Content\vendors\leaflet\leaflet.css" />
+    <Content Include="Content\vendors\leaflet\leaflet.js" />
+    <Content Include="Content\vendors\list.js\list.min.js" />
+    <Content Include="Content\vendors\lodash\lodash.min.js" />
+    <Content Include="Content\vendors\lottie\lottie.min.js" />
+    <Content Include="Content\vendors\overlayscrollbars\OverlayScrollbars.min.css" />
+    <Content Include="Content\vendors\overlayscrollbars\OverlayScrollbars.min.js" />
+    <Content Include="Content\vendors\plyr\plyr.css" />
+    <Content Include="Content\vendors\plyr\plyr.polyfilled.min.js" />
+    <Content Include="Content\vendors\popper\popper.min.js" />
+    <Content Include="Content\vendors\prism\prism-okaidia.css" />
+    <Content Include="Content\vendors\prism\prism.js" />
+    <Content Include="Content\vendors\rater-js\index.js" />
+    <Content Include="Content\vendors\swiper\swiper-bundle.min.css" />
+    <Content Include="Content\vendors\swiper\swiper-bundle.min.js" />
+    <Content Include="Content\vendors\tinymce\tinymce.min.js" />
+    <Content Include="Content\vendors\typed.js\typed.js" />
+    <Content Include="Content\vendors\validator\validator.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -312,6 +709,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\toastr.less" />
     <Content Include="Content\toastr.scss" />
+    <Content Include="Models\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
     <Content Include="v3.4.0\app\calendar.html" />
     <Content Include="v3.4.0\app\chat.html" />
     <Content Include="v3.4.0\app\e-commerce\billing.html" />
@@ -778,35 +1185,62 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Chat.cshtml" />
-    <Content Include="Views\institutes\Create.cshtml" />
-    <Content Include="Views\institutes\Delete.cshtml" />
-    <Content Include="Views\institutes\Details.cshtml" />
-    <Content Include="Views\institutes\Edit.cshtml" />
-    <Content Include="Views\institutes\Index.cshtml" />
-    <Content Include="Views\Shared\_NavBar.cshtml" />
-    <Content Include="Views\Users\Create.cshtml" />
-    <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
-    <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="phpmyadmin\" />
     <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <Content Include="Content\assets\img\favicons\manifest.json" />
+    <Content Include="Content\assets\img\icons\star_on.svg.readme" />
     <None Include="packages.config" />
+    <Content Include="v3.4.0\assets\img\favicons\manifest.json" />
+    <Content Include="v3.4.0\assets\img\icons\star_on.svg.readme" />
+    <Content Include="Views\Admin\AddCity.cshtml" />
+    <Content Include="Views\Admin\AddGovernment.cshtml" />
+    <Content Include="Views\Admin\AddJob.cshtml" />
+    <Content Include="Views\Admin\AddStation.cshtml" />
+    <Content Include="Views\Admin\add_project.cshtml" />
+    <Content Include="Views\Admin\add_section.cshtml" />
+    <Content Include="Views\Admin\add_section_type.cshtml" />
+    <Content Include="Views\Admin\Cities.cshtml" />
+    <Content Include="Views\Admin\EditCity.cshtml" />
+    <Content Include="Views\Admin\EditGovernment.cshtml" />
+    <Content Include="Views\Admin\EditJob.cshtml" />
+    <Content Include="Views\Admin\EditStation.cshtml" />
+    <Content Include="Views\Admin\edit_project.cshtml" />
+    <Content Include="Views\Admin\edit_section.cshtml" />
+    <Content Include="Views\Admin\edit_section_type.cshtml" />
+    <Content Include="Views\Admin\Governments.cshtml" />
+    <Content Include="Views\Admin\Ind.cshtml" />
+    <Content Include="Views\Admin\Jobs.cshtml" />
+    <Content Include="Views\Admin\project_panel.cshtml" />
+    <Content Include="Views\Admin\section_panel.cshtml" />
+    <Content Include="Views\Admin\section_type_panel.cshtml" />
+    <Content Include="Views\Admin\Stations.cshtml" />
+    <Content Include="Views\departments\Create.cshtml" />
+    <Content Include="Views\departments\Delete.cshtml" />
+    <Content Include="Views\departments\Details.cshtml" />
+    <Content Include="Views\departments\Edit.cshtml" />
+    <Content Include="Views\departments\Index.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Chat.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\institutes\Create.cshtml" />
+    <Content Include="Views\institutes\Delete.cshtml" />
+    <Content Include="Views\institutes\Details.cshtml" />
+    <Content Include="Views\institutes\Edit.cshtml" />
+    <Content Include="Views\institutes\Index.cshtml" />
     <Content Include="Views\institute_address\Create.cshtml" />
     <Content Include="Views\institute_address\Delete.cshtml" />
     <Content Include="Views\institute_address\Details.cshtml" />
@@ -817,22 +1251,18 @@
     <Content Include="Views\institute_type\Details.cshtml" />
     <Content Include="Views\institute_type\Edit.cshtml" />
     <Content Include="Views\institute_type\Index.cshtml" />
-    <Content Include="Views\departments\Create.cshtml" />
-    <Content Include="Views\departments\Delete.cshtml" />
-    <Content Include="Views\departments\Details.cshtml" />
-    <Content Include="Views\departments\Edit.cshtml" />
-    <Content Include="Views\departments\Index.cshtml" />
-    <Content Include="Views\Admin\add_project.cshtml" />
-    <Content Include="Views\Admin\add_section.cshtml" />
-    <Content Include="Views\Admin\add_section_type.cshtml" />
-    <Content Include="Views\Admin\edit_project.cshtml" />
-    <Content Include="Views\Admin\edit_section.cshtml" />
-    <Content Include="Views\Admin\edit_section_type.cshtml" />
-    <Content Include="Views\Admin\project_panel.cshtml" />
-    <Content Include="Views\Admin\section_panel.cshtml" />
-    <Content Include="Views\Admin\section_type_panel.cshtml" />
-    <Content Include="v3.4.0\assets\img\favicons\manifest.json" />
-    <Content Include="v3.4.0\assets\img\icons\star_on.svg.readme" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\new_layout.cshtml" />
+    <Content Include="Views\Shared\sidebar.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -870,9 +1300,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.EntityFrameworkCore.Design.3.1.26\build\net461\Microsoft.EntityFrameworkCore.Design.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.EntityFrameworkCore.Design.3.1.26\build\net461\Microsoft.EntityFrameworkCore.Design.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

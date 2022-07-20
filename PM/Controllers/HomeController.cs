@@ -14,7 +14,7 @@ namespace PM.Controllers
         {
 
 
-            var context = new project_managementEntities();
+            var context = new project_managementEntities1();
 
             //return Content(string.Join(",", context.institutes.Select(i => new { i.institute_address, i.institutename}).ToList()));
             return View();

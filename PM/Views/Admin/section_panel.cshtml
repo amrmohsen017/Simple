@@ -4,66 +4,74 @@
 
 @model IPagedList<PM.Models.section>
 @*
-	@model IEnumerable<PM.Models.section>
+    @model IEnumerable<PM.Models.section>
 *@
-<h4>قائمة الاقسام</h4>
-<p>
-	@Html.ActionLink("اضافه قسم", "add_section")
-</p>
-<input type="text" id="search" placeholder="بحث" class="form-control" />
-<table class="table">
-	<tr>
-		<th>
-			أسم القسم
-		</th>
-		<th>
-			نوع القسم
-		</th>
-		<th></th>
-	</tr>
-	@if (Model.Count() == 0)
-	{
-		<tr> <td> لا يوجد اقسام للعرض </td></tr>
-	}
-	@foreach (var item in Model)
-	{
-		<tr class="search">
-			<td>
-				@Html.DisplayFor(modelItem => item.sectionname)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.section_type.sectiontype)
-			</td>
-			<td>
-				@Html.ActionLink("تعديل", "edit_section", new { id = item.section_id }) |
-				@Html.ActionLink("مسح", "delete_section", new { id = item.section_id }, new { onclick = "return confirm('هل تريد مسح القسم ؟')" })
-			</td>
-		</tr>
-	}
-	@ViewBag.successfulDelete
-</table>
-@Html.PagedListPager(Model, pageNumber => Url.Action("section_panel", new
-{
-pageNumber
-}))
+@{ Layout = "~/Views/Shared/new_layout.cshtml"; }
+<div class="container" data-layout="container">
+
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h4>قائمة الاقسام</h4>
+            <p>
+                @Html.ActionLink("اضافه قسم", "add_section")
+            </p>
+            <input type="text" id="search" placeholder="بحث" class="form-control" />
+            <table class="table">
+                <tr>
+                    <th>
+                        أسم القسم
+                    </th>
+                    <th>
+                        نوع القسم
+                    </th>
+                    <th></th>
+                </tr>
+                @if (Model.Count() == 0)
+                {
+    <tr> <td> لا يوجد اقسام للعرض </td></tr>}
+                @foreach (var item in Model)
+                {
+    <tr class="search">
+        <td>
+            @Html.DisplayFor(modelItem => item.sectionname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.section_type.sectiontype)
+        </td>
+        <td>
+            @Html.ActionLink("تعديل", "edit_section", new { id = item.section_id }) |
+            @Html.ActionLink("مسح", "delete_section", new { id = item.section_id }, new { onclick = "return confirm('هل تريد مسح القسم ؟')" })
+        </td>
+    </tr>}
+                @ViewBag.successfulDelete
+            </table>
+            @Html.PagedListPager(Model, pageNumber => Url.Action("section_panel", new
+            {
+                pageNumber
+            }))
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 @* a script for live search at client side*@
 <script>
-	$(document).ready(function () {
-		function contains(text_one, text_two) {
-			if (text_one.indexOf(text_two) != -1)
-				return true;
-		}
-		$('#search').keyup(function () {
-			var searchText = $("#search").val().toLowerCase();
-			$(".search").each(function () {
-				if (!contains($(this).text().toLowerCase(), searchText)) {
-					$(this).hide();
-				}
-				else {
-					$(this).show();
-				}
-			});
-		});
-	});
+    $(document).ready(function () {
+        function contains(text_one, text_two) {
+            if (text_one.indexOf(text_two) != -1)
+                return true;
+        }
+        $('#search').keyup(function () {
+            var searchText = $("#search").val().toLowerCase();
+            $(".search").each(function () {
+                if (!contains($(this).text().toLowerCase(), searchText)) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+        });
+    });
 </script>

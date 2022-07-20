@@ -1,0 +1,70 @@
+﻿@using PagedList;
+
+@using PagedList.Mvc;
+
+@model IPagedList<PM.Models.governmnet>
+@{ Layout = "~/Views/Shared/new_layout.cshtml"; }
+
+
+<div class="container" data-layout="container">
+
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h4>المحافظات</h4>
+            <p>
+                @Html.ActionLink("اضافة محافظة", "AddGovernment")
+            </p>
+            <input type="text" id="search" placeholder="بحث" class="form-control" />
+            <table class="table">
+                <tr>
+                    <th>
+                        المحافظة
+                    </th>
+
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+    <tr class="search">
+        <td>
+            @Html.DisplayFor(modelItem => item.governmentname)
+        </td>
+        <td>
+            @Html.ActionLink("تعديل", "EditGovernment", new { id = item.governmentcode }) |
+            @Html.ActionLink("مسح", "DeleteGovernment", new { id = item.governmentcode })
+        </td>
+    </tr>}
+
+            </table>
+            @Html.PagedListPager(Model, pageNumber => Url.Action("Governments", new
+            {
+                pageNumber
+            }))
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+@* a script for live search at client side*@
+<script>
+    $(document).ready(function () {
+        function contains(text_one, text_two) {
+            if (text_one.indexOf(text_two) != -1)
+                return true;
+        }
+        $('#search').keyup(function () {
+            var searchText = $("#search").val().toLowerCase();
+            $(".search").each(function () {
+                if (!contains($(this).text().toLowerCase(), searchText)) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+        });
+    });
+</script>
+

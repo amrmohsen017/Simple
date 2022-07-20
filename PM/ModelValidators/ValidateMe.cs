@@ -9,7 +9,7 @@ namespace Vidly.ModelValidators
     public class ValidateMe : ValidationAttribute
     {
 
-        private project_managementEntities db = new project_managementEntities();
+        private project_managementEntities1 db = new project_managementEntities1();
 
 
         private string _fieldName;
@@ -50,6 +50,12 @@ namespace Vidly.ModelValidators
             else if (validationContext.ObjectInstance is user)
             {
                 type = (user)validationContext.ObjectInstance;
+
+            }
+
+            else if (validationContext.ObjectInstance is section)
+            {
+                type = (section)validationContext.ObjectInstance;
 
             }
             else if (validationContext.ObjectInstance is institute_type)
@@ -109,12 +115,14 @@ namespace Vidly.ModelValidators
 
 
                 var exists = db.institutes.FirstOrDefault(i => i.institutename == name);
+                if ((type as institute).institute_id == 0)
 
-                if (id == 0 && exists != null)
                 {
-                    return new ValidationResult("Institute name is already registered");
+                    if (id == 0 && exists != null)
+                    {
+                        return new ValidationResult("Institute name is already registered");
+                    }
                 }
-
     
 
 
@@ -135,13 +143,15 @@ namespace Vidly.ModelValidators
                 if (name == null) return new ValidationResult("Username is requried");
 
                 var exists = db.users.FirstOrDefault(i => i.username == name);
+                if ((type as user).user_id == 0)
 
-                if (exists != null)
                 {
-                    return new ValidationResult("Username is already registered");
+                    if (exists != null)
+                    {
+                        return new ValidationResult("Username is already registered");
+                    }
+
                 }
-
-
                 return Regex.IsMatch(name, symbolsPattern)
                         ? new ValidationResult("username is not valid")
                         : ValidationResult.Success;
@@ -169,16 +179,18 @@ namespace Vidly.ModelValidators
                 if (name == null) return new ValidationResult("Department name is requried");
 
                 var exists = db.departments.FirstOrDefault(i => i.departmentname == name);
+                if ((type as department).departementid == 0)
+                
+                    {
+                        if (exists != null)
+                        {
+                            return new ValidationResult("Department is already registered");
+                        }
+                    }
 
-                if (exists != null)
-                {
-                    return new ValidationResult("Department is already registered");
-                }
+                var pattern = @"^[0-9_.-]*$";
 
-
-
-
-                return Regex.IsMatch(name, symbolsPattern)
+                return Regex.IsMatch(name, symbolsPattern) || Regex.IsMatch(name, pattern)
                         ? new ValidationResult("department name is not valid")
                         : ValidationResult.Success;
 
@@ -186,25 +198,47 @@ namespace Vidly.ModelValidators
             else if (_fieldName == "typename")
             {
                 var name = (type as institute_type).typename; // A LIL HACK to the copmiler :) 
+               
                 if (name == null) return new ValidationResult("Institute name is requried");
+                if ((type as institute_type).type_id == 0)
 
-                var exists = db.institute_type.FirstOrDefault(i => i.typename == name);
-
-                if (exists != null)
                 {
-                    return new ValidationResult("Institute is already registered");
+                    var exists = db.institute_type.FirstOrDefault(i => i.typename == name);
+
+                    if (exists != null)
+                    {
+                        return new ValidationResult("Institute is already registered");
+                    }
+
                 }
+                var pattern = @"^[0-9_.-]*$";
 
-
-
-
-                return Regex.IsMatch(name, symbolsPattern)
+                return Regex.IsMatch(name, symbolsPattern) || Regex.IsMatch(name, pattern)
                         ? new ValidationResult("type name is not valid")
                         : ValidationResult.Success;
+            }
 
+            else if (_fieldName == "sectionname")
+            {
+                var name = (type as section).sectionname; // A LIL HACK to the copmiler :) 
 
+                if (name == null) return new ValidationResult("Section name is requried");
+                if ((type as section).section_id == 0)
 
+                {
+                    var exists = db.sections.FirstOrDefault(i => i.sectionname == name);
 
+                    if (exists != null)
+                    {
+                        return new ValidationResult("Section is already registered");
+                    }
+
+                }
+                var pattern = @"^[0-9_.-]*$";
+
+                return Regex.IsMatch(name, symbolsPattern) || Regex.IsMatch(name, pattern)
+                        ? new ValidationResult("type name is not valid")
+                        : ValidationResult.Success;
             }
 
             else if (_fieldName == "telephone")

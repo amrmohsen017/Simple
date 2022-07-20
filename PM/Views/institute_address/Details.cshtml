@@ -1,42 +1,50 @@
 ﻿@model PM.Models.institute_address
 
-@{
-    ViewBag.Title = "Details";
-}
+@{ ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/new_layout.cshtml"; }
 
-<h2>Details</h2>
 
-<div>
-    <h4>institute_address</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.city.cityname)
-        </dt>
+<div class="container" data-layout="container">
 
-        <dd>
-            @Html.DisplayFor(model => model.city.cityname)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.governmnet.governmentname)
-        </dt>
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h2>Details</h2>
 
-        <dd>
-            @Html.DisplayFor(model => model.governmnet.governmentname)
-        </dd>
+            <div>
+                <h4>institute_address</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.city.cityname)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.station.stationname)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.city.cityname)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.station.stationname)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.governmnet.governmentname)
+                    </dt>
 
-    </dl>
+                    <dd>
+                        @Html.DisplayFor(model => model.governmnet.governmentname)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.station.stationname)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.station.stationname)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.institute_adress_id }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.institute_adress_id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

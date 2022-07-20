@@ -12,7 +12,7 @@ namespace PM.Controllers
 {
     public class Institute_typeController : Controller
     {
-        private project_managementEntities db = new project_managementEntities();
+        private project_managementEntities1 db = new project_managementEntities1();
 
         // GET: institute_type
         public ActionResult Index()

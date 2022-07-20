@@ -13,11 +13,11 @@ namespace PM.Controllers.Api
 {
     public class InstitutesTypesController : ApiController
     {
-        private project_managementEntities _context;
+        private project_managementEntities1 _context;
 
         public InstitutesTypesController()
         {
-            _context = new project_managementEntities();
+            _context = new project_managementEntities1();
         }
 
 
@@ -26,8 +26,8 @@ namespace PM.Controllers.Api
         {
 
             // LOL THE TARGET PROPERTY NOT THE NAVIGATING PROPERTY 
-            var institutesTypesQuery = _context.institute_type.Select( i => new { i.type_id , i.typename});
-              
+            var institutesTypesQuery = _context.institute_type.Select(i => new { i.type_id, i.typename });
+
 
             return Ok(institutesTypesQuery);
 
@@ -36,12 +36,12 @@ namespace PM.Controllers.Api
         // GET api/<controller>/5
         public IHttpActionResult GetInstitutesType(int id)
         {
-            
+
             var institute_type_indb = _context.institute_type.SingleOrDefault(c => c.type_id == id);
 
             if (institute_type_indb == null)
                 return NotFound();
-           
+
             return Ok(institute_type_indb);
         }
 
@@ -66,12 +66,12 @@ namespace PM.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var InstitutesTypeInDb = _context.institute_type.SingleOrDefault(c => c.type_id== id);
+            var InstitutesTypeInDb = _context.institute_type.SingleOrDefault(c => c.type_id == id);
 
             if (InstitutesTypeInDb == null)
                 return NotFound();
 
-            
+
 
             _context.SaveChanges();
 
@@ -82,7 +82,7 @@ namespace PM.Controllers.Api
         public IHttpActionResult DeleteInstitutesType(int id)
         {
 
-            var InstitutesTypeInDb = _context.institute_type 
+            var InstitutesTypeInDb = _context.institute_type
                 .SingleOrDefault(i => i.type_id == id);
 
             if (InstitutesTypeInDb == null)

@@ -1,0 +1,80 @@
+﻿@using PagedList;
+
+@using PagedList.Mvc;
+
+@model IPagedList<PM.Models.station>
+@{ Layout = "~/Views/Shared/new_layout.cshtml"; }
+
+
+<div class="container" data-layout="container">
+
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h4>المراكز</h4>
+            @if (ViewBag.addStationSuccess != null)
+            {
+@ViewBag.addStationSuccess}
+
+            <p>
+                @Html.ActionLink("اضافة مركز", "AddStation")
+            </p>
+            <input type="text" id="search" placeholder="بحث" class="form-control" />
+            <table class="table">
+                <tr>
+                    <th>
+                        المركز
+                    </th>
+                    <th>
+                        المدينة
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+    <tr class="search">
+        <td>
+            @Html.DisplayFor(modelItem => item.stationname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.city.cityname)
+        </td>
+        <td>
+            @Html.ActionLink("تعديل", "EditStation", new { id = item.stationcode }) |
+            @Html.ActionLink("مسح", "DeleteStation", new { id = item.stationcode })
+        </td>
+    </tr>}
+
+            </table>
+            @Html.PagedListPager(Model, pageNumber => Url.Action("Stations", new
+            {
+                pageNumber
+            }))
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+@* a script for live search at client side*@
+<script>
+    $(document).ready(function () {
+        function contains(text_one, text_two) {
+            if (text_one.indexOf(text_two) != -1)
+                return true;
+        }
+        $('#search').keyup(function () {
+            var searchText = $("#search").val().toLowerCase();
+            $(".search").each(function () {
+                if (!contains($(this).text().toLowerCase(), searchText)) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+        });
+    });
+</script>
+

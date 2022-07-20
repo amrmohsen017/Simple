@@ -2,26 +2,35 @@
 
 
 @{ ViewBag.Title = "Institutes Types";
-    Layout = "~/Views/Shared/_Layout.cshtml"; }
-
-<h2>Institutes Types</h2>
-<p>
-    @Html.ActionLink("New Institute Type", "Create", "Institute_type", null, new { @class = "btn btn-primary" })
-</p>
-
-<table id="institutesTypes" class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Type name</th>
-      
+    Layout = "~/Views/Shared/new_layout.cshtml"; }
 
 
-            <th></th>
+<div class="container" data-layout="container">
 
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h2>Institutes Types</h2>
+            <p>
+                @Html.ActionLink("New Institute Type", "Create", "Institute_type", null, new { @class = "btn btn-primary" })
+            </p>
+
+            <table id="institutesTypes" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Type name</th>
+
+
+
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 @section scripts
 {

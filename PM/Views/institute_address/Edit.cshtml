@@ -1,58 +1,189 @@
 ﻿@model PM.Models.institute_address
 
-@{
-    ViewBag.Title = "Edit";
-}
-
-<h2>Edit</h2>
+@{ ViewBag.Title = "Edit";
+                Layout = "~/Views/Shared/new_layout.cshtml"; }
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>institute_address</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.institute_adress_id)
+<div class="container" data-layout="container">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.governmnetcode, "governmnetcode",  htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("governmnetcode", null, "Select governmnet name", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.governmnetcode, "", new { @class = "text-danger" })
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+
+            <h2>Edit</h2>
+
+
+            @using (Html.BeginForm())
+            {
+@Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>institute_address</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.institute_adress_id)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.governmnetcode, "governmnetcode", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("governmnetcode", null, "Select governmnet name", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.governmnetcode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.citycode, "citycode", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("citycode", null, "Select city name", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.citycode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.stationcode, "stationcode", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("stationcode", null, "Select station name", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.stationcode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>}
+
+            <div>
+                @Html.ActionLink("Back to List", "Index", "Institutes")
             </div>
+
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.citycode, "citycode", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("citycode", null, "Select city name" ,  htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.citycode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.stationcode, "stationcode", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("stationcode", null, "Select station name", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.stationcode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index" , "Institutes")
 </div>
+            
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+    <script>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+        let govCode = document.getElementById("governmnetcode")
+        let cityCode = document.getElementById("citycode")
+
+        if (govCode.value) {
+            var xhr = new XMLHttpRequest();
+
+            // Making our connection
+            var url = `/api/cities/${govCode.value}`
+            xhr.open("GET", url, true);
+
+            // function execute after request is successful
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let dropdown = $('#citycode').empty().append('<option value="null"> Select city name </option>');
+                    let result = JSON.parse(this.responseText);
+                    result.forEach(i => {
+                        dropdown.append('<option value="' + i.$id + '">' + i.cityname + '</option>');
+                    })
+
+                    //$("#cityName").val(result);
+
+                    $("#citycode").prop("disabled", false);
+                }
+            }
+            // Sending our request
+            xhr.send();
+
+
+        }
+        else if (cityCode.value) {
+            var xhr = new XMLHttpRequest();
+
+            // Making our connection
+            var url = `/api/stations/${cityCode.value}`
+            xhr.open("GET", url, true);
+
+            // function execute after request is successful
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let dropdown = $('#stationcode').empty().append('<option value="null" > Select station name </option>');
+                    let result = JSON.parse(this.responseText);
+                    result.forEach(i => {
+                        dropdown.append('<option value="' + i.$id + '">' + i.stationname + '</option>');
+                    })
+
+
+                    //$("#stationName").val(result);
+
+                    $("#stationcode").prop("disabled", false);
+                }
+            }
+            // Sending our request
+            xhr.send();
+
+
+
+        }
+
+
+
+        document.getElementById("governmnetcode").onchange = function () {
+
+            if (!$("#governmnetcode").val()) {
+                $("#citycode").prop("disabled", true);
+                $('#stationcode').prop("disabled", true);
+            }
+
+
+            $.ajax({
+                url: `/api/cities/${$("#governmnetcode").val()}`, success: function (result) {
+
+
+                    let dropdown = $('#citycode').empty().append('<option value="null"> Select city name </option>');
+
+                    result.forEach(i => {
+                        dropdown.append('<option value="' + i.$id + '">' + i.cityname + '</option>');
+                    })
+
+                    //$("#cityName").val(result);
+
+                    $("#citycode").prop("disabled", false);
+
+                }
+            });
+
+
+        };
+
+        document.getElementById("citycode").onchange = function () {
+            if (!$("#governmnetcode").val()) {
+                $("#citycode").prop("disabled", true);
+                $('#stationcode').prop("disabled", true);
+            }
+
+            $.ajax({
+                url: `/api/stations/${$("#citycode").val()}`, success: function (result) {
+
+                    let dropdown = $('#stationcode').empty().append('<option value="null" > Select station name </option>');
+
+                    result.forEach(i => {
+                        dropdown.append('<option value="' + i.$id + '">' + i.stationname + '</option>');
+                    })
+
+
+                    //$("#stationName").val(result);
+
+                    $("#stationcode").prop("disabled", false);
+
+                }
+            });
+
+
+
+        };
+
+
+
+    </script>

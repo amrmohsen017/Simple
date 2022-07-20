@@ -6,66 +6,73 @@
 
 @if (ViewBag.deleteSectionTypeAlert != null)
 {
-	<script>alert("@ViewBag.deleteSectionTypeAlert");</script>
+<script>alert("@ViewBag.deleteSectionTypeAlert");</script>
 }
 @if (ViewBag.updateSectionTypeSuccess != null)
 {
-	<script>alert("@ViewBag.updateSectionTypeSuccess");</script>
-}
-
-@*
-	@model IEnumerable<PM.Models.section_type>
+<script>alert("@ViewBag.updateSectionTypeSuccess");</script>
+ } @*
+    @model IEnumerable<PM.Models.section_type>
 *@
-<h4>قائمة انواع الاقسام</h4>
-<p>
-	@Html.ActionLink("اضافة نوع قسم جديد", "add_section_type")
-</p>
-<input type="text" id="search" placeholder="بحث" class="form-control" />
-<table class="table">
-	<tr>
-		<th>
-			نوع القسم
-		</th>
-		<th></th>
-	</tr>
+@{ Layout = "~/Views/Shared/new_layout.cshtml"; }
+<div class="container" data-layout="container">
 
-	@foreach (var item in Model)
-	{
-		<tr class="search">
-			<td>
-				@Html.DisplayFor(modelItem => item.sectiontype)
-			</td>
-			<td>
-				@Html.ActionLink("تعديل", "edit_section_type", new { id = item.sectiontype_id }) |
-				@Html.ActionLink("مسح", "delete_section_type", new { id = item.sectiontype_id }, new { onclick = "return confirm('هل تريد مسح نوع القسم ؟')" })
-			</td>
-		</tr>
-	}
 
-</table>
-@Html.PagedListPager(Model, pageNumber => Url.Action("section_type_panel", new
-{
-pageNumber
-}))
+    <div class="row g-3 mb-3">
+        <div class="col-md-6 col-xxl-3">
+            <h4>قائمة انواع الاقسام</h4>
+            <p>
+                @Html.ActionLink("اضافة نوع قسم جديد", "add_section_type")
+            </p>
+            <input type="text" id="search" placeholder="بحث" class="form-control" />
+            <table class="table">
+                <tr>
+                    <th>
+                        نوع القسم
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+    <tr class="search">
+        <td>
+            @Html.DisplayFor(modelItem => item.sectiontype)
+        </td>
+        <td>
+            @Html.ActionLink("تعديل", "edit_section_type", new { id = item.sectiontype_id }) |
+            @Html.ActionLink("مسح", "delete_section_type", new { id = item.sectiontype_id }, new { onclick = "return confirm('هل تريد مسح نوع القسم ؟')" })
+        </td>
+    </tr>}
+
+            </table>
+            @Html.PagedListPager(Model, pageNumber => Url.Action("section_type_panel", new
+            {
+                pageNumber
+            }))
+
+        </div>
+    </div>
+</div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 @* a script for live search at client side*@
 <script>
-	$(document).ready(function () {
-		function contains(paragraph, search_text) {
-			if (paragraph.indexOf(search_text) != -1)
-				return true;
-		}
-		$('#search').keyup(function () {
-			var searchText = $("#search").val().toLowerCase();
-			$(".search").each(function () {
-				if (!contains($(this).text().toLowerCase(), searchText)) {
-					$(this).hide();
-				}
-				else {
-					$(this).show();
-				}
-			});
-		});
-	});
+    $(document).ready(function () {
+        function contains(paragraph, search_text) {
+            if (paragraph.indexOf(search_text) != -1)
+                return true;
+        }
+        $('#search').keyup(function () {
+            var searchText = $("#search").val().toLowerCase();
+            $(".search").each(function () {
+                if (!contains($(this).text().toLowerCase(), searchText)) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+        });
+    });
 </script>

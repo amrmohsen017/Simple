@@ -11,7 +11,7 @@ namespace Vidly.ModelValidators
 {
     public class Institute_name: ValidationAttribute
     {
-        private project_managementEntities db  = new project_managementEntities();
+        private project_managementEntities1 db  = new project_managementEntities1();
 
 
 
