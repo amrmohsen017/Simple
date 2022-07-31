@@ -12,7 +12,7 @@ namespace PM.Controllers
 {
     public class AdminController : Controller
     {
-                
+
         project_managementEntities1 pm = new project_managementEntities1();
         Jobsection dbVM = new Jobsection();
 
@@ -448,33 +448,37 @@ namespace PM.Controllers
         [HttpPost]
         public ActionResult AddCity(city model)
         {
-            var cities = pm.cities.Where(x => x.cityname == model.cityname).ToList();
-            var governments = pm.governmnets.Where(x => x.governmentcode == model.governmentcode).ToList();
 
-            if (ModelState.IsValid)
+
+            if (model != null)
             {
+                var query = (from cit in pm.cities
+                             where cit.cityname == model.cityname && cit.governmentcode == model.governmentcode
+                             select cit).FirstOrDefault();
 
-                city obj = new city();
-                if (cities.Count > 0)
+                if (query != null)
                 {
-                    ViewBag.Duplicate = "City Name " + model.cityname + " already exist !";
+                    ViewBag.Duplicate = "هذا الاسم قد اضيف سابقا";
                     List<governmnet> govs = new List<governmnet>();
                     govs = pm.governmnets.ToList();
                     ViewBag.governmentname = new SelectList(govs, "governmentcode", "governmentname");
                     return View("AddCity");
                 }
 
+                var cityy = new city
+                {
+                    citycode = model.citycode,
+                    cityname = model.cityname,
+                    governmentcode = model.governmentcode,
+                    governmnet = model.governmnet
+                };
 
-                obj.citycode = model.citycode;
-                obj.cityname = model.cityname;
-                obj.governmentcode = model.governmentcode;
-                obj.governmnet = model.governmnet;
 
-                pm.cities.Add(obj);
+                pm.cities.Add(cityy);
                 pm.SaveChanges();
                 TempData["addSCitySuccess"] = "تم اضافة مدينة " + model.cityname + " بنجاح";
 
-
+                return RedirectToAction("Cities");
 
 
 
@@ -496,7 +500,7 @@ namespace PM.Controllers
                 pm.stations.RemoveRange(stations);
                 pm.cities.Remove(obj);
                 pm.SaveChanges();
-                return RedirectToAction("Governments");
+                return RedirectToAction("Cities");
             }
             catch (Exception ex)
             {
@@ -520,43 +524,32 @@ namespace PM.Controllers
         [HttpPost]
         public ActionResult EditCity(city cityy)
         {
-            var cities = pm.cities.Where(x => x.cityname == cityy.cityname).ToList();
-            var govs = pm.governmnets.Where(x => x.governmentcode == cityy.governmentcode).ToList();
+
             if (cityy != null)
             {
-
-
-                if (ModelState.IsValid)
+                var query = (from cit in pm.cities
+                             where cit.cityname == cityy.cityname && cit.citycode != cityy.citycode && cit.governmentcode == cityy.governmentcode
+                             select cit).FirstOrDefault();
+                if (query != null)
                 {
-
-                    station obj = new station();
-                    if (cities.Count > 0)
-                    {
-                        ViewBag.Duplicate = "اسم المدينة" + cityy.cityname + "موجود بالفعل";
-                        List<governmnet> gov = new List<governmnet>();
-                        gov = pm.governmnets.ToList();
-                        ViewBag.governmentname = new SelectList(gov, "governmentcode", "governmentname");
-                        return View(cityy);
-                    }
-
-                    city updatedS = pm.cities.SingleOrDefault(x => x.citycode == cityy.citycode);
-                    if (updatedS != null)
-                    {
-                        updatedS.cityname = cityy.cityname;
-                        updatedS.governmentcode = cityy.governmentcode;
-                        pm.SaveChanges();
-                        TempData["updateCitySuccess"] = "تم التعديل";
-                    }
-
+                    ViewBag.Duplicate = "هذا الاسم قد اضيف سابقا";
+                    List<governmnet> gov = new List<governmnet>();
+                    gov = pm.governmnets.ToList();
+                    ViewBag.governmentname = new SelectList(gov, "governmentcode", "governmentname");
+                    return View(cityy);
                 }
-                else
+
+                city updatedS = pm.cities.SingleOrDefault(x => x.citycode == cityy.citycode);
+                if (updatedS != null)
                 {
-                    TempData["updateCitySuccess"] = "لا يمكن تعديله";
-
+                    updatedS.cityname = cityy.cityname;
+                    updatedS.governmentcode = cityy.governmentcode;
+                    pm.SaveChanges();
+                    TempData["updateCitySuccess"] = "تم التعديل";
                 }
-                return RedirectToAction("EditCity");
-
+                return RedirectToAction("Cities");
             }
+
             else
             {
                 return RedirectToAction("Cities");
@@ -649,28 +642,24 @@ namespace PM.Controllers
         {
             if (gov != null)
             {
+                var query = (from g in pm.governmnets
+                             where g.governmentname == gov.governmentname && g.governmentcode != gov.governmentcode
+                             select g).FirstOrDefault();
 
-
-                var governments = pm.governmnets.Where(x => x.governmentname == gov.governmentname).ToList();
-                if (ModelState.IsValid)
+                if (query != null)
                 {
-                    if (governments.Count > 0)
-                    {
-                        ViewBag.Duplicate = "اسم المخافظة " + gov.governmentname + " موجود بالفعل";
-                        return View(gov);
-                    }
-
-
-                    governmnet updatedgov = pm.governmnets.SingleOrDefault(x => x.governmentcode == gov.governmentcode);
-                    if (updatedgov != null)
-                    {
-                        updatedgov.governmentname = gov.governmentname;
-
-                        pm.SaveChanges();
-                    }
+                    ViewBag.Duplicate = "هذا الاسم قد اضيف سابقا";
+                    return View(gov);
                 }
-                TempData["updateGovernmentSuccess"] = "لا يمكن تعديله";
-                return RedirectToAction("EditGovernment");
+                governmnet updatedgov = pm.governmnets.SingleOrDefault(x => x.governmentcode == gov.governmentcode);
+                if (updatedgov != null)
+                {
+                    updatedgov.governmentname = gov.governmentname;
+
+                    pm.SaveChanges();
+                }
+
+                return RedirectToAction("Governments");
             }
             else
             {
@@ -699,36 +688,32 @@ namespace PM.Controllers
         [HttpPost]
         public ActionResult AddStation(station model)
         {
-            var stationss = pm.stations.Where(x => x.stationname == model.stationname).ToList();
-            var cities = pm.cities.Where(x => x.citycode == model.citycode).ToList();
-
-            if (ModelState.IsValid)
+            if (model != null)
             {
+                var query = (from st in pm.stations
+                             where st.stationname == model.stationname && st.citycode == model.citycode
+                             select st).FirstOrDefault();
 
-                station obj = new station();
-                if (stationss.Count > 0)
+
+                if (query != null)
                 {
+
                     ViewBag.Duplicate = "اسم المركز" + model.stationname + "موجود بالفعل";
                     List<city> cit = new List<city>();
-                    cities = pm.cities.ToList();
+                    cit = pm.cities.ToList();
                     ViewBag.cityname = new SelectList(cit, "citycode", "cityname");
                     return View("AddStation");
                 }
 
+                var s = new station
+                {
+                    stationname = model.stationname,
+                    citycode = model.citycode
+                };
 
-
-
-                obj.stationname = model.stationname;
-                obj.citycode = model.citycode;
-                pm.stations.Add(obj);
+                pm.stations.Add(s);
                 pm.SaveChanges();
                 TempData["addStationSuccess"] = "تم اضافة مركز " + model.stationname + " بنجاح";
-
-
-
-
-
-
 
             }
             else
@@ -775,47 +760,40 @@ namespace PM.Controllers
         [HttpPost]
         public ActionResult EditStation(station s)
         {
-            var stationss = pm.stations.Where(x => x.stationname == s.stationname).ToList();
-            var cities = pm.cities.Where(x => x.citycode == s.citycode).ToList();
+
+
             if (s != null)
             {
-
-
-                if (ModelState.IsValid)
+                var query = (from st in pm.stations
+                             where st.stationname == s.stationname && st.stationcode != s.stationcode && s.citycode == st.citycode
+                             select st).FirstOrDefault();
+                if (query != null)
                 {
+                    List<city> cit = new List<city>();
+                    cit = pm.cities.ToList();
+                    ViewBag.Duplicate = "هذا الاسم قد اضيف سابقا";
+                    ViewBag.cityname = new SelectList(cit, "citycode", "cityname");
+                    return View(s);
+                }
+                station updatedst = pm.stations.SingleOrDefault(x => x.stationcode == s.stationcode);
 
-                    station obj = new station();
-                    if (stationss.Count > 0)
-                    {
-                        ViewBag.Duplicate = "اسم المركز" + s.stationname + "موجود بالفعل";
-                        List<city> cit = new List<city>();
-                        cities = pm.cities.ToList();
-                        ViewBag.cityname = new SelectList(cit, "citycode", "cityname");
-                        return View(s);
-                    }
-
-                    station updatedS = pm.stations.SingleOrDefault(x => x.stationcode == s.stationcode);
-                    if (updatedS != null)
-                    {
-                        updatedS.stationname = s.stationname;
-                        updatedS.citycode = s.citycode;
-                        pm.SaveChanges();
-                        TempData["updateStationSuccess"] = "تم التعديل";
-                    }
+                if (updatedst != null)
+                {
+                    updatedst.stationname = s.stationname;
+                    updatedst.citycode = s.citycode;
+                    pm.SaveChanges();
 
                 }
-                else
-                {
-                    TempData["updateStationSuccess"] = "لا يمكن تعديله";
-
-                }
-                return RedirectToAction("EditStation");
-
+                return RedirectToAction("Stations");
             }
             else
             {
+
                 return RedirectToAction("Stations");
             }
+
+
+
 
         }
 
@@ -846,44 +824,40 @@ namespace PM.Controllers
         [HttpPost]
         public ActionResult AddJob(Jobsection model)
         {
-            var jobs = pm.jobs.Where(x => x.jobname == model.jobs.jobname).ToList();
+            model.sections = (from sec in pm.sections where sec.section_id == model.section_id select sec).FirstOrDefault();
 
-            if (ModelState.IsValid)
+            if (model != null)
             {
+                var query = (from job in pm.jobs join sec in pm.job_section on job.job_id equals sec.job_id
+                             where job.jobname == model.jobs.jobname && job.followupcode == model.jobs.followupcode && sec.section_id == model.section_id
+                             select job).FirstOrDefault();
 
-                Jobsection obj = new Jobsection();
-                if (jobs.Count > 0)
+
+                if (query != null)
                 {
-                    ViewBag.Duplicate = "اسم الوظيفة" + model.jobs.jobname + "موجود بالفعل";
-
+                    ViewBag.Duplicate = "هذا الاسم قد اضيف سابقا";
                     dbVM.jobs2 = pm.jobs.ToList();
+                    dbVM.sections2 = pm.sections.ToList();
+                    ViewBag.sectionnames = new SelectList(dbVM.sections2, "section_id", "sectionname");
 
                     ViewBag.jobnames = new SelectList(dbVM.jobs2, "job_id", "jobname");
                     return View("AddJob");
                 }
 
 
+                job obj = new job();
+                obj.jobname = model.jobs.jobname;
+                obj.followupcode = model.jobs.followupcode;
+                
 
-
-                pm.jobs.Add(model.jobs);
-                pm.job_section.Add(new job_section { job_id=model.jobs.job_id,section_id=model.section_id});
+                pm.jobs.Add(obj);
+                pm.job_section.Add(new job_section { job_id = model.jobs.job_id, section_id = model.section_id });
                 pm.SaveChanges();
-                TempData["addJobSuccess"] = "تم اضافة وظيفة " + model.jobs.jobname + " بنجاح";
-
-          
-
-
-
-
-
+                
 
             }
-            else
-            {
-                TempData["addJobSuccess"] = "ادخل اسم القسم صحيح ";
-
-            }
-            return RedirectToAction("AddJob");
+            
+            return RedirectToAction("Jobs");
 
         }
 
@@ -928,52 +902,50 @@ namespace PM.Controllers
         [HttpPost]
         public ActionResult EditJob(Jobsection model)
         {
-            var jobs = pm.jobs.Where(x => x.jobname == model.jobs.jobname).ToList();
+            
             if (model != null)
             {
+                model.sections = (from sec in pm.sections where sec.section_id == model.section_id select sec).FirstOrDefault();
+                var query = (from job in pm.jobs join sec in pm.job_section on job.job_id equals sec.job_id
+                             where job.jobname == model.jobs.jobname && job.followupcode== model.jobs.followupcode  && sec.section_id == model.section_id
+                             select job).FirstOrDefault();
+                
 
-
-                if (ModelState.IsValid)
+                if (query != null)
                 {
 
+                    ViewBag.Duplicate = "هذا الاسم قد اضيف سابقا";
+                    dbVM.jobs2 = pm.jobs.ToList();
+                    dbVM.sections2 = pm.sections.ToList();
+                    ViewBag.sectionnames = new SelectList(dbVM.sections2, "section_id", "sectionname");
+                    ViewBag.jobnames = new SelectList(dbVM.jobs2, "job_id", "jobname");
+                    return View(model);
+                }
 
-                    if (jobs.Count > 0)
-                    {
-                        ViewBag.Duplicate = "اسم الوظيفة" + model.jobs.jobname + "موجود بالفعل";
-                        dbVM.jobs2 = pm.jobs.ToList();
-
-                        ViewBag.jobnames = new SelectList(dbVM.jobs2, "job_id", "jobname");
-                        return View("EditJob");
-                    }
-
-                    Jobsection updatedmodel = new Jobsection();
-                    updatedmodel.jobs = pm.jobs.SingleOrDefault(x => x.job_id == model.jobs.job_id);
-                    updatedmodel.sections = pm.sections.SingleOrDefault(x => x.section_id == model.sections.section_id);
-                    if (updatedmodel != null)
-                    {
-                        updatedmodel.jobs.jobname = model.jobs.jobname;
-                        updatedmodel.sections.sectionname = model.sections.sectionname;
-                        updatedmodel.jobs.followupcode = model.jobs.followupcode;
-                        pm.SaveChanges();
-                        TempData["updateStationSuccess"] = "تم التعديل";
-                    }
-
+                Jobsection updatedmodel = new Jobsection();
+                updatedmodel.jobs = pm.jobs.SingleOrDefault(x => x.job_id == model.jobs.job_id);
+                updatedmodel.sections = pm.sections.SingleOrDefault(x => x.section_id == model.section_id);
+                if (updatedmodel != null)
+                {
+                    updatedmodel.jobs.jobname = model.jobs.jobname;
+                    updatedmodel.sections.sectionname = model.sections.sectionname;
+                    updatedmodel.jobs.followupcode = model.jobs.followupcode;
+                    pm.SaveChanges();
+                    TempData["updateStationSuccess"] = "تم التعديل";
                 }
                 else
                 {
                     TempData["updateStationSuccess"] = "لا يمكن تعديله";
 
                 }
-                return RedirectToAction("EditStation");
+
+                
+
 
             }
-            else
-            {
-                return RedirectToAction("Jobs");
-            }
+            return RedirectToAction("Jobs");
 
         }
 
     }
-
 }
