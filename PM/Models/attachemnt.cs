@@ -23,6 +23,8 @@ namespace PM.Models
     
         public int attachment_id { get; set; }
         public string attachment_name { get; set; }
+        public string attachment_path { get; set; }
+        public string attachment_url { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task_attachments> task_attachments { get; set; }

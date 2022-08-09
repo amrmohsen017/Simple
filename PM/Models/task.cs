@@ -11,7 +11,8 @@ namespace PM.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using Vidly.ModelValidators;
+
     public partial class task
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -26,6 +27,7 @@ namespace PM.Models
         }
     
         public int task_id { get; set; }
+        [ValidateMe("task_name")]
         public string task_name { get; set; }
         public Nullable<System.DateTime> task_planned_start { get; set; }
         public Nullable<System.DateTime> task_planned_end { get; set; }
@@ -33,6 +35,7 @@ namespace PM.Models
         public Nullable<int> sub_task { get; set; }
         public Nullable<int> task_supervisor { get; set; }
         public string task_description { get; set; }
+        public Nullable<int> status_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<blocklist_tasks> blocklist_tasks { get; set; }

@@ -17,7 +17,6 @@ namespace PM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public project()
         {
-            this.gross_marign = new HashSet<gross_marign>();
             this.milestones = new HashSet<milestone>();
             this.project_log = new HashSet<project_log>();
             this.project_attachment = new HashSet<project_attachment>();
@@ -37,8 +36,6 @@ namespace PM.Models
         public Nullable<int> project_stage_id { get; set; }
         public Nullable<int> client { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<gross_marign> gross_marign { get; set; }
         public virtual institute institute { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<milestone> milestones { get; set; }

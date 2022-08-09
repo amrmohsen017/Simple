@@ -30,7 +30,6 @@ namespace PM.Models
         public virtual DbSet<city> cities { get; set; }
         public virtual DbSet<department> departments { get; set; }
         public virtual DbSet<governmnet> governmnets { get; set; }
-        public virtual DbSet<gross_marign> gross_marign { get; set; }
         public virtual DbSet<institute> institutes { get; set; }
         public virtual DbSet<institute_address> institute_address { get; set; }
         public virtual DbSet<institute_type> institute_type { get; set; }
