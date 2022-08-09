@@ -36,7 +36,7 @@
         <EntityTypeShape EntityType="project_managementModel.task_tags" Width="1.5" PointX="22.5" PointY="24.375" />
         <EntityTypeShape EntityType="project_managementModel.task" Width="1.5" PointX="17.25" PointY="23.375" />
         <EntityTypeShape EntityType="project_managementModel.user" Width="1.5" PointX="15" PointY="17.5" />
-        <EntityTypeShape EntityType="project_managementModel.stationdetail" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="project_managementModel.stationdetail" Width="1.5" PointX="14.375" PointY="6.875" />
         <AssociationConnector Association="project_managementModel.attachment_forign" />
         <AssociationConnector Association="project_managementModel.attachment_forignkey" />
         <AssociationConnector Association="project_managementModel.task1" />

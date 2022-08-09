@@ -15,10 +15,11 @@ namespace PM
                      "~/Scripts/bootstrap.js",
                      "~/scripts/bootbox.js",
                      "~/Scripts/respond.js",
-                     "~/scripts/datatables/jquery.datatables.js",
-                     "~/scripts/datatables/datatables.bootstrap.js",
                      "~/scripts/typeahead.bundle.js",
-                     "~/scripts/toastr.js"
+                     "~/scripts/toastr.js",
+                     "~/Scripts/DataTables/jquery.dataTables.js",
+                     "~/Scripts/DataTables/dataTables.bootstrap.js"
+
                    ));
 
 
