@@ -1060,7 +1060,7 @@ var subtasks_table =  $("#subtasks").DataTable({
             data: "task_id",
             render: function (task_id ,type,  row) {
 
-                //ahmed 
+                //ahmed: this code won't work on edit page :)
                 console.log("welcome: ", sub_taskId)
             /*  let temp = `<div><a class='edit' style="cursor: pointer;" > Edit </a> <br>`*/
                 let temp = "" ; 
@@ -1078,6 +1078,7 @@ var subtasks_table =  $("#subtasks").DataTable({
                 if (task_id == 0) {
                     temp = `<div><a class='edit' style="cursor: pointer;" > Edit </a></div>`
                 }
+                alert(sub_taskId)
                 return temp;
 
 
@@ -1311,8 +1312,8 @@ sub_tasks.on('click', 'tbody td .update', function (e) {
        
             subTask_cell_to_add_its_dbIdAfterSave.replaceWith(`<td class=" editable text"> <a class="link-primary" href="/Edit/${sub_task_id}"> ${subTask_cell_value} </a> </td>`);
 
-
-
+            sub_taskId = sub_task_id
+    
         }
 
     )
