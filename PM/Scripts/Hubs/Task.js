@@ -1078,7 +1078,7 @@ var subtasks_table =  $("#subtasks").DataTable({
                 if (task_id == 0) {
                     temp = `<div><a class='edit' style="cursor: pointer;" > Edit </a></div>`
                 }
-                alert(sub_taskId)
+                //alert(sub_taskId)
                 return temp;
 
 
