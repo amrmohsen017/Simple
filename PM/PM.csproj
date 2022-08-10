@@ -1691,7 +1691,6 @@
     <Content Include="template\assets\img\icons\star_on.svg.readme" />
     <Content Include="Views\Admin\AddCity.cshtml" />
     <Content Include="Views\Admin\AddGovernment.cshtml" />
-    <Content Include="Views\Admin\AddJob.cshtml" />
     <Content Include="Views\Admin\AddStation.cshtml" />
     <Content Include="Views\Admin\add_project.cshtml" />
     <Content Include="Views\Admin\add_section.cshtml" />
@@ -1699,14 +1698,12 @@
     <Content Include="Views\Admin\Cities.cshtml" />
     <Content Include="Views\Admin\EditCity.cshtml" />
     <Content Include="Views\Admin\EditGovernment.cshtml" />
-    <Content Include="Views\Admin\EditJob.cshtml" />
     <Content Include="Views\Admin\EditStation.cshtml" />
     <Content Include="Views\Admin\edit_project.cshtml" />
     <Content Include="Views\Admin\edit_section.cshtml" />
     <Content Include="Views\Admin\edit_section_type.cshtml" />
     <Content Include="Views\Admin\Governments.cshtml" />
     <Content Include="Views\Admin\Ind.cshtml" />
-    <Content Include="Views\Admin\Jobs.cshtml" />
     <Content Include="Views\Admin\project_panel.cshtml" />
     <Content Include="Views\Admin\section_panel.cshtml" />
     <Content Include="Views\Admin\section_type_panel.cshtml" />
@@ -1747,6 +1744,11 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+
+    <Content Include="Views\Admin\AddJob.cshtml" />
+    <Content Include="Views\Admin\EditJob.cshtml" />
+    <Content Include="Views\Admin\Jobs.cshtml" />
+
     <Content Include="Views\Tasks\Create.cshtml" />
     <Content Include="Views\Tasks\Delete.cshtml" />
     <Content Include="Views\Tasks\Details.cshtml" />
@@ -1755,6 +1757,7 @@
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
     <Content Include="Views\Admin\show_project_stage_panel.cshtml" />
+
 
   </ItemGroup>
   <ItemGroup>

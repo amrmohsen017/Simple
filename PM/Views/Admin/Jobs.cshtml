@@ -49,7 +49,7 @@
 }
 else
 {
-project_managementEntities dbo_ = new project_managementEntities();
+project_managementEntities1 dbo_ = new project_managementEntities1();
 
 <p> @dbo_.jobs.Where(x => x.job_id == item.jobs.followupcode).Select(x => x.jobname).FirstOrDefault().ToString()</p>}
 
