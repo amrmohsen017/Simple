@@ -947,5 +947,156 @@ namespace PM.Controllers
 
         }
 
+        public ActionResult show_project_stage_panel()
+		{
+            //exists only for showing the view.
+            ViewBag.duplicationError = TempData["duplicationError"];
+            ViewBag.updateStageSuccessfull = TempData["updateStageSuccessfull"];
+            return View();
+		}
+
+        public ActionResult project_stages_panel()
+		{
+            //this action for sending data to datatable table using Ajax
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault(); 
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                // Getting all Customer data    
+                var query = (from ps in pm.project_stage
+                                    select ps);
+
+
+                Dictionary<string, Func<project_stage, object>> field_mapper = new Dictionary<string, Func<project_stage, object>>()
+                    {
+                        {"stage_name", t => t.stage_name},
+                    };
+
+                if (sortColumnDir == "asc")
+                {
+                    query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize); 
+                   // hack of the day :)
+                }
+                else
+                {
+                    query.OrderByDescending(field_mapper[sortColumn]);
+                 
+                }
+                
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.stage_name.Contains(searchValue));
+                }
+                
+                //total number of rows count     
+                recordsTotal = query.Count();
+                //Paging     
+                var data = query.ToList();
+                //Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public ActionResult add_stage(string  new_stage)
+		{
+            //it came to me validated in the client side.
+            if(new_stage != null)
+			{
+                //checking if the new name already exists in the database or not
+                var query = (from p in pm.project_stage
+                             where p.stage_name == new_stage
+                             select p).FirstOrDefault();
+                if (query != null)
+                {
+                    TempData["duplicationError"] = "هذا الاسم قد اضيف سابقا";
+                    return RedirectToAction("show_project_stage_panel");
+                }
+
+
+                project_stage ps = new project_stage { stage_name = new_stage };
+                pm.project_stage.Add(ps);
+                pm.SaveChanges();
+                TempData["addStageSuccessfull"] = "تم اضافة اسم مرحلة " + new_stage + " بنجاح";
+
+                return RedirectToAction("show_project_stage_panel");
+
+            }
+            else
+			{
+                return RedirectToAction("show_project_stage_panel");
+
+            }
+            
+
+        }
+
+        
+        public ActionResult delete_stage(int id)
+		{
+            project_stage ps = pm.project_stage.Find(id);
+            pm.project_stage.Remove(ps);
+            pm.SaveChanges();
+            TempData["deleteSuccessfull"] = "تم مسح الاسم " + ps.stage_name + "بنجاح";
+            return RedirectToAction("project_stages_panel");
+		}
+
+        public ActionResult edit_stage(int id, string stage_update)
+		{
+            if(stage_update != null)
+			{
+                var query = (from p in pm.project_stage
+                             where p.stage_name == stage_update && p.stage_id != id
+                             select p).FirstOrDefault();
+                if(query != null)
+				{
+					TempData["duplicationError"] = "هذا الاسم قد اضيف سابقا";
+                    return RedirectToAction("show_project_stage_panel");
+                }
+
+                //updating the record with the data user altered.
+                project_stage updatedStage = pm.project_stage.SingleOrDefault(x => x.stage_id == id);
+                if (updatedStage != null)
+                {
+                    updatedStage.stage_name = stage_update;
+
+                    pm.SaveChanges();
+                    TempData["updateStageSuccessfull"] = "تم تعديل اسم المرحلة الى " + stage_update;
+                }
+                return RedirectToAction("show_project_stage_panel");
+            }
+			else
+			{
+                return RedirectToAction("show_project_stage_panel");
+            }
+		}
+
+
+
+        public ActionResult project_main_page()
+		{
+
+            return View();
+		}
+
     }
 }

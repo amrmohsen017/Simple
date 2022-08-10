@@ -1,0 +1,513 @@
+﻿@model PM.Models.task
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>task</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.task_id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.task_name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.task_name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.task_name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.task_planned_start, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.task_planned_start, new { htmlAttributes = new { @class = "form-control datepicker" } })*@
+            @Html.EditorFor(model => model.task_planned_start, new { htmlAttributes = new { @Value = Model.task_planned_start?.ToString("MM/dd/yyyy"), @class = "form-control datepicker" } })
+
+            @Html.ValidationMessageFor(model => model.task_planned_start, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.task_planned_end, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.task_planned_end, new { htmlAttributes = new { @Value = Model.task_planned_end?.ToString("MM/dd/yyyy"), @class = "form-control datepicker" } })
+            @Html.ValidationMessageFor(model => model.task_planned_end, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.task_deadline, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.task_deadline, new { htmlAttributes = new { @Value = Model.task_deadline?.ToString("MM/dd/yyyy"), @class = "form-control datepicker" } })
+            @Html.ValidationMessageFor(model => model.task_deadline, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.status_id, "status_id", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("status_id", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.status_id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.task_supervisor, "task_supervisor", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("task_supervisor", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.task_supervisor, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.task_description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.task_description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.task_description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+
+</div>
+
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+
+
+
+@*tasks details including its subtasks*@
+
+
+<div class="mt-3 modal-body p-0 task_modal_body" id="@Model.task_id">
+    <div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+        <h3 style="display:inline" class="mb-1">Management details for task :</h3>
+        <h4 style="display:inline" class="mb-1" id="kanban-modal-label-1"></h4>
+        <hr />
+        <p class="fs--2 mb-0">Supervised by <a class="link-600 fw-semi-bold" href="#!" id="supervised_by">hospital manager</a></p>
+    </div>
+
+    <div class="p-4">
+        <div class="row">
+            <div class="col-lg-9">
+
+                <div class="px-4 py-2">
+                    <label for="organizerMultiple">Assignees</label>
+                    <select class="form-select choices-multiple" multiple id="assignees" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    </select>
+                </div>
+                <div class=" px-4 py-2">
+                    <label for="organizerMultiple">Tags</label>
+                    <select class="form-select choices-multiple" multiple id="tags" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    </select>
+                </div>
+            
+            </div>
+
+            <div class="col-lg-3">
+
+                <h6 class="mt-3">Actions</h6>
+                <ul class="nav flex-lg-column fs--1">
+                  
+                    <li class="nav-item me-2 me-lg-0"><a id="save_task_ingreds" class="nav-link nav-link-card-details" href="#!"> <span class="fas fa-check me-2"></span>Save</a></li>
+
+
+
+
+
+                  
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="p-4">
+        <div class="row">
+
+
+
+
+
+
+
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+               
+                <li class="nav-item"><a class="nav-link active" id="subtasks-tab" data-bs-toggle="tab" href="#tab-subtasks" role="tab" aria-controls="tab-subtasks" aria-selected="true">Subtasks</a></li>
+                <li class="nav-item"><a class="nav-link" id="block-tab" data-bs-toggle="tab" href="#tab-block" role="tab" aria-controls="tab-block" aria-selected="false">Blocked By</a></li>
+                <li class="nav-item"><a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#tab-contact" role="tab" aria-controls="tab-contact" aria-selected="false">Logs</a></li>
+            </ul>
+            <div class="tab-content border-x border-bottom p-3" id="myTabContent">
+               
+                <div class="tab-pane fade active show" id="tab-subtasks" role="tabpanel" aria-labelledby="profile-tab">
+
+
+
+                    <table id="subtasks" class="table table-bordered table-striped fs--1 mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>task_name</th>
+                                @*<th>assignees</th>*@
+                                <th>deadline</th>
+                                @*<th>tags</th>
+                                    <th>status</th>
+                                    <th>stage</th>*@
+                                <th>Controls</th>
+
+
+
+
+
+                            </tr>
+
+                        </thead>
+
+                    </table>
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <div class="tab-pane fade" id="tab-block" role="tabpanel" aria-labelledby="block-tab">
+
+
+
+                    <table id="subtasks" class="table table-bordered table-striped fs--1 mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>task_name</th>
+                                <th>assignees</th>
+                                <th>deadline</th>
+
+                                <th>Controls</th>
+
+
+
+
+
+                            </tr>
+
+                        </thead>
+                    </table>
+
+
+
+                </div>
+                <div class="tab-pane fade" id="tab-contact" role="tabpanel" aria-labelledby="contact-tab">
+
+
+                    <div class="d-flex">
+                        <span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-list-ul fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M48 48a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-list-ul" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+                        <div class="flex-1">
+                            <h5 class="mb-3 fs-0">Activity </h5>
+                            <div class="d-flex mb-3 kanban-items-container scrollbar" tabindex="0">
+                                <ul id="task_logs"><li> Task was created</li></ul>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+@*let the uploads begin :)*@
+
+
+<input type="hidden" class="task_id" id="@Model.task_id" />
+
+<h2>Task attachments</h2>
+@using (Html.BeginForm("UploadFile", "Tasks", new { id = Model.task_id }, FormMethod.Post, new { id = "formID", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+
+        <div class="mb-3">
+            <div class="row">
+                <label for="formFileSm" class="form-label">Attachments</label>
+                <div class="col-md-9">
+
+                    <input name="file" class="form-control form-control-sm" id="formFileSm" type="file">
+
+                    @ViewBag.Message
+                </div>
+                <div class="col-lg-3">
+                    <input class="btn btn-sm btn-outline-dark" type="submit" value="Upload" id="file_upload_btn" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+
+
+<table id="attachments" class="table table-bordered table-striped fs--1 mb-0">
+
+    <thead>
+        <tr>
+            <th>Task name</th>
+            <th>Attachment name</th>
+
+            <th>Controls</th>
+
+
+
+
+
+        </tr>
+
+    </thead>
+</table>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 7000">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+
+            <strong class="me-auto">New notification</strong>
+
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+
+
+            <ul id="client_side_validation" style="color: black ">
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
+
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts {
+    <script src="~/Scripts/Hubs/Task.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+
+
+    <link href="~/template/vendors/choices/choices.min.css" rel="stylesheet" />
+
+    <script src="~/template/vendors/choices/choices.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script src="/template/vendors/glightbox/glightbox.min.js"></script>
+
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script>
+
+
+
+        $("#formID").submit(function (e) {
+
+            if (!$("#formFileSm").val()) {
+                e.preventDefault();
+                toastLiveExample.className = "toast bg-danger";
+
+
+                toastEl.html(`<li>Select an attachment to upload! </li>`)
+                new bootstrap.Toast(toastLiveExample).show()
+
+
+            }
+
+
+        });
+
+        $("#file_upload_btn").on('click', function (e) {
+
+
+
+        });
+
+        var attachments_table = $("#attachments").DataTable({
+            autoWidth: false,
+            //deferLoading: 0,
+            serverSide: true,
+            deferRender: true,
+
+            scrollCollapse: true,
+            scroller: true,
+            ajax: {
+                url: "/tasks/attachments",
+
+      
+                type: 'POST',
+
+
+                dataSrc: function (data) {
+
+                    // here mr ahmed
+                    //if (data.recordsTotal == 0) {
+
+                    //    //create_sub_task_add_row()
+                    //    data.data = [{
+                    //        //"$id": "1",
+                    //        "task_id": 0,
+                    //        "task_name": "",
+                    //        "task_description": null,
+                    //        "task_planned_start": null,
+                    //        "task_planned_end": null,
+                    //        "task_deadline": null
+                    //    }]
+                    //    console.log(data)
+                    //    console.log("yUMy")
+                    //}
+
+
+
+                    return data.data
+                },
+                data: function (data) {
+                    data.task_id = $(".task_id").attr("id")
+                    console.log(data)
+                    return data
+                }
+
+            },
+
+            columnDefs: [
+
+                {
+                    targets: 0,
+                    searchable: true
+                },
+                {
+                    targets: 1,
+                    searchable: false,
+                    orderable: false
+
+                },
+                {
+                    targets: 2,
+                    searchable: false,
+                    orderable: false
+
+                },
+
+
+            ]
+            ,
+            columns: [
+
+                {
+                    data: "attachment_name",
+
+                    render: function (data, type, row) {
+
+
+                        return data /*`<a class="link-primary" href="/Tasks/Edit/${row.task_id}"> ${data} </a>`*/
+                    }
+                },
+
+
+                {
+                    data: "attachment_id", width: "40%",
+                    render: function (data, type, row) {
+                        console.log(row, "ohyeah")
+
+                        return `<a href='${row.attachment_url}' download>Download</a>`
+                    }
+
+
+                },
+
+                {
+                    data: "attachment_id",
+                    render: function (data, type, row) {
+
+
+                        
+                        return `<div><a  style="cursor: pointer;" class='delete_attachment' id ="${row.attachmnet_id}" > Delete </a> </div>`
+                            ;
+                    }
+                },
+
+
+
+            ]
+
+        }
+
+
+        );
+
+      
+        $(document).on("click", ".delete_attachment", function () {
+     
+        
+            $.ajax({
+                url: "/tasks/attachments/delete/" + $(this).attr("id") + '/' + $(".task_id").attr("id"),
+                method: "Delete",
+                success: function () {
+                    attachments_table.ajax.reload();
+                }
+            });
+
+
+        });
+
+
+
+
+        $(document).ready(function () {
+            console.log($(".datepicker").val())
+            $(".datepicker").datepicker({
+                dateFormat: "mm/dd/yy",
+                changemonth: true,
+                changeyear: true,
+                //date: new Date("1990-01-20")  //$(".datepicker").val()
+            });
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}
