@@ -1,4 +1,3 @@
-﻿
 using System.Web.Optimization;
 
 namespace PM
@@ -17,10 +16,11 @@ namespace PM
                      "~/Scripts/bootstrap.js",
                      "~/scripts/bootbox.js",
                      "~/Scripts/respond.js",
-                  "~/Scripts/DataTables/jquery.dataTables.js",
-                  "~/Scripts/DataTables/dataTables.bootstrap.js",
                      "~/scripts/typeahead.bundle.js",
-                     "~/scripts/toastr.js"
+                     "~/scripts/toastr.js",
+                     "~/Scripts/DataTables/jquery.dataTables.js",
+                     "~/Scripts/DataTables/dataTables.bootstrap.js"
+
                    ));
 
 

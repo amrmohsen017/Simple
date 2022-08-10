@@ -1,0 +1,242 @@
+﻿@{
+	Layout = "~/Views/Shared/new_layout.cshtml";
+}
+@if (ViewBag.duplicationError != null)
+{
+	<script>alert("@ViewBag.duplicationError");</script>
+}
+@if (ViewBag.updateStageSuccessfull != null)
+{
+	<script>alert("@ViewBag.updateStageSuccessfull");</script>
+}
+
+<head>
+	<link href="~/Content/DataTables/css/responsive.bootstrap.min.css" rel="stylesheet" />
+	<link href="~/Scripts/DataTables/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+	<link href="~/Content/bootstrap.css" rel="stylesheet" />
+	<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+</head>
+<h4>
+	اضافة اسم مرحلة جديد
+</h4>
+@*@using (Html.BeginForm("add_stage", "Admin"))
+{
+}*@
+
+<input type="text" id="add_stage" class=""/>
+<input type="submit" value="اضافة اسم جديد" onclick="add_stage_validation()" class="btn btn-sm btn-falcon-default"/>
+
+
+<body>
+	<div class="container">
+		<br />
+		<div margin:0 auto;">
+			<table id="stages" class="table table-striped table-bordered dt-responsive nowrap">
+				<thead>
+					<tr>
+						<th>
+							اسم المرحلة
+						</th>
+						<th hidden>
+							id
+						</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+
+			</table>
+		</div>
+	</div>
+</body>
+
+
+
+
+@section scripts {
+
+	<script>
+		$(document).ready(function () {
+			$("#stages").DataTable({
+
+				"processing": true, // for show progress bar
+				"serverSide": true, // for process server side
+				"filter": true, // this is for disable filter (search box)
+				"orderMulti": false, // for disable multiple column at once
+				"pageLength": 10,
+				"language": {
+					"emptyTable": "لا يوجد بيانات"
+				},
+
+				"ajax": {
+					"url": "/Admin/project_stages_panel",
+					"type": "POST",
+					"datatype": "json"
+				},
+
+				"columnDefs":
+					[{
+						"targets": [1],
+						"searchable": false,
+						"orderable": false
+					},
+					{
+						"targets": [0],
+						"searchable": true,
+						"orderable": true
+					},
+					{
+						"targets": [2],
+						"orderable": false
+					},
+					{
+						"targets": [3],
+						"orderable": false
+					}
+
+					],
+
+				"columns": [
+					{ "data": "stage_name", "name": "stage_name", "autoWidth": true, class: 'editable text' },
+					{ "data": "stage_id", "name": "stage_id", "autoWidth": true, class: 'hidden' },
+
+
+					{
+						"render": function (data, type, full, meta) {
+							return '<button class="btn btn-info edit" type="button">تعديل</button>'
+							//return '<a class="btn btn-info" href="/Admin/edit_stage/' + full.stage_id + '">Edit</a>';
+						}
+					},
+					{
+						data: null, render: function (data, type, row) {
+							return '<button class="btn btn-danger delete" type="button">حذف</button>'
+							//return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.stage_id + "'); >Delete</a>";
+						}
+					},
+
+				]
+
+			});
+		});
+
+		//coming lines for manipulating datatable object.
+		$('#stages').on('click', 'tbody td .edit', function (e) {
+			fnResetControls();
+			var dataTable = $('#stages').DataTable();
+			var clickedRow = $($(this).closest('td')).closest('tr');
+			$(clickedRow).find('td').each(function () {
+				// do your cool stuff
+				if ($(this).hasClass('editable')) {
+					if ($(this).hasClass('text')) {
+						var html = fnCreateTextBox($(this).html(), 'name');
+						$(this).html($(html))
+					}
+				}
+			});
+
+			$('#stages tbody tr td .update').removeClass('update').addClass('edit').html('تعديل');
+			$('#stages tbody tr td .cancel').removeClass('cancel').addClass('delete').html('حذف');
+			$(clickedRow).find('td .edit').removeClass('edit').addClass('update').html('تحديث');
+			$(clickedRow).find('td .delete').removeClass('delete').addClass('cancel').html('لغي');
+
+		});
+
+		function fnCreateTextBox(value, fieldprop) {
+			return '<input data-field="' + fieldprop + '" type="text" value="' + value + '" ></input>';
+		}
+
+		$('#stages').on('click', 'tbody td .cancel', function (e) {
+			fnResetControls();
+			$('#stages tbody tr td .update').removeClass('update').addClass('edit').html('تعديل');
+			$('#stages tbody tr td .cancel').removeClass('cancel').addClass('delete').html('حذف');
+		});
+
+		function fnResetControls() {
+			var openedTextBox = $('#stages').find('input');
+			$.each(openedTextBox, function (k, $cell) {
+				$(openedTextBox[k]).closest('td').html($cell.value);
+			})
+		}
+
+		$('#stages').on('click', 'tbody td .update', function (e) {
+
+			var openedTextBox = $('#stages').find('input');
+			$.each(openedTextBox, function (k, $cell) {
+				fnUpdateDataTableValue($cell, $cell.value);
+				$(openedTextBox[k]).closest('td').html($cell.value);
+			})
+
+			$('#stages tbody tr td .update').removeClass('update').addClass('edit').html('تعديل');
+			$('#stages tbody tr td .cancel').removeClass('cancel').addClass('delete').html('حذف');
+		});
+
+		function fnUpdateDataTableValue($inputCell, value) {
+			var dataTable = $('#stages').DataTable();
+			var rowIndex = dataTable.row($($inputCell).closest('tr')).index();
+			var object = dataTable.row($($inputCell).closest('tr')).data();
+			var id = object.stage_id;
+			//const current_value = object.stage_name;
+			var fieldName = $($inputCell).attr('data-field');
+
+
+			//validation without starting with numbers
+			const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
+			if (value != "") {
+				if (regularExp.test(value)) {
+					dataTable.rows().data()[rowIndex][fieldName] = value;
+					$.ajax({
+						type: "POST",
+						url: "/Admin/edit_stage?stage_update=" + value + "&id=" + id
+					});
+
+				}
+				else {
+					//dataTable.rows().data()[rowIndex][fieldName] = current_value;
+					alert("لا يمكن ادخال ارقام فقط")
+					dataTable.draw();
+
+				}
+			}
+			else {
+				alert("يجب ادخال كلمة صحيحة")
+				dataTable.draw();
+
+			}
+
+
+		}
+
+
+
+		//function to add new stage
+		function add_stage_validation() {
+			var dataTable = $('#stages').DataTable();
+			const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
+			var new_stage = document.getElementById("add_stage").value;
+			console.log(new_stage);
+			if (new_stage != "") {
+				if (regularExp.test(new_stage)) {
+					$.ajax({
+						type: "POST",
+						url: "/Admin/add_stage?new_stage=" +new_stage					
+					});
+					dataTable.draw();
+
+				}
+				else {
+					alert("لا يمكن ادخال ارقام فقط");
+				}
+			}
+			else {
+				alert("لا يمكن ادخال كلمة فارغة");
+			}
+		}
+	</script>
+
+}
+
+
+
+
+
+

@@ -27,6 +27,7 @@
         <EntityTypeShape EntityType="project_managementModel.section_institute" Width="1.5" PointX="15" PointY="18.375" />
         <EntityTypeShape EntityType="project_managementModel.section_type" Width="1.5" PointX="10.5" PointY="14.625" />
         <EntityTypeShape EntityType="project_managementModel.station" Width="1.5" PointX="5.25" PointY="18.375" />
+
         <EntityTypeShape EntityType="project_managementModel.status" Width="1.5" PointX="20.25" PointY="12.625" />
         <EntityTypeShape EntityType="project_managementModel.tag" Width="1.5" PointX="17.25" PointY="10.5" />
         <EntityTypeShape EntityType="project_managementModel.task_assignedemployee" Width="1.5" PointX="16.5" PointY="23.25" />
@@ -36,6 +37,7 @@
         <EntityTypeShape EntityType="project_managementModel.task" Width="1.5" PointX="13.375" PointY="23.375" IsExpanded="true" />
         <EntityTypeShape EntityType="project_managementModel.user" Width="1.5" PointX="12" PointY="17.5" />
         <EntityTypeShape EntityType="project_managementModel.stationdetail" Width="1.5" PointX="0.75" PointY="0.75" />
+
         <AssociationConnector Association="project_managementModel.attachment_forign" />
         <AssociationConnector Association="project_managementModel.attachment_forignkey" />
         <AssociationConnector Association="project_managementModel.task1" />

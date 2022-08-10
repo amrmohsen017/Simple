@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PM.ViewModels;
 
 namespace Vidly.ModelValidators
 {
@@ -32,8 +33,6 @@ namespace Vidly.ModelValidators
             if (validationContext.ObjectInstance is institute)
             {
                 type = (institute)validationContext.ObjectInstance;
-
-
             }
 
             else if (validationContext.ObjectInstance is institute_address)
@@ -81,11 +80,13 @@ namespace Vidly.ModelValidators
                 type = (governmnet)validationContext.ObjectInstance;
 
             }
+
             else if (validationContext.ObjectInstance is task)
             {
                 type = (task)validationContext.ObjectInstance;
 
             }
+
 
             var symbolsPattern = "[!@#$%^&*(),.?\":{}|<>\\]\\]|\\[\\[']";
 
@@ -262,6 +263,16 @@ namespace Vidly.ModelValidators
                        : ValidationResult.Success;
 
             }
+   //         else if(_fieldName == "stage_name")
+			//{
+   //             var sn = (type as stageView).stage_name;
+   //             if (sn == null) return new ValidationResult("يجب ادخال الاسم الجديد");
+
+   //             var pattern = @"^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+";
+   //             return Regex.IsMatch(sn, pattern)
+   //                 ? ValidationResult.Success
+   //                 : new ValidationResult("لا يمكن ادخال ارقام فقط");
+   //         }
 
             else if (_fieldName == "task_name")
             {
