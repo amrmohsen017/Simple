@@ -1,0 +1,87 @@
+﻿@model IEnumerable<PM.Models.task>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.task_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.task_planned_start)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.task_planned_end)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.task_deadline)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sub_task)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.task_description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.user.username)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            
+
+            @Html.DisplayFor(modelItem => item.task_name)
+        </td>
+        <td>
+            @if (@item.task_planned_start != null )
+            {
+                @item.task_planned_start.Value.ToString("dd/MM/yyyy")
+            }
+
+            @*@Html.DisplayFor(modelItem => item.task_planned_start, "ha", new { @Value = "FUCK" })*@
+        </td>
+        <td>
+            @* @Html.DisplayFor(modelItem => item.task_planned_end)*@
+            @if (@item.task_planned_end != null)
+            {
+                @item.task_planned_end.Value.ToString("dd/MM/yyyy")
+            }
+
+
+        </td>
+        <td>
+            @if (@item.task_deadline != null)
+            {
+                @item.task_deadline.Value.ToString("dd/MM/yyyy")
+            }
+           
+            @*@Html.DisplayFor(modelItem => item.task_deadline)*@
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sub_task)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.task_description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user.username)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.task_id }) |
+            @*@Html.ActionLink("Details", "Details", new { id=item.task_id }) |*@
+            @Html.ActionLink("Delete", "Delete", new { id=item.task_id })
+        </td>
+    </tr>
+}
+
+</table>

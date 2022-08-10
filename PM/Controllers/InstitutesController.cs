@@ -74,7 +74,7 @@ namespace PM.Controllers
                 int? cityName = null;
                 int? stationName = null;
 
-                var shit = Request["cityName"];
+              
                 if (Request["governmentName"] != "")
                 {
                     governmentName = int.Parse(Request["governmentName"]);

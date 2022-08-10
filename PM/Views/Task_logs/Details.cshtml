@@ -1,0 +1,34 @@
+﻿@model PM.Models.task_logs
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>task_logs</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.log.log_text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.log.log_text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.task.task_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.task_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
