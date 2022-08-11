@@ -4,27 +4,35 @@
 	Layout = "~/Views/Shared/new_layout.cshtml";
 	//Layout = null;
 }
+@if (ViewBag.duplicationError != null)
+{
+	<script>alert("@ViewBag.duplicationError");</script>
+}
+@if (ViewBag.projectCreatedSuccessfully != null)
+{
+	<script>alert("@ViewBag.projectCreatedSuccessfully");</script>
+}
 <div class="kanban-container scrollbar me-n3" id="kanban_container">
-	<div class="kanban-column" id="kanban_column">
+	<div class="kanban-column" id="kanban_column" >
 		<div class="kanban-column-header">
 			<h5 class="fs-0 mb-0 stage_name">Documentation <span class="text-500">(8)</span></h5>
 			<div class="dropdown font-sans-serif btn-reveal-trigger">
 				<button class="btn btn-sm btn-reveal py-0 px-2" type="button" id="kanbanColumn0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
 				<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="kanbanColumn0">
-					<a class="dropdown-item" id="add_card" onclick="addCard(this.id)">Add Card</a><a class="dropdown-item" href="#!" id="edit_card">Edit</a><a class="dropdown-item" href="#!" id="copy_card">Copy link</a>
+					<a class="dropdown-item" id="add_card" onclick="addCard(this.id)">Add Project</a><a class="dropdown-item" href="#!" id="edit_card">Edit</a>
 					<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!" id="remove_card">Remove</a>
 				</div>
 			</div>
 		</div>
 		<div class="kanban-items-container scrollbar" id="column_scrollbar">
-			<div class="kanban-item" id="kanban_item">
+			<div class="kanban-item" id="kanban_item" onclick="add_attachments(this.id)">
 				<div class="card kanban-item-card hover-actions-trigger">
 					<div class="card-body">
 						<div class="position-relative">
 							<div class="dropdown font-sans-serif">
 								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
 								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
+									<a class="dropdown-item" href="#!">Edit</a>
 									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
 								</div>
 							</div>
@@ -33,7 +41,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 
 
 
@@ -54,7 +62,7 @@
 										<div class="d-flex">
 											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
 											<div class="flex-1">
-												<h5 class="mb-2 fs-0">Start date</h5>
+												<h5 class="mb-2 fs-0">تاريخ البداية</h5>
 												<div class="d-flex">
 													<p class="text-word-break fs--1" id="projec_start_date"></p>
 												</div>
@@ -65,9 +73,20 @@
 										<div class="d-flex">
 											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
 											<div class="flex-1">
-												<h5 class="mb-2 fs-0">End date</h5>
+												<h5 class="mb-2 fs-0">تاريخ الانتهاء</h5>
 												<div class="d-flex">
 													<p class="text-word-break fs--1" id="projec_end_date"></p>
+												</div>
+												<hr class="my-4">
+											</div>
+										</div>
+										@* deadline date section *@
+										<div class="d-flex">
+											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+											<div class="flex-1">
+												<h5 class="mb-2 fs-0">deadline date</h5>
+												<div class="d-flex">
+													<p class="text-word-break fs--1" id="projec_dead_date"></p>
 												</div>
 												<hr class="my-4">
 											</div>
@@ -76,66 +95,29 @@
 										<div class="d-flex">
 											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
 											<div class="flex-1">
-												<h5 class="mb-2 fs-0">Description</h5>
+												<h5 class="mb-2 fs-0">وصف المشروع</h5>
 												<p class="text-word-break fs--1" id="project_desc_window"></p>
 												<hr class="my-4">
 											</div>
 										</div>
 										<div class="d-flex">
 											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-paperclip fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-paperclip" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<div class="d-flex justify-content-between mb-2">
-													<h5 class="mb-0 fs-0">Attachments</h5>
-													<div class="dropdown">
-														<button class="btn btn-falcon-default btn-sm dropdown-toggle dropdown-caret-none fs--2" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <svg class="svg-inline--fa fa-plus fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg><!-- <span class="fas fa-plus"></span> Font Awesome fontawesome.com --></button>
-														<div class="dropdown-menu dropdown-menu-end">
-															<a class="dropdown-item" href="#!">Computer</a><a class="dropdown-item" href="#!">Google Drive</a>
-															<div class="dropdown-divider"></div><a class="dropdown-item" href="#!">Attach Link</a>
-														</div>
-													</div>
+											<div class="flex-1" id="attachment_column">
+												<div class="d-flex justify-content-between mb-2" id="attachment_header">
+													<h5 class="mb-0 fs-0">المرفقات</h5>
 												</div>
-												<div class="d-flex align-items-center mb-3">
-													<a class="text-decoration-none me-3" href="../Content/assets/img/kanban/3.jpg" data-gallery="attachment-bg">
+												<div class="d-flex align-items-center mb-3" id="attachment_item">
+													<a class="text-decoration-none me-3" id="href_id" href="../Content/assets/img/kanban/3.jpg" target="_blank" data-gallery="attachment-bg">
 														<div class="bg-attachment">
-															<div class="bg-holder rounded" style="background-image: url(../Content/assets/img/kanban/3.jpg);"></div>
+															<div class="bg-holder rounded" id="bg_style" style="background-image: url(../Content/assets/img/kanban/3.jpg);"></div>
 															<!--/.bg-holder-->
 														</div>
 													</a>
 													<div class="flex-1 fs--2">
-														<h6 class="mb-1"> <a class="text-decoration-none" href="../Content/assets/img/kanban/3.jpg" data-gallery="attachment-title">final-img.jpg</a></h6><a class="link-600 fw-semi-bold" href="#!">Edit</a><span class="mx-1">|</span><a class="link-600 fw-semi-bold" href="#!">Remove</a>
-														<p class="mb-0">Uploaded at 2020-04-18 5:25 pm</p>
+														<h6 class="mb-1"> <a class="text-decoration-none" id="attach_name" target="_blank" href="../Content/assets/img/kanban/3.jpg" data-gallery="attachment-title">final-img.jpg</a></h6>
 													</div>
 												</div>
-												<div class="d-flex align-items-center mb-3">
-													<a class="text-decoration-none me-3" href="../Content/assets/img/kanban/4.jpg" data-gallery="attachment-bg">
-														<div class="bg-attachment">
-															<div class="bg-holder rounded" style="background-image: url(../Content/assets/img/kanban/4.jpg);"></div>
-															<!--/.bg-holder-->
-														</div>
-													</a>
-													<div class="flex-1 fs--2">
-														<h6 class="mb-1"> <a class="text-decoration-none" href="../Content/assets/img/kanban/4.jpg" data-gallery="attachment-title">picture.png</a></h6><a class="link-600 fw-semi-bold" href="#!">Edit</a><span class="mx-1">|</span><a class="link-600 fw-semi-bold" href="#!">Remove</a>
-														<p class="mb-0">Uploaded at 2020-04-20 4:34 pm</p>
-													</div>
-												</div>
-												<div class="d-flex align-items-center mb-3">
-													<a class="text-decoration-none me-3" href="#!">
-														<div class="bg-attachment"><span class="text-uppercase fw-bold">txt</span></div>
-													</a>
-													<div class="flex-1 fs--2">
-														<h6 class="mb-1"> <a class="text-decoration-none" href="#!">sample.txt</a></h6><a class="link-600 fw-semi-bold" href="#!">Edit</a><span class="mx-1">|</span><a class="link-600 fw-semi-bold" href="#!">Remove</a>
-														<p class="mb-0">Uploaded at 2020-04-21 2:10 pm</p>
-													</div>
-												</div>
-												<div class="d-flex align-items-center mb-3">
-													<a class="text-decoration-none me-3" href="#!">
-														<div class="bg-attachment"><span class="text-uppercase fw-bold">pdf</span></div>
-													</a>
-													<div class="flex-1 fs--2">
-														<h6 class="mb-1"> <a class="text-decoration-none" href="#!">example.pdf</a></h6><a class="link-600 fw-semi-bold" href="#!">Edit</a><span class="mx-1">|</span><a class="link-600 fw-semi-bold" href="#!">Remove</a>
-														<p class="mb-0">Uploaded at 2020-05-02 11:34 am</p>
-													</div>
-												</div>
+
 												<div class="d-flex align-items-center">
 													<a class="text-decoration-none me-3" href="../assets/video/beach.mp4" data-gallery="attachment-bg">
 														<div class="bg-attachment">
@@ -149,13 +131,14 @@
 														<p class="mb-0">Uploaded at 2020-05-10 3:40 pm</p>
 													</div>
 												</div>
-												<hr class="my-4">
+
 											</div>
+											<hr class="my-4">
 										</div>
 										<div class="d-flex">
 											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
 											<div class="flex-1">
-												<h5 class="mb-2 fs-0">Cost</h5>
+												<h5 class="mb-2 fs-0">التكلفة</h5>
 												<p class="text-word-break fs--1" id="cost"></p>
 												<hr class="my-4">
 											</div>
@@ -199,16 +182,21 @@
 							<div class="p-4">
 								<div class="row">
 									<div class="col-lg-9">
-										@* all project data needed to be created *@
-										<div class="mb-3"><label class="form-label" for="exampleFormControlInput1">project name</label><input class="form-control" id="project_name" type="email" placeholder="name@example.com" /></div>
+										@using (Html.BeginForm("create_project", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+										{
+											@* all project data needed to be created *@
+											<div class="mb-3">
+												<label class="form-label" for="exampleFormControlInput1">project name</label>
+												<input class="form-control" id="project_name" required="required" name="projectname" />
+											</div>
 
-										<label class="form-label" for="datepicker">Start Date</label>
-										<input class="form-control datetimepicker" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+											<label class="form-label" for="datepicker">Start Date</label>
+											<input class="form-control datetimepicker" name="plannedstartdate" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
 
-										<label class="form-label" for="datepicker">End Date</label>
-										<input class="form-control datetimepicker" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+											<label class="form-label" for="datepicker">End Date</label>
+											<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
 
-										<label for="organizerMultiple">Institutions</label><select class="form-select js-choice" id="stages_options" multiple="multiple" size="1" name="organizerMultiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+											<label for="organizerMultiple">Institutions</label><select class="form-select js-choice" id="stages_options" multiple="multiple" size="1" name="organizerMultiple" data-options='{"removeItemButton":true,"placeholder":true}'>
 												<option value="">Select organizer...</option>
 												<option>Massachusetts Institute of Technology</option>
 												<option>University of Chicago</option>
@@ -216,13 +204,20 @@
 												<option>California Institute of Technology</option>
 											</select>
 
-										<div class="input-group mb-3"><span class="input-group-text">$</span><input class="form-control" id ="cost" type="text" aria-label="Amount (to the nearest dollar)" /><span class="input-group-text">.00</span></div>
+											<div class="input-group mb-3"><span class="input-group-text">$</span><input class="form-control" id="cost" name="cost" type="text" aria-label="Amount (to the nearest dollar)" /><span class="input-group-text">.00</span></div>
 
-										<label class="form-label" for="datetimepicker">DeadLine Datetime</label>
-										<input class="form-control datetimepicker" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"enableTime":true,"dateFormat":"d/m/y H:i","disableMobile":true}' />
+											<label class="form-label" for="datetimepicker">DeadLine Datetime</label>
+											<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"disableMobile":true}' />
 
-										<div class="mb-3"><label class="form-label" for="exampleFormControlTextarea1">Description</label><textarea class="form-control" id="project_desc" rows="3"></textarea></div>
-										<button class="btn btn-success me-1 mb-1" type="button" onclick="create_project()">Create</button>
+											<div class="mb-3"><label class="form-label" for="exampleFormControlTextarea1">Description</label><textarea class="form-control" id="project_desc" name="description" required="required" rows="3"></textarea></div>
+
+											<div class="mb-3">
+												<label class="form-label">ارفاق ملف</label>
+												<input name="attachment" id="file" class="form-control" type="file" />
+											</div>
+
+											<button class="btn btn-success me-1 mb-1" type="submit" id="create_project">Create</button>
+										}
 									</div>
 									<div class="col-lg-3">
 										<h6 class="mt-5 mt-lg-0">Add To Card</h6>
@@ -649,33 +644,52 @@
 			console.log(all_projects);
 
 			var kanbanContainer = $("#kanban_container");
+			//$("#kanban_column").css("visibility", "hidden");
 			var kanbanItem = $("#kanban_item");
 			var mainKanbanColumn = $("#kanban_column").clone();
-			$("#kanban_column").hide();
+			//mainKanbanColumn.attr("style", "visibility: visible;")
 
 			//adding columns equal to stages we have in DB.
-			$.each(all_stages, function (index, val) {				
+			$.each(all_stages, function (index, val) {
 				var kanbanColumn = mainKanbanColumn.clone();
 				var stage_id = val.stage_id.toString();
 				kanbanColumn.attr("id", "kanban_column_" + stage_id); //changing the kanban column id.
 				kanbanColumn.find("#column_scrollbar").attr("id", "column_scrollbar_" + stage_id);
+				kanbanColumn.find("#add_card").attr("id", "add_card_" + stage_id);
 				kanbanColumn.find(".stage_name").text(val.stage_name); //changing the name of the column to the stage name.
 				kanbanContainer.append(kanbanColumn); //adding the columns we created according to the stages we have in DB.
 			});
 
 			//adding projects to columns according to its stages id.
-			$.each(all_projects, function (index,val) {
+			$.each(all_projects, function (index, val) {
 				var project_id = val.project_id.toString();
 				var project_stage_id = val.project_stage_id.toString();
 				var item = kanbanItem.clone();
-				
+
 				item.attr("id", "kanban_item_" + project_id); //changing the kanban item to have the project id
-				item.find("#project_data").attr("id", "project_data_" + project_id); 
+				item.find("#project_data").attr("id", "project_data_" + project_id);
 				item.find("#project_hint").text(val.projectname); //setting the card to its equivalent project name
 				$("#column_scrollbar_" + project_stage_id).append(item); //appending the project card to the equivalent stage.
 
 
 			});
+
+			//validation on creating the project.
+			$("#create_project").click(function () {
+
+				var projectname = $("#project_name").val();
+
+				//validation
+				const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
+
+				if (!regularExp.test(projectname)) {
+					console.log(projectname);
+					alert("لا يمكن ادخال ارقام فقط");
+					return false;
+				}
+
+
+			})
 
 
 		});
@@ -687,7 +701,7 @@
 				type: 'GET',
 				url: '../api/stage',
 				dataType: 'json',
-				async:false,
+				async: false,
 				success: function (data) {
 					stages = data;
 				}
@@ -715,74 +729,10 @@
 		function addCard(item_id) {
 			var card_item = $("#kanban_item");
 			console.log(card_item);
-			var id_number = item_id[item_id.length-1]; //getting the last char in id string
+			var word_list = item_id.split("_");
+			var id_number = word_list[word_list.length - 1]; //getting the last char in id string
 			//console.log(column_scrollBar_className);
 			$("#column_scrollbar_" + id_number).append(card_item.clone());
-
-		}
-		//this function for creating project in db
-		function create_project() {
-			var projectname = $("#project_name").val();
-			var plannedstartdate = $("#startdate").val();
-			var plannedenddate = $("#enddate").val();
-			var cost = $("#cost").val();
-			var institute_id = 26;
-			var project_manager_id = 1;
-			var deadline_date = $("#deadline").val();
-			var client = 1;
-			var project_stage_id = 1;
-			var description = $("#project_desc").val();
-
-			//validation
-			const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
-			if (projectname != "") {
-				if (regularExp.test(projectname)) {
-
-					//sending the data to save in db after validation.
-					$.post('../api/projects', {
-						projectname: projectname, plannedstartdate: plannedstartdate, plannedenddate: plannedenddate,
-						cost: cost, institute_id: institute_id, project_manager_id: project_manager_id,
-						deadline_date: deadline_date, client: client,
-						project_stage_id: project_stage_id, description: description
-					},
-						function (data,status) {
-							if (status == "notmodified") {
-								alert("this project name already exists!");
-							}
-							else
-							{
-								var stageID = data.project_stage_id;
-								var item = $("#kanban_item").clone();
-								item.attr("id", "kanban_item_" + data.project_id.toString());
-								var projectclickID = item.find("#project_data");
-								projectclickID.attr("id", "project_data_" + data.project_id.toString());
-								projectclickID.find("#project_hint").text(data.projectname);
-								$("#column_scrollbar_" + stageID).append(item);
-								alert("تم انشاء مشروع" + response.projectname);
-							}
-							
-
-					});
-
-				}
-				else {
-					alert("لا يمكن ادخال ارقام فقط");
-				}
-			}
-			else {
-				alert("لا يمكن ادخال كلمة فارغة");
-			}
-
-
-
-
-			
-
-
-		
-
-
-
 
 		}
 
@@ -796,9 +746,45 @@
 				$("#project_desc_window").text(data.description);
 				$("#projec_start_date").text(data.plannedstartdate);
 				$("#projec_end_date").text(data.plannedenddate);
+				$("#projec_dead_date").text(data.deadline_date);
 				$("#cost").text(data.cost);
 
 			});
+		}
+
+
+		function add_attachments(kanban_item_full_id)
+		{
+			$("#attachment_column").empty();
+			$("#attachment_column").append($("#attachment_header")); //adding the attachment header after deleting it from .empty() method.
+
+			//getting the id number only
+			var word_list = kanban_item_full_id.split("_");
+			var id_number = word_list[word_list.length - 1];
+			console.log(id_number);
+			$.ajax({
+				type: 'GET',
+				url: '../api/attachemnts/'+id_number,
+				dataType: 'json',
+				success: function (data) {
+					console.log(data);
+					$.each(data, function (index,val){
+						var item = $("#attachment_item").clone();
+						item.attr("id", "attachment_item_" + id_number);
+						item.find("#href_id").attr("href", "../project_attachments/" + val);
+						item.find("#attach_name").attr("href", "../project_attachments/" + val);
+						item.find("#attach_name").text(val);
+						item.find("#bg_style").attr("style", "background-image: url(../project_attachments/" + val + ");");
+						$("#attachment_column").append(item);
+
+					});
+					
+				}
+
+			});
+
+			//var item = $("#attachment_item").clone();
+			//item.attr("id","attachment_item_"+id_number)
 		}
 	</script>
 }
