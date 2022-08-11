@@ -13,7 +13,7 @@
 	<script>alert("@ViewBag.projectCreatedSuccessfully");</script>
 }
 <div class="kanban-container scrollbar me-n3" id="kanban_container">
-	<div class="kanban-column" id="kanban_column" >
+	<div class="kanban-column" id="kanban_column">
 		<div class="kanban-column-header">
 			<h5 class="fs-0 mb-0 stage_name">Documentation <span class="text-500">(8)</span></h5>
 			<div class="dropdown font-sans-serif btn-reveal-trigger">
@@ -45,590 +45,185 @@
 
 
 
-			@* this is the code of the popup window *@
-			<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="project_details">
-				<div class="modal-dialog modal-lg mt-6" role="document">
-					<div class="modal-content border-0">
-						<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
-						<div class="modal-body p-0">
-							<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
-								<h4 class="mb-1" id="project_name_window">Add a new illustration to the landing page</h4>
-								<p class="fs--2 mb-0" id="manager">managed by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
-							</div>
-							<div class="p-4">
-								<div class="row">
-									<div class="col-lg-9">
-										@* start date section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">تاريخ البداية</h5>
-												<div class="d-flex">
-													<p class="text-word-break fs--1" id="projec_start_date"></p>
-												</div>
-												<hr class="my-4">
-											</div>
-										</div>
-										@* end date section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">تاريخ الانتهاء</h5>
-												<div class="d-flex">
-													<p class="text-word-break fs--1" id="projec_end_date"></p>
-												</div>
-												<hr class="my-4">
-											</div>
-										</div>
-										@* deadline date section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">deadline date</h5>
-												<div class="d-flex">
-													<p class="text-word-break fs--1" id="projec_dead_date"></p>
-												</div>
-												<hr class="my-4">
-											</div>
-										</div>
-										@* description section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">وصف المشروع</h5>
-												<p class="text-word-break fs--1" id="project_desc_window"></p>
-												<hr class="my-4">
-											</div>
-										</div>
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-paperclip fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-paperclip" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1" id="attachment_column">
-												<div class="d-flex justify-content-between mb-2" id="attachment_header">
-													<h5 class="mb-0 fs-0">المرفقات</h5>
-												</div>
-												<div class="d-flex align-items-center mb-3" id="attachment_item">
-													<a class="text-decoration-none me-3" id="href_id" href="../Content/assets/img/kanban/3.jpg" target="_blank" data-gallery="attachment-bg">
-														<div class="bg-attachment">
-															<div class="bg-holder rounded" id="bg_style" style="background-image: url(../Content/assets/img/kanban/3.jpg);"></div>
-															<!--/.bg-holder-->
-														</div>
-													</a>
-													<div class="flex-1 fs--2">
-														<h6 class="mb-1"> <a class="text-decoration-none" id="attach_name" target="_blank" href="../Content/assets/img/kanban/3.jpg" data-gallery="attachment-title">final-img.jpg</a></h6>
-													</div>
-												</div>
-
-												<div class="d-flex align-items-center">
-													<a class="text-decoration-none me-3" href="../assets/video/beach.mp4" data-gallery="attachment-bg">
-														<div class="bg-attachment">
-															<div class="bg-holder rounded" style="background-image:url(../assets/video/beach.jpg);"></div>
-															<!--/.bg-holder-->
-															<div class="icon-play"><svg class="svg-inline--fa fa-play fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="play" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"></path></svg><!-- <span class="fas fa-play"></span> Font Awesome fontawesome.com --></div>
-														</div>
-													</a>
-													<div class="flex-1 fs--2">
-														<h6 class="mb-1"> <a class="text-decoration-none" href="../Content/assets/video/beach.mp4" data-gallery="attachment-title">beach.mp4</a></h6><a class="link-600 fw-semi-bold" href="#!">Edit</a><span class="mx-1">|</span><a class="link-600 fw-semi-bold" href="#!">Remove</a>
-														<p class="mb-0">Uploaded at 2020-05-10 3:40 pm</p>
-													</div>
-												</div>
-
-											</div>
-											<hr class="my-4">
-										</div>
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">التكلفة</h5>
-												<p class="text-word-break fs--1" id="cost"></p>
-												<hr class="my-4">
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-3">
-										<h6 class="mt-5 mt-lg-0">Add To Card</h6>
-										<ul class="nav flex-lg-column fs--1">
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-user fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg><!-- <span class="fas fa-user me-2"></span> Font Awesome fontawesome.com -->Members</a></li>
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-tag fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"></path></svg><!-- <span class="fas fa-tag me-2"></span> Font Awesome fontawesome.com -->Label</a></li>
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-paperclip fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z"></path></svg><!-- <span class="fas fa-paperclip me-2"></span> Font Awesome fontawesome.com -->Attachments</a></li>
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-check fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg><!-- <span class="fas fa-check me-2"></span> Font Awesome fontawesome.com -->Checklists</a></li>
-										</ul>
-										<h6 class="mt-3">Actions</h6>
-										<ul class="nav flex-lg-column fs--1">
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-copy fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="far" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path></svg><!-- <span class="far fa-copy me-2"> </span> Font Awesome fontawesome.com -->Copy</a></li>
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-arrow-right fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg><!-- <span class="fas fa-arrow-right me-2"></span> Font Awesome fontawesome.com -->Move</a></li>
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"><svg class="svg-inline--fa fa-trash-alt fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"></path></svg><!-- <span class="fas fa-trash-alt me-2"></span> Font Awesome fontawesome.com -->Remove</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-
-
-
-			@* this is the code of the popup window for creating a project*@
-			<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="add_project_window">
-				<div class="modal-dialog modal-lg mt-6" role="document">
-					<div class="modal-content border-0">
-						<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
-						<div class="modal-body p-0">
-							<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
-								<h4 class="mb-1" id="kanban-modal-label-1">Add a new illustration to the landing page</h4>
-								<p class="fs--2 mb-0">Added by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
-							</div>
-							<div class="p-4">
-								<div class="row">
-									<div class="col-lg-9">
-										@using (Html.BeginForm("create_project", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-										{
-											@* all project data needed to be created *@
-											<div class="mb-3">
-												<label class="form-label" for="exampleFormControlInput1">project name</label>
-												<input class="form-control" id="project_name" required="required" name="projectname" />
-											</div>
-
-											<label class="form-label" for="datepicker">Start Date</label>
-											<input class="form-control datetimepicker" name="plannedstartdate" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
-
-											<label class="form-label" for="datepicker">End Date</label>
-											<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
-
-											<label for="organizerMultiple">Institutions</label><select class="form-select js-choice" id="stages_options" multiple="multiple" size="1" name="organizerMultiple" data-options='{"removeItemButton":true,"placeholder":true}'>
-												<option value="">Select organizer...</option>
-												<option>Massachusetts Institute of Technology</option>
-												<option>University of Chicago</option>
-												<option>GSAS Open Labs At Harvard</option>
-												<option>California Institute of Technology</option>
-											</select>
-
-											<div class="input-group mb-3"><span class="input-group-text">$</span><input class="form-control" id="cost" name="cost" type="text" aria-label="Amount (to the nearest dollar)" /><span class="input-group-text">.00</span></div>
-
-											<label class="form-label" for="datetimepicker">DeadLine Datetime</label>
-											<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"disableMobile":true}' />
-
-											<div class="mb-3"><label class="form-label" for="exampleFormControlTextarea1">Description</label><textarea class="form-control" id="project_desc" name="description" required="required" rows="3"></textarea></div>
-
-											<div class="mb-3">
-												<label class="form-label">ارفاق ملف</label>
-												<input name="attachment" id="file" class="form-control" type="file" />
-											</div>
-
-											<button class="btn btn-success me-1 mb-1" type="submit" id="create_project">Create</button>
-										}
-									</div>
-									<div class="col-lg-3">
-										<h6 class="mt-5 mt-lg-0">Add To Card</h6>
-										<ul class="nav flex-lg-column fs--1">
-											<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-user fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>--><!-- <span class="fas fa-user me-2"></span> Font Awesome fontawesome.com -->
-											<!--Members</a></li>
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-tag fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"></path></svg>-->
-											<!-- <span class="fas fa-tag me-2"></span> Font Awesome fontawesome.com --><!--Label</a></li>-->
-											<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-paperclip fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z"></path></svg><!-- <span class="fas fa-paperclip me-2"></span> Font Awesome fontawesome.com -->Attachments</a></li>
-											<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-check fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>--><!-- <span class="fas fa-check me-2"></span> Font Awesome fontawesome.com --><!--Checklists</a></li>-->
-										</ul>
-										@*<h6 class="mt-3">Actions</h6>
-											<ul class="nav flex-lg-column fs--1">
-												<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-copy fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="far" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path></svg> <span class="far fa-copy me-2"> </span> Font Awesome fontawesome.com Copy</a></li>
-												<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-arrow-right fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg> <span class="fas fa-arrow-right me-2"></span> Font Awesome fontawesome.com Move</a></li>
-												<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"><svg class="svg-inline--fa fa-trash-alt fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"></path></svg> <span class="fas fa-trash-alt me-2"></span> Font Awesome fontawesome.com Remove</a></li>
-											</ul>*@
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			@*<form class="add-card-form mt-3">
-					<textarea class="form-control" data-input="add-card" rows="2" placeholder="Enter a title for this card..."></textarea>
-					<div class="row gx-2 mt-2">
-						<div class="col"><button class="btn btn-primary btn-sm d-block w-100" type="button">Add</button></div>
-						<div class="col"><button class="btn btn-outline-secondary btn-sm d-block w-100 border-400" type="button" data-btn-form="hide">Cancel</button></div>
-					</div>
-				</form>*@
 		</div>
+
 		@*<div class="kanban-column-footer"><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button"><span class="fas fa-plus me-2"></span>انشاء مشروغ جديد</button></div>*@
 	</div>
-	<!--<div class="kanban-column">
-		<div class="kanban-column-header">
-			<h5 class="fs-0 mb-0">Doing <span class="text-500">(4)</span></h5>
-			<div class="dropdown font-sans-serif btn-reveal-trigger">
-				<button class="btn btn-sm btn-reveal py-0 px-2" type="button" id="kanbanColumn1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-				<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="kanbanColumn1">
-					<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-					<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+
+
+	@* this is the code of the popup window *@
+	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="project_details">
+		<div class="modal-dialog modal-lg mt-6" role="document">
+			<div class="modal-content border-0">
+				<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
+				<div class="modal-body p-0">
+					<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+						<h4 class="mb-1" id="project_name_window">Add a new illustration to the landing page</h4>
+						<p class="fs--2 mb-0" id="manager">managed by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
+					</div>
+					<div class="p-4">
+						<div class="row">
+							<div class="col-lg-9">
+								@* start date section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">تاريخ البداية</h5>
+										<div class="d-flex">
+											<p class="text-word-break fs--1" id="projec_start_date"></p>
+										</div>
+										<hr class="my-4">
+									</div>
+								</div>
+								@* end date section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">تاريخ الانتهاء</h5>
+										<div class="d-flex">
+											<p class="text-word-break fs--1" id="projec_end_date"></p>
+										</div>
+										<hr class="my-4">
+									</div>
+								</div>
+								@* deadline date section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">deadline date</h5>
+										<div class="d-flex">
+											<p class="text-word-break fs--1" id="projec_dead_date"></p>
+										</div>
+										<hr class="my-4">
+									</div>
+								</div>
+								@* description section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">وصف المشروع</h5>
+										<p class="text-word-break fs--1" id="project_desc_window"></p>
+										<hr class="my-4">
+									</div>
+								</div>
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-paperclip fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-paperclip" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1" id="attachment_column">
+										<div class="d-flex justify-content-between mb-2" id="attachment_header">
+											<h5 class="mb-0 fs-0">المرفقات</h5>
+										</div>
+										@* here we will add our code of attachments at runtime. *@
+									</div>
+									<hr class="my-4">
+								</div>
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">التكلفة</h5>
+										<p class="text-word-break fs--1" id="cost"></p>
+										<hr class="my-4">
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3">
+								<h6 class="mt-5 mt-lg-0">Add To Card</h6>
+								<ul class="nav flex-lg-column fs--1">
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-user fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg><!-- <span class="fas fa-user me-2"></span> Font Awesome fontawesome.com -->Members</a></li>
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-tag fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"></path></svg><!-- <span class="fas fa-tag me-2"></span> Font Awesome fontawesome.com -->Label</a></li>
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-paperclip fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z"></path></svg><!-- <span class="fas fa-paperclip me-2"></span> Font Awesome fontawesome.com -->Attachments</a></li>
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-check fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg><!-- <span class="fas fa-check me-2"></span> Font Awesome fontawesome.com -->Checklists</a></li>
+								</ul>
+								<h6 class="mt-3">Actions</h6>
+								<ul class="nav flex-lg-column fs--1">
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-copy fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="far" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path></svg><!-- <span class="far fa-copy me-2"> </span> Font Awesome fontawesome.com -->Copy</a></li>
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-arrow-right fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg><!-- <span class="fas fa-arrow-right me-2"></span> Font Awesome fontawesome.com -->Move</a></li>
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"><svg class="svg-inline--fa fa-trash-alt fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"></path></svg><!-- <span class="fas fa-trash-alt me-2"></span> Font Awesome fontawesome.com -->Remove</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="kanban-items-container scrollbar">
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Add a cookie notice, which will be shown at the bottom of the page and has a link of "Privacy Policy"</p>
-						<div class="kanban-item-footer cursor-default">
-							<div class="text-500 z-index-2"><span class="me-2" data-bs-toggle="tooltip" title="You're assigned in this card"><span class="fas fa-eye"></span></span><span class="me-2" data-bs-toggle="tooltip" title="Checklist"><span class="fas fa-check me-1"></span><span>3/6</span></span></div>
-							<div class="z-index-2">
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Emma">
-									<img class="rounded-circle" src="../Content/assets/img/team/3.jpg" alt="" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="position-relative rounded-top-lg overflow-hidden py-8">
-						<div class="bg-holder" style="background-image: url(../Content/assets/img/kanban/2.jpg);"></div>-->
-	<!--/.bg-holder-->
-	<!--</div>
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-3">Add a pdf file that describes all the symptoms of COVID-19</p>
-						<div class="kanban-item-footer cursor-default">
-							<div class="text-500 z-index-2"><span class="me-2" data-bs-toggle="tooltip" title="Attachments"><span class="fas fa-paperclip me-1"></span><span>1</span></span></div>
-							<div class="z-index-2">
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Shophie">
-									<img class="rounded-circle" src="../Content/assets/img/team/3.jpg" alt="" />
-								</div>
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Rowan">
-									<img class="rounded-circle" src="../Content/assets/img/team/4.jpg" alt="" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<div class="mb-2"><span class="badge py-1 me-1 mb-1 badge-soft-success">New</span><span class="badge py-1 me-1 mb-1 badge-soft-primary">Goal</span></div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Make a Registration form that includes Name, Email, and a Password input field</p>
-						<div class="kanban-item-footer cursor-default">
-							<div class="text-500 z-index-2"><span class="me-2" data-bs-toggle="tooltip" title="Attachments"><span class="fas fa-paperclip me-1"></span><span>1</span></span><span class="me-2" data-bs-toggle="tooltip" title="Checklist"><span class="fas fa-check me-1"></span><span>2/10</span></span></div>
-							<div class="z-index-2">
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Shophie">
-									<img class="rounded-circle" src="../Content/assets/img/team/3.jpg" alt="" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<div class="mb-2"><span class="badge py-1 me-1 mb-1 badge-soft-info">Enhancement</span></div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Update profile page layout with cover image and user setting menu</p>
-						<div class="kanban-item-footer cursor-default">
-							<div class="text-500 z-index-2"><span class="me-2" data-bs-toggle="tooltip" title="You're assigned in this card"><span class="fas fa-eye"></span></span><span class="me-2" data-bs-toggle="tooltip" title="Attachments"><span class="fas fa-paperclip me-1"></span><span>1</span></span></div>
-							<div class="z-index-2">
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Emma">
-									<img class="rounded-circle" src="../Content/assets/img/team/1.jpg" alt="" />
-								</div>
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Antony">
-									<img class="rounded-circle" src="../Content/assets/img/team/2.jpg" alt="" />
-								</div>
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Anna">
-									<img class="rounded-circle" src="../Content/assets/img/team/3.jpg" alt="" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<form class="add-card-form mt-3">
-				<textarea class="form-control" data-input="add-card" rows="2" placeholder="Enter a title for this card..."></textarea>
-				<div class="row gx-2 mt-2">
-					<div class="col"><button class="btn btn-primary btn-sm d-block w-100" type="button">Add</button></div>
-					<div class="col"><button class="btn btn-outline-secondary btn-sm d-block w-100 border-400" type="button" data-btn-form="hide">Cancel</button></div>
-				</div>
-			</form>
-		</div>
-		<div class="kanban-column-footer"><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" type="button"><span class="fas fa-plus me-2"></span>Add another card</button></div>
 	</div>
-	<div class="kanban-column">
-		<div class="kanban-column-header">
-			<h5 class="fs-0 mb-0">Review <span class="text-500">(4)</span></h5>
-			<div class="dropdown font-sans-serif btn-reveal-trigger">
-				<button class="btn btn-sm btn-reveal py-0 px-2" type="button" id="kanbanColumn2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-				<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="kanbanColumn2">
-					<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-					<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+
+
+
+
+	@* this is the code of the popup window for creating a project*@
+	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="add_project_window">
+		<div class="modal-dialog modal-lg mt-6" role="document">
+			<div class="modal-content border-0">
+				<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
+				<div class="modal-body p-0">
+					<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+						<h4 class="mb-1" id="kanban-modal-label-1">Add a new illustration to the landing page</h4>
+						<p class="fs--2 mb-0">Added by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
+					</div>
+					<div class="p-4">
+						<div class="row">
+							<div class="col-lg-9">
+								@using (Html.BeginForm("create_project", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+								{
+									@* all project data needed to be created *@
+									<div class="mb-3">
+										<label class="form-label" for="exampleFormControlInput1">project name</label>
+										<input class="form-control" id="project_name" required="required" name="projectname" />
+									</div>
+
+									<label class="form-label" for="datepicker">Start Date</label>
+									<input class="form-control datetimepicker" name="plannedstartdate" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+
+									<label class="form-label" for="datepicker">End Date</label>
+									<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+
+									<label for="organizerMultiple">Institutions</label><select class="form-select js-choice" id="stages_options" multiple="multiple" size="1" name="organizerMultiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+										<option value="">Select organizer...</option>
+										<option>Massachusetts Institute of Technology</option>
+										<option>University of Chicago</option>
+										<option>GSAS Open Labs At Harvard</option>
+										<option>California Institute of Technology</option>
+									</select>
+
+									<div class="input-group mb-3"><span class="input-group-text">$</span><input class="form-control" id="cost" name="cost" type="text" aria-label="Amount (to the nearest dollar)" /><span class="input-group-text">.00</span></div>
+
+									<label class="form-label" for="datetimepicker">DeadLine Datetime</label>
+									<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"disableMobile":true}' />
+
+									<div class="mb-3"><label class="form-label" for="exampleFormControlTextarea1">Description</label><textarea class="form-control" id="project_desc" name="description" required="required" rows="3"></textarea></div>
+
+									<div class="mb-3">
+										<label class="form-label">ارفاق ملف</label>
+										<input name="attachment" id="file" class="form-control" type="file" />
+									</div>
+
+									<button class="btn btn-success me-1 mb-1" type="submit" id="create_project">Create</button>
+								}
+							</div>
+							<div class="col-lg-3">
+								<h6 class="mt-5 mt-lg-0">Add To Card</h6>
+								<ul class="nav flex-lg-column fs--1">
+									<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-user fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>--><!-- <span class="fas fa-user me-2"></span> Font Awesome fontawesome.com -->
+									<!--Members</a></li>
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-tag fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"></path></svg>-->
+									<!-- <span class="fas fa-tag me-2"></span> Font Awesome fontawesome.com --><!--Label</a></li>-->
+									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-paperclip fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z"></path></svg><!-- <span class="fas fa-paperclip me-2"></span> Font Awesome fontawesome.com -->Attachments</a></li>
+									<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-check fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>--><!-- <span class="fas fa-check me-2"></span> Font Awesome fontawesome.com --><!--Checklists</a></li>-->
+								</ul>
+								@*<h6 class="mt-3">Actions</h6>
+									<ul class="nav flex-lg-column fs--1">
+										<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-copy fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="far" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path></svg> <span class="far fa-copy me-2"> </span> Font Awesome fontawesome.com Copy</a></li>
+										<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-arrow-right fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg> <span class="fas fa-arrow-right me-2"></span> Font Awesome fontawesome.com Move</a></li>
+										<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"><svg class="svg-inline--fa fa-trash-alt fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"></path></svg> <span class="fas fa-trash-alt me-2"></span> Font Awesome fontawesome.com Remove</a></li>
+									</ul>*@
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="kanban-items-container scrollbar">
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<div class="mb-2"><span class="badge py-1 me-1 mb-1 badge-soft-danger">bug</span></div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Update all the npm packages and also remove the outdated plugins</p>
-						<div class="kanban-item-footer cursor-default">
-							<div class="text-500 z-index-2"><span class="me-2" data-bs-toggle="tooltip" title="You're assigned in this card"><span class="fas fa-eye"></span></span><span class="me-2" data-bs-toggle="tooltip" title="Checklist"><span class="fas fa-check me-1"></span><span>5/5</span></span></div>
-							<div class="z-index-2">
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Sophie">
-									<img class="rounded-circle" src="../Content/assets/img/team/4.jpg" alt="" />
-								</div>
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Antony">
-									<img class="rounded-circle" src="../Content/assets/img/team/1.jpg" alt="" />
-								</div>
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Emma">
-									<img class="rounded-circle" src="../Content/assets/img/team/2.jpg" alt="" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<div class="mb-2"><span class="badge py-1 me-1 mb-1 badge-soft-secondary">Documentation</span></div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Add a getting started page that allows users to see the starting process</p>
-						<div class="kanban-item-footer cursor-default">
-							<div class="text-500 z-index-2"><span class="me-2" data-bs-toggle="tooltip" title="Attachments"><span class="fas fa-paperclip me-1"></span><span>2</span></span></div>
-							<div class="z-index-2">
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Antony">
-									<img class="rounded-circle" src="../Content/assets/img/team/2.jpg" alt="" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Review and test all the task and deploy to the server</p>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<div class="mb-2"><span class="badge py-1 me-1 mb-1 badge-soft-success">New</span></div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Get all the data by API call and show them to the landing page by adding a new section</p>
-					</div>
-				</div>
-			</div>
-			<form class="add-card-form mt-3">
-				<textarea class="form-control" data-input="add-card" rows="2" placeholder="Enter a title for this card..."></textarea>
-				<div class="row gx-2 mt-2">
-					<div class="col"><button class="btn btn-primary btn-sm d-block w-100" type="button">Add</button></div>
-					<div class="col"><button class="btn btn-outline-secondary btn-sm d-block w-100 border-400" type="button" data-btn-form="hide">Cancel</button></div>
-				</div>
-			</form>
-		</div>
-		<div class="kanban-column-footer"><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" type="button"><span class="fas fa-plus me-2"></span>Add another card</button></div>
 	</div>
-	<div class="kanban-column">
-		<div class="kanban-column-header">
-			<h5 class="fs-0 mb-0">Release <span class="text-500">(5)</span></h5>
-			<div class="dropdown font-sans-serif btn-reveal-trigger">
-				<button class="btn btn-sm btn-reveal py-0 px-2" type="button" id="kanbanColumn3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-				<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="kanbanColumn3">
-					<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-					<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-				</div>
-			</div>
-		</div>
-		<div class="kanban-items-container scrollbar">
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="position-relative rounded-top-lg overflow-hidden py-9">
-						<div class="bg-holder" style="background-image: url(../Content/assets/img/kanban/1.jpg);"></div>-->
-	<!--/.bg-holder-->
-	<!--</div>
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-2">Add a new illustration to the landing page according to the contrast of the current theme </p>
-						<div class="kanban-item-footer cursor-default">
-							<div class="text-500 z-index-2"><span class="me-2" data-bs-toggle="tooltip" title="You're assigned in this card"><span class="fas fa-eye"></span></span><span class="me-2" data-bs-toggle="tooltip" title="Attachments"><span class="fas fa-paperclip me-1"></span><span>2</span></span></div>
-							<div class="z-index-2">
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Anna">
-									<img class="rounded-circle" src="../Content/assets/img/team/1.jpg" alt="" />
-								</div>
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Antony">
-									<img class="rounded-circle" src="../Content/assets/img/team/2.jpg" alt="" />
-								</div>
-								<div class="avatar avatar-l align-top ms-n2" data-bs-toggle="tooltip" title="Emma">
-									<img class="rounded-circle" src="../Content/assets/img/team/3.jpg" alt="" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<div class="mb-2"><span class="badge py-1 me-1 mb-1 badge-soft-info">Goal</span></div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Design a new E-commerce, Product list, and details page</p>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Make a weather app design which must have: Local weather, Weather map and weather widgets</p>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<div class="mb-2"><span class="badge py-1 me-1 mb-1 badge-soft-secondary">Documentation</span></div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">List all the Frequently Asked Questions and make an FAQ section in the landing page</p>
-					</div>
-				</div>
-			</div>
-			<div class="kanban-item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Add Card</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Copy link</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#kanban-modal-1">Remove all the warning from dev dependencies and update the packages if needed</p>
-					</div>
-				</div>
-			</div>
-			<form class="add-card-form mt-3">
-				<textarea class="form-control" data-input="add-card" rows="2" placeholder="Enter a title for this card..."></textarea>
-				<div class="row gx-2 mt-2">
-					<div class="col"><button class="btn btn-primary btn-sm d-block w-100" type="button">Add</button></div>
-					<div class="col"><button class="btn btn-outline-secondary btn-sm d-block w-100 border-400" type="button" data-btn-form="hide">Cancel</button></div>
-				</div>
-			</form>
-		</div>
-		<div class="kanban-column-footer"><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" type="button"><span class="fas fa-plus me-2"></span>Add another card</button></div>
-	</div>
-	<div class="kanban-column">
-		<div class="collapse bg-100 p-card rounded-lg transition-none" id="addListForm">
-			<form>
-				<textarea class="form-control mb-2" data-input="add-list" rows="2" placeholder="Enter list title..."></textarea>
-				<div class="row gx-2">
-					<div class="col"><button class="btn btn-primary btn-sm d-block w-100" type="button">Add</button></div>
-					<div class="col"><button class="btn btn-outline-secondary btn-sm d-block w-100 border-400" type="button" data-dismiss="collapse">Cancel</button></div>
-				</div>
-			</form>
-		</div><button class="btn d-block w-100 btn-secondary bg-400 border-400" data-bs-toggle="collapse" data-bs-target="#addListForm" aria-expanded="false" aria-controls="addListForm"><span class="fas fa-plus me-1"> </span>Add another list</button>
-	</div>-->
+
 </div>
 <div><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button"><span class="fas fa-plus me-2"></span>انشاء مشروغ جديد</button></div>
 
@@ -644,10 +239,10 @@
 			console.log(all_projects);
 
 			var kanbanContainer = $("#kanban_container");
-			//$("#kanban_column").css("visibility", "hidden");
+			$("#kanban_column").attr("style", "display: none !important;")
 			var kanbanItem = $("#kanban_item");
 			var mainKanbanColumn = $("#kanban_column").clone();
-			//mainKanbanColumn.attr("style", "visibility: visible;")
+			mainKanbanColumn.attr("style", "display: visible;")
 
 			//adding columns equal to stages we have in DB.
 			$.each(all_stages, function (index, val) {
@@ -755,21 +350,43 @@
 
 		function add_attachments(kanban_item_full_id)
 		{
-			$("#attachment_column").empty();
-			$("#attachment_column").append($("#attachment_header")); //adding the attachment header after deleting it from .empty() method.
-
 			//getting the id number only
 			var word_list = kanban_item_full_id.split("_");
 			var id_number = word_list[word_list.length - 1];
-			console.log(id_number);
+
+			 
+
+			//creating the attachment item from scratch
+			var first_div = "<div class='d-flex align - items - center mb - 3' id='attachment_item'></div>"
+			var second_div = "<a class='text-decoration - none me - 3' id='href_id' href='' target='_blank' data-gallery='attachment - bg'></div>";
+			var third_div = "<div class='bg-attachment'></div>";
+			var fourth_div = "<div class='bg-holder rounded' id='bg_style' style='background - image: url(../Content/assets/img/kanban/3.jpg);'></div>";
+			var fifth_div = "<div class='flex-1 fs--2'></div>";
+			var sixth_div = "<h6 class='mb-1'> <a class='text - decoration - none' id='attach_name' target='_blank' href='../Content/assets/img/kanban/3.jpg' data-gallery='attachment - title'>final-img.jpg</a></h6>";
+			$("#attachment_column").append(first_div);
+			var temp_item = $("#attachment_item");
+			temp_item.append(second_div);
+			temp_item.append(fifth_div);
+			temp_item.find("#href_id").append(third_div);
+			temp_item.find(".bg-attachment").append(fourth_div);
+			temp_item.find(".flex-1").append(sixth_div);
+
+			var attach_header = $("#attachment_header").clone(); //copying the attachment header before .empty()
+			var main_item = temp_item.clone();
+			$("#attachment_column").empty();
+			$("#attachment_column").append(attach_header);  //adding the attachment header after deleting it from .empty() method.
+			
+			
 			$.ajax({
 				type: 'GET',
 				url: '../api/attachemnts/'+id_number,
 				dataType: 'json',
 				success: function (data) {
+					if (data == null) { return false;}
 					console.log(data);
 					$.each(data, function (index,val){
-						var item = $("#attachment_item").clone();
+						var item = main_item.clone();
+						console.log(item);
 						item.attr("id", "attachment_item_" + id_number);
 						item.find("#href_id").attr("href", "../project_attachments/" + val);
 						item.find("#attach_name").attr("href", "../project_attachments/" + val);
