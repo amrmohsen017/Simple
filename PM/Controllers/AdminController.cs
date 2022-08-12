@@ -1141,7 +1141,6 @@ namespace PM.Controllers
             }
             //static assigning will be handled later....
             p.project_stage_id = 1;
-            p.institute_id = 26;
             p.client = 1;
             pm.projects.Add(p);
             pm.SaveChanges();
