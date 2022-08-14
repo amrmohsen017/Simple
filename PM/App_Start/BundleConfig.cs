@@ -1,4 +1,3 @@
-﻿
 using System.Web.Optimization;
 
 namespace PM
@@ -9,8 +8,10 @@ namespace PM
         public static void RegisterBundles(BundleCollection bundles)
         {
 
-            //third party JS
-            bundles.Add(new ScriptBundle("~/bundles/lib").Include(
+ 
+             //third party JS
+             bundles.Add(new ScriptBundle("~/bundles/lib").Include(
+                  
                      "~/Scripts/jquery-{version}.js",
                      "~/Scripts/bootstrap.js",
                      "~/scripts/bootbox.js",
@@ -36,7 +37,9 @@ namespace PM
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap-lumen.css",
                  "~/Content/bootstrap-theme.css",
-                 "~/content/datatables/css/datatables.bootstrap.css",
+
+                 "~/Content/DataTables/css/dataTables.bootstrap.css",
+
                  "~/content/typeahead.css",
                  "~/content/toastr.css",
                  "~/Content/site.css"));

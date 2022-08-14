@@ -80,11 +80,13 @@ namespace Vidly.ModelValidators
                 type = (governmnet)validationContext.ObjectInstance;
 
             }
-            //else if (validationContext.ObjectInstance is stageView)
-            //{
-            //    type = (stageView)validationContext.ObjectInstance;
 
-            //}
+            else if (validationContext.ObjectInstance is task)
+            {
+                type = (task)validationContext.ObjectInstance;
+
+            }
+
 
             var symbolsPattern = "[!@#$%^&*(),.?\":{}|<>\\]\\]|\\[\\[']";
 
@@ -127,11 +129,11 @@ namespace Vidly.ModelValidators
                         return new ValidationResult("Institute name is already registered");
                     }
                 }
-    
+
 
 
                 var pattern = @"^[0-9_.-]*$";
-             
+
 
                 return Regex.IsMatch(name, pattern) || Regex.IsMatch(name, symbolsPattern)
                         ? new ValidationResult("Institute name is not valid")
@@ -161,7 +163,7 @@ namespace Vidly.ModelValidators
                         : ValidationResult.Success;
 
 
-            
+
 
             }
 
@@ -184,13 +186,13 @@ namespace Vidly.ModelValidators
 
                 var exists = db.departments.FirstOrDefault(i => i.departmentname == name);
                 if ((type as department).departementid == 0)
-                
+
+                {
+                    if (exists != null)
                     {
-                        if (exists != null)
-                        {
-                            return new ValidationResult("Department is already registered");
-                        }
+                        return new ValidationResult("Department is already registered");
                     }
+                }
 
                 var pattern = @"^[0-9_.-]*$";
 
@@ -202,7 +204,7 @@ namespace Vidly.ModelValidators
             else if (_fieldName == "typename")
             {
                 var name = (type as institute_type).typename; // A LIL HACK to the copmiler :) 
-               
+
                 if (name == null) return new ValidationResult("Institute name is requried");
                 if ((type as institute_type).type_id == 0)
 
@@ -249,14 +251,14 @@ namespace Vidly.ModelValidators
             {
 
 
-             
+
 
                 var telephone = (type as user) == null ? (type as institute).telephone : (type as user).telephone;
 
 
                 if (telephone == null) return new ValidationResult("telephone is requried");
 
-                return (telephone.Length < 11 || telephone.Length > 15 ) || Regex.IsMatch(telephone, symbolsPattern)
+                return (telephone.Length < 11 || telephone.Length > 15) || Regex.IsMatch(telephone, symbolsPattern)
                        ? new ValidationResult("telephone is not valid")
                        : ValidationResult.Success;
 
@@ -271,6 +273,29 @@ namespace Vidly.ModelValidators
    //                 ? ValidationResult.Success
    //                 : new ValidationResult("لا يمكن ادخال ارقام فقط");
    //         }
+
+            else if (_fieldName == "task_name")
+            {
+
+                var task_name = (type as task).task_name;
+
+                if (task_name == null ) return new ValidationResult("task_name is requried");
+                if ((type as task).task_id == 0)
+
+                {
+                    var exists = db.tasks.FirstOrDefault(i => i.task_name == task_name);
+
+                    if (exists != null)
+                    {
+                        return new ValidationResult("Task is already registered");
+                    }
+
+                }
+
+
+                return  ValidationResult.Success;
+
+            }
 
 
 

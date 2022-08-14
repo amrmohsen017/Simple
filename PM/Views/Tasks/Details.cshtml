@@ -1,0 +1,159 @@
+﻿@model PM.ViewModels.TaskInfo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>task</h4>
+    <hr />
+    @*<label for="organizerMultiple">Tags</label>
+    <select class="form-select js-choice" id="tags" multiple="multiple" size="1" name="organizerMultiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+        <option value="">Add a tag</option>
+        @foreach (var tag in Model.tags)
+        {
+
+            <option>@tag.tagname</option>
+
+
+        }
+    </select>
+    <label for="organizerMultiple">Status</label>
+    <select class="form-select js-choice" id="tags" multiple="multiple" size="1" name="organizerMultiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+        <option value="">Add a tag</option>
+        @foreach (var status in Model.state)
+        {
+
+            <option>@status.status_name</option>
+
+
+        }
+    </select>
+    <label for="organizerMultiple">Attachments</label>
+    <select class="form-select js-choice" id="tags" multiple="multiple" size="1" name="organizerMultiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+        <option value="">Add a tag</option>
+        @foreach (var attatch in Model.attatchments)
+        {
+
+            <option>@attatch.attachment_name</option>
+
+
+        }
+    </select>*@
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.task.task_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.task_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.task.task_planned_start)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.task_planned_start)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.task.task_planned_end)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.task_planned_end)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.task.task_deadline)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.task_deadline)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.task.sub_task)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.sub_task)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.task.task_description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.task_description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.task.user.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.task.user.username)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.task.task_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@*<input id="auto" />
+<input id="result" />*@
+
+
+
+
+@*<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">*@
+<link href="~/template/vendors/choices/choices.min.css" rel="stylesheet" />
+
+
+@section Scripts {
+    <script src="~/template/vendors/choices/choices.min.js"></script>
+    @*<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>*@
+
+    <script type="text/javascript">
+        /**/
+        $(document).ready(function () {
+            SearchText();
+        });
+        function SearchText() {
+     /*       alert($("#tags").autocomplete );*/
+            $("#tags").autocomplete({
+                source: function (request, response) {
+                    alert("FUCK");
+                    $.ajax({
+                        type: "GET",
+                        url: "/util/tags",
+                        /*  data: { 'tag' : getElementById('auto').value }, */
+
+                        success: function (data) {
+                            alert(data)
+                            response(data)
+                        },
+                        error: function (result) {
+                            alert("No Match");
+                        }
+                    });
+                },
+                select: function (event, data) {
+                    console.log(data)
+                    //$("#result").val(data.item.value)
+                    $("#tags").append(`<option  id={data.item.label} >{data.item.value}</option>`);
+                   
+
+                }
+            });
+        }
+    </script>
+
+}
