@@ -7,6 +7,7 @@ using PM.Models;
 using PM.ViewModels;
 using PagedList;
 using System.Data.Entity.Validation;
+using System.IO;
 
 namespace PM.Controllers
 {
@@ -1094,8 +1095,58 @@ namespace PM.Controllers
 
         public ActionResult project_main_page()
 		{
-
+            ViewBag.projectCreatedSuccessfully = TempData["projectCreatedSuccessfully"];
+            ViewBag.duplicationError = TempData["duplicationError"];
             return View();
+		}
+
+        [HttpPost]
+        public ActionResult create_project(project p,HttpPostedFileBase attachment)
+		{
+            var query = (from proj in pm.projects
+                         where proj.projectname == p.projectname
+                         select proj).FirstOrDefault();
+            //checking for name duplication
+            if (query != null)
+            {
+                TempData["duplicationError"] = "هذا الاسم قد تم استخدامه سابقا";
+                return RedirectToAction("project_main_page");
+            }
+            //static assigning will be handled later....
+            p.project_stage_id = 1;
+            p.client = 1;
+            pm.projects.Add(p);
+            pm.SaveChanges();
+
+            var projectWithId = (from proj in pm.projects
+                                 where proj.projectname == p.projectname
+                                 select proj).FirstOrDefault();
+
+            if (attachment != null)
+            {
+                //saving the file in the appropriate folder
+                 
+                string path = Server.MapPath("~/project_attachments");
+                string filename = Path.GetFileName(attachment.FileName);
+                string full_path = Path.Combine(path, filename);
+                attachment.SaveAs(full_path);
+
+                //adding a project attachment
+                attachemnt a = new attachemnt { attachment_name = attachment.FileName };
+                pm.attachemnts.Add(a);
+                pm.SaveChanges();
+
+                //getting the id that is automatically generated in db of that attachment
+                var attachmentQuery = (from attach in pm.attachemnts
+                                       where attach.attachment_name == attachment.FileName
+                                       select attach).FirstOrDefault();
+
+                project_attachment pa = new project_attachment { project_id = projectWithId.project_id, attachment_id = attachmentQuery.attachment_id };
+                pm.project_attachment.Add(pa);
+                pm.SaveChanges();
+            }
+            TempData["projectCreatedSuccessfully"] = "تم انشاء المشروع بنجاح";
+            return RedirectToAction("project_main_page");
 		}
 
     }

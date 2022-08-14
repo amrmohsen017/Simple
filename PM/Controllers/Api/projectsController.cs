@@ -9,6 +9,9 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PM.Models;
+using PM.ViewModels;
+using System.IO;
+
 
 namespace PM.Controllers.Api
 {
@@ -40,27 +43,21 @@ namespace PM.Controllers.Api
 
         // POST: api/stage
         //creating a new project
-        [ResponseType(typeof(project_stage))]
-        public HttpResponseMessage Postproject_stage(project p)
-        {
-            //if (p == null)
-            //{
-            //	return Request.CreateErrorResponse("the project was sent empty!");
-            //}
-            var query = (from proj in db.projects
-                         where proj.projectname == p.projectname
-                         select proj).FirstOrDefault();
+        //[ResponseType(typeof(project_stage))]
+   //     public HttpResponseMessage Postproject(project p)
+   //     {
+            
+   //         //if (p == null)
+   //         //{
+   //         //	return Request.CreateErrorResponse("the project was sent empty!");
+   //         //}
+            
 
-            if (query != null)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotModified);
-            }
 
-            db.projects.Add(p);
-            db.SaveChanges();
 
-            return Request.CreateResponse(HttpStatusCode.Created, p);
-        }
+
+			//return Request.CreateResponse(HttpStatusCode.Created, p);
+   //     }
 
 
 

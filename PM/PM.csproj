@@ -277,6 +277,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="ChatHub.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Api\attachemntsController.cs" />
     <Compile Include="Controllers\Api\citiesController.cs" />
     <Compile Include="Controllers\Api\DepartmentsController.cs" />
     <Compile Include="Controllers\Api\InstitutesController.cs" />
@@ -1671,6 +1672,8 @@
     <Folder Include="Attachments\" />
     <Folder Include="Images\" />
     <Folder Include="phpmyadmin\" />
+    <Folder Include="project_attachments\" />
+
 
     <Folder Include="Views\Upload\" />
 
