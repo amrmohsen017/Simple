@@ -1140,7 +1140,9 @@ namespace PM.Controllers
                 return RedirectToAction("project_main_page");
             }
             //static assigning will be handled later....
-            p.project_stage_id = 1;
+            //handling if the user didnt enter a stage.
+            if (p.project_stage_id == null)
+                p.project_stage_id = 1;
             p.client = 1;
             pm.projects.Add(p);
             pm.SaveChanges();
