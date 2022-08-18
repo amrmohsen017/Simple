@@ -11,8 +11,7 @@ namespace PM.Models
 {
     using System;
     using System.Collections.Generic;
-    using Vidly.ModelValidators;
-
+    
     public partial class task
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,10 +23,10 @@ namespace PM.Models
             this.task_attachments = new HashSet<task_attachments>();
             this.task_logs = new HashSet<task_logs>();
             this.task_tags = new HashSet<task_tags>();
+            this.task_access = new HashSet<task_access>();
         }
     
         public int task_id { get; set; }
-        [ValidateMe("task_name")]
         public string task_name { get; set; }
         public Nullable<System.DateTime> task_planned_start { get; set; }
         public Nullable<System.DateTime> task_planned_end { get; set; }
@@ -35,7 +34,7 @@ namespace PM.Models
         public Nullable<int> sub_task { get; set; }
         public Nullable<int> task_supervisor { get; set; }
         public string task_description { get; set; }
-        public Nullable<int> status_id { get; set; }
+        public Nullable<int> task_status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<blocklist_tasks> blocklist_tasks { get; set; }
@@ -50,5 +49,7 @@ namespace PM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task_tags> task_tags { get; set; }
         public virtual user user { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<task_access> task_access { get; set; }
     }
 }

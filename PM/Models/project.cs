@@ -22,6 +22,9 @@ namespace PM.Models
             this.project_attachment = new HashSet<project_attachment>();
             this.project_tag = new HashSet<project_tag>();
             this.project_updates = new HashSet<project_updates>();
+            this.gross_marign = new HashSet<gross_marign>();
+            this.messages = new HashSet<message>();
+            this.project_access = new HashSet<project_access>();
         }
     
         public int project_id { get; set; }
@@ -49,5 +52,11 @@ namespace PM.Models
         public virtual project_stage project_stage { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project_updates> project_updates { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<gross_marign> gross_marign { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<message> messages { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<project_access> project_access { get; set; }
     }
 }

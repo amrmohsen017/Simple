@@ -21,6 +21,10 @@ namespace PM.Models
             this.project_updates = new HashSet<project_updates>();
             this.task_assignedemployee = new HashSet<task_assignedemployee>();
             this.tasks = new HashSet<task>();
+            this.message_access = new HashSet<message_access>();
+            this.message_reply = new HashSet<message_reply>();
+            this.project_access = new HashSet<project_access>();
+            this.task_access = new HashSet<task_access>();
         }
     
         public int user_id { get; set; }
@@ -42,5 +46,13 @@ namespace PM.Models
         public virtual ICollection<task_assignedemployee> task_assignedemployee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task> tasks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<message_access> message_access { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<message_reply> message_reply { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<project_access> project_access { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<task_access> task_access { get; set; }
     }
 }

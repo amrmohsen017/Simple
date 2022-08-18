@@ -12,24 +12,23 @@ namespace PM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tag
+    public partial class message_reply
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tag()
+        public message_reply()
         {
-            this.project_tag = new HashSet<project_tag>();
-            this.task_tags = new HashSet<task_tags>();
-            this.message_tag = new HashSet<message_tag>();
+            this.reply_attachments = new HashSet<reply_attachments>();
         }
     
-        public int tag_id { get; set; }
-        public string tagname { get; set; }
+        public int ID { get; set; }
+        public int mesaage_id { get; set; }
+        public System.DateTime reply_date { get; set; }
+        public string reply_text { get; set; }
+        public int user_id { get; set; }
     
+        public virtual message message { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<project_tag> project_tag { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<task_tags> task_tags { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<message_tag> message_tag { get; set; }
+        public virtual ICollection<reply_attachments> reply_attachments { get; set; }
+        public virtual user user { get; set; }
     }
 }

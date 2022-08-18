@@ -44,7 +44,7 @@ namespace PM.Hubs
 
         public string server_get_task_details(int id)
         {
-            var task = db.tasks.Include(t => t.user).Where(t => t.task_id == id).Select(t => new { t.task_id, t.task_name, t.task_description, task_planned_start = t.task_planned_start, t.task_planned_end , t.user.username , t.status_id}).ToList();
+            var task = db.tasks.Include(t => t.user).Where(t => t.task_id == id).Select(t => new { t.task_id, t.task_name, t.task_description, task_planned_start = t.task_planned_start, t.task_planned_end , t.user.username , t.task_status }).ToList();
 
             //todo get ONLY users to this project 
             var users = db.users.Select(u => new { u.username  , u.user_id}).ToList();
@@ -80,7 +80,7 @@ namespace PM.Hubs
             
 
             //var tasks = db.tasks.Select(t=> new { t.task_name , t.task_description , task_planned_start = t.task_planned_start.Value.ToString("dd/MM/yyyy"), task_planned_end = t.task_planned_end.Value.ToString("dd/MM/yyyy") }).ToList();
-            var tasks = db.tasks.Select(t => new { t.task_id , t.sub_task, t.task_name, t.task_description, task_planned_start = t.task_planned_start ,  t.task_planned_end , t.status_id , t.task_supervisor}).ToList();
+            var tasks = db.tasks.Select(t => new { t.task_id , t.sub_task, t.task_name, t.task_description, task_planned_start = t.task_planned_start ,  t.task_planned_end , t.task_status, t.task_supervisor}).ToList();
 
             var statuses = db.status.ToList();
             var output = JsonConvert.SerializeObject(new { tasks , statuses }); 
@@ -260,7 +260,7 @@ namespace PM.Hubs
             {
 
 
-                var new_task = new task { task_name = sub_task_name, task_deadline = dead_line , status_id = update_s.status };
+                var new_task = new task { task_name = sub_task_name, task_deadline = dead_line , task_status = update_s.status };
                 db.tasks.Add(new_task);
                 db.SaveChanges();
 
@@ -288,7 +288,7 @@ namespace PM.Hubs
             if (update_s.status != null)
             {
                 task = db.tasks.Find(update_s.task_id);
-                task.status_id = update_s.status;
+                task.task_status = update_s.status;
                 db.SaveChanges();
             }
 
@@ -327,7 +327,7 @@ namespace PM.Hubs
             //db.task_assignedemployee.AddRange(update_s.assignees.Select(assignee_id => new task_assignedemployee { task_id = update_s.task_id, user_id = assignee_id }));
             db.SaveChanges();
             create_task_log(update_s.task_id, "Task updated");
-            Clients.All.client_get_task(task != null ? new { task.task_id , task.task_name , task.status_id} : null , false , null , true); // if this line is executed after the next >> an exception will stem hmm :)
+            Clients.All.client_get_task(task != null ? new { task.task_id , task.task_name , task.task_status } : null , false , null , true); // if this line is executed after the next >> an exception will stem hmm :)
 
 
 

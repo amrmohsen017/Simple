@@ -56,5 +56,14 @@ namespace PM.Models
         public virtual DbSet<task> tasks { get; set; }
         public virtual DbSet<user> users { get; set; }
         public virtual DbSet<stationdetail> stationdetails { get; set; }
+        public virtual DbSet<gross_marign> gross_marign { get; set; }
+        public virtual DbSet<message_access> message_access { get; set; }
+        public virtual DbSet<message_attachments> message_attachments { get; set; }
+        public virtual DbSet<message_reply> message_reply { get; set; }
+        public virtual DbSet<message_tag> message_tag { get; set; }
+        public virtual DbSet<message> messages { get; set; }
+        public virtual DbSet<project_access> project_access { get; set; }
+        public virtual DbSet<reply_attachments> reply_attachments { get; set; }
+        public virtual DbSet<task_access> task_access { get; set; }
     }
 }

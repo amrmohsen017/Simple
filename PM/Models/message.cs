@@ -12,29 +12,37 @@ namespace PM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class attachemnt
+    public partial class message
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public attachemnt()
+        public message()
         {
-            this.task_attachments = new HashSet<task_attachments>();
-            this.project_attachment = new HashSet<project_attachment>();
+            this.message_access = new HashSet<message_access>();
             this.message_attachments = new HashSet<message_attachments>();
-            this.reply_attachments = new HashSet<reply_attachments>();
+            this.message_reply = new HashSet<message_reply>();
+            this.message_tag = new HashSet<message_tag>();
         }
     
-        public int attachment_id { get; set; }
-        public string attachment_name { get; set; }
-        public string attachment_path { get; set; }
-        public string attachment_url { get; set; }
+        public int ID { get; set; }
+        public int message_num { get; set; }
+        public int archive_num { get; set; }
+        public int type { get; set; }
+        public int source_destination { get; set; }
+        public System.DateTime message_date { get; set; }
+        public System.DateTime message_date_sent_recieved { get; set; }
+        public Nullable<System.DateTime> last_date_reply { get; set; }
+        public int project_id { get; set; }
+        public sbyte follow { get; set; }
     
+        public virtual institute institute { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<task_attachments> task_attachments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<project_attachment> project_attachment { get; set; }
+        public virtual ICollection<message_access> message_access { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<message_attachments> message_attachments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<reply_attachments> reply_attachments { get; set; }
+        public virtual ICollection<message_reply> message_reply { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<message_tag> message_tag { get; set; }
+        public virtual project project { get; set; }
     }
 }

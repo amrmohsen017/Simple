@@ -20,6 +20,7 @@ namespace PM.Models
             this.section_institute = new HashSet<section_institute>();
             this.projects = new HashSet<project>();
             this.users = new HashSet<user>();
+            this.messages = new HashSet<message>();
         }
     
         public int institute_id { get; set; }
@@ -41,5 +42,7 @@ namespace PM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<user> users { get; set; }
         public virtual institute_type institute_type { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<message> messages { get; set; }
     }
 }

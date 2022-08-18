@@ -87,7 +87,7 @@ namespace PM.Controllers
             }
 
             ViewBag.task_supervisor = new SelectList(db.users, "user_id", "username", task.task_supervisor);
-            ViewBag.status_id = new SelectList(db.status, "status_id", "status_name", task.status_id);
+            ViewBag.status_id = new SelectList(db.status, "status_id", "status_name", task.task_status);
             return View(task);
             //return View("Home" , ,task);
 
@@ -107,7 +107,7 @@ namespace PM.Controllers
                 return HttpNotFound();
             }
             ViewBag.task_supervisor = new SelectList(db.users, "user_id", "username", task.task_supervisor);
-            ViewBag.status_id = new SelectList(db.status, "status_id", "status_name", task.status_id);
+            ViewBag.status_id = new SelectList(db.status, "status_id", "status_name", task.task_status);
             return View(task);
         }
 
