@@ -1,0 +1,132 @@
+﻿
+
+
+
+
+
+
+
+
+
+<body>
+	<div class="container">
+		<br />
+		<div margin:0 auto;">
+			<table id="attachments" class="table table-striped table-bordered dt-responsive nowrap">
+				<thead>
+					<tr>
+						<th>
+							اسم الملف
+						</th>
+						<th hidden>
+							attachment_id
+						</th>
+
+						<th>المرفقات</th>
+						<th>
+							اسم المشروع
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+
+			</table>
+		</div>
+	</div>
+</body>
+
+
+@section scripts {
+	<script>
+
+
+        $(document).ready(function() {
+			$("#attachments").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+				"pageLength": 10,
+				"language": {
+					"emptyTable": "لا يوجد بيانات"
+				},
+                "ajax": {
+					"url": "/Admin/fill_attachment_list",
+                    "type": "POST",
+                    "datatype": "json"
+				},
+
+				"columnDefs":
+					[{
+						"targets": [0],
+						"searchable": true,
+						"orderable": true
+					},
+					{
+						"targets": [2],
+						"searchable": true
+					}],
+                
+
+				"columns": [
+					{ "data": "attachment_name", "name": "attachment_name", "autoWidth": true },
+					{
+						data:null,
+						render: function (data, type, row) {
+							console.log(row);
+							return `<a class='text-decoration-none me-3' href='../project_attachments/${row.attachment_name}' target='_blank' data-gallery='attachment-bg'><div class='bg-attachment'><div class='bg-holder rounded' target='_blank' style='background-image: url(../project_attachments/${row.attachment_name});'></div></div></a>`;
+							
+						}
+					},
+                    { "data": "project_name", "name": "project_name", "autoWidth": true },		                   
+                    {
+                        data: null,
+						render: function (data, type, row) {
+							return "<a class='btn btn-danger' onclick=DeleteData('" + row.attachment_id + "'); >Delete</a>";
+                        }
+					},
+					{
+						data: null,
+						render: function (data, type, row) {
+							return `<a href='/Admin/download_attachment?attachment_name=${row.attachment_name}' class='btn btn-danger' >Download File</a>`;
+						}
+					}
+                ]
+
+            });
+        });
+
+
+        function DeleteData(attachmentID) {
+            if (confirm("Are you sure you want to delete ...?")) {
+                Delete(attachmentID);
+            } else {
+                return false;
+            }
+        }
+
+
+        function Delete(attachmentID) {
+			var url = "/api/attachemnts/Deleteattachemnt?id="+attachmentID;
+
+			$.ajax({
+				url: url,
+				type: "DELETE",
+				datatype: "json",
+				success: function (data) {
+					alert(`the file ${data.attachment_name} has been deleted successfully`);
+					var table = $("#attachments").DataTable();
+					table.draw();
+
+				}
+
+            });
+		}
+
+	</script>
+
+
+
+
+
+}

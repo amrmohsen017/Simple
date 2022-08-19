@@ -404,18 +404,18 @@
 			var id_number = word_list[word_list.length - 1];
 
 			//creating the attachment header from scratch
-			var h_div = "<div class='d-flex justify - content - between mb - 2' id='attachment_header'></div>";
-			var h_div2 = "<h5 class='mb-0 fs - 0'>المرفقات</h5>";
-			$("attachment_column").append(h_div);
-			$("#attachment_header").append(h_div2);
-			var header = $("attachment_header").clone();
+			//var h_div = "<div class='d-flex justify-content-between mb-2' id='attachment_header'></div>";
+			//var h_div2 = "<h5 class='mb-0 fs-0'>المرفقات</h5>";
+			//$("#attachment_column").append(h_div);
+			//$("#attachment_header").append(h_div2);
+			//var header = $("#attachment_header").clone();
 
 
 			//creating the item from scratch
-			var first_div = "<div class='d-flex align - items - center mb - 3' id='attachment_item'></div>"
-			var second_div = "<a class='text-decoration - none me - 3' id='href_id' href='' target='_blank' data-gallery='attachment - bg'></div>";
+			var first_div = "<div class='d-flex align-items-center mb-3' id='attachment_item'></div>"
+			var second_div = "<a class='text-decoration-none me-3' id='href_id' href='' target='_blank' data-gallery='attachment-bg'></div>";
 			var third_div = "<div class='bg-attachment'></div>";
-			var fourth_div = "<div class='bg-holder rounded' id='bg_style' style='background - image: url(../Content/assets/img/kanban/3.jpg);'></div>";
+			var fourth_div = "<div class='bg-holder rounded' id='bg_style' style='background-image: url(../Content/assets/img/kanban/3.jpg);'></div>";
 			var fifth_div = "<div class='flex-1 fs--2'></div>";
 			var sixth_div = "<h6 class='mb-1'> <a class='text - decoration - none' id='attach_name' target='_blank' href='../Content/assets/img/kanban/3.jpg' data-gallery='attachment - title'>final-img.jpg</a></h6>";
 
@@ -431,7 +431,8 @@
 
 			var main_item = temp_item.clone();
 			$("#attachment_column").empty();
-			$("#attachment_column").append(header); //adding the attachment header after deleting it from .empty() method.
+			//$("#attachment_header").empty();
+			//$("#attachment_column").append(header); //adding the attachment header after deleting it from .empty() method.
 			
 			
 			$.ajax({
@@ -440,11 +441,9 @@
 				dataType: 'json',
 				success: function (data) {
 					if (data == null) { return false;}
-					console.log(data);
 
 					$.each(data, function (index,val){
 						var item = main_item.clone();
-						console.log(item);
 						item.attr("id", "attachment_item_" + id_number);
 						item.find("#href_id").attr("href", "../project_attachments/" + val);
 						item.find("#attach_name").attr("href", "../project_attachments/" + val);
@@ -458,8 +457,7 @@
 
 			});
 
-			//var item = $("#attachment_item").clone();
-			//item.attr("id","attachment_item_"+id_number)
+
 		}
 	</script>
 }

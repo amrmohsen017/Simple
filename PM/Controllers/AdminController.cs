@@ -1178,6 +1178,104 @@ namespace PM.Controllers
             return RedirectToAction("project_main_page");
 		}
 
+        public ActionResult show_attachment_list()
+		{
+
+            return View();
+		}
+        public ActionResult fill_attachment_list()
+		{
+            //this action for sending data to datatable table using Ajax
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                //Getting all Customer data
+
+                var query = (from p in pm.projects
+                             join pa in pm.project_attachment on p.project_id equals pa.project_id
+                             join a in pm.attachemnts on pa.attachment_id equals a.attachment_id
+                             select new projectAttchment
+                             {
+                                 project_name = p.projectname,
+                                 project_id = p.project_id,
+                                 attachment_id=a.attachment_id,
+                                 attachment_name = a.attachment_name
+                             }) ;
+
+                //var query = pm.attachemnts; 
+
+                Dictionary<string, Func<projectAttchment, object>> field_mapper = new Dictionary<string, Func<projectAttchment, object>>()
+                    {
+                        {"attachment_name", t => t.attachment_name}
+                    };
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.attachment_name.Contains(searchValue) || m.project_name.Contains(searchValue));
+                  
+                }
+
+
+             
+                if (sortColumnDir == "asc")
+                {
+                    var dataa = query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                    //recordsTotal = query.Count();
+                    //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = dataa });
+                }
+                else
+                {
+                    var dataa = query.OrderByDescending(field_mapper[sortColumn]);
+                    //recordsTotal = query.Count();
+                    //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = dataa });
+
+                }
+
+
+
+				//total number of rows count     
+				recordsTotal = query.Count();
+                ////Paging     
+                var data = query.ToList();
+               
+				////Returning Json Data    
+				return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+			}
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public FileResult download_attachment(string attachment_name)
+		{
+            string path = Server.MapPath("~/project_attachments");
+            string filename = Path.GetFileName(attachment_name);
+            string fullpath = Path.Combine(path, filename);
+            return File(fullpath, attachment_name,attachment_name);
+
+		}
+
+       
+
     }
 
 }
