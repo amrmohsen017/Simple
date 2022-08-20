@@ -454,6 +454,7 @@
     <Compile Include="ViewModels\TaskUpdates.cs" />
     <Compile Include="ViewModels\TaskInfo.cs" />
     <Compile Include="ViewModels\Jobsection.cs" />
+    <Compile Include="ViewModels\projectAttchment.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\assets\css\theme-rtl.min.css" />
@@ -1682,6 +1683,7 @@
     <Content Include="Scripts\tinymce\langs\README.md" />
     <Content Include="Views\Tasks\Dashboard.cshtml" />
     <Content Include="Views\Admin\project_main_page.cshtml" />
+    <Content Include="Views\Admin\show_attachment_list.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

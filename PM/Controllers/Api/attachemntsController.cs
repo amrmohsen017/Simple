@@ -91,15 +91,19 @@ namespace PM.Controllers.Api
         }
 
         // DELETE: api/attachemnts/5
-        [ResponseType(typeof(attachemnt))]
         public IHttpActionResult Deleteattachemnt(int id)
         {
             attachemnt attachemnt = db.attachemnts.Find(id);
-            if (attachemnt == null)
+            var pa_query = (from pa in db.project_attachment
+                        where pa.attachment_id == attachemnt.attachment_id
+                        select pa).FirstOrDefault();
+
+            if (pa_query == null || attachemnt == null)
             {
                 return NotFound();
             }
 
+            db.project_attachment.Remove(pa_query);
             db.attachemnts.Remove(attachemnt);
             db.SaveChanges();
 
