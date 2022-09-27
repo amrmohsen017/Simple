@@ -1,0 +1,291 @@
+﻿<link href="~/template/vendors/choices/choices.min.css" rel="stylesheet" />
+<link href="~/template/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" />
+<body>
+	<div class="container">
+		<br />
+		<button class="btn btn-success me-1 mb-1" type="submit" id="addNewMarginID" onclick="show_hide(1)">add new margin</button>
+		<div id="addFourmID" class="form-control form-control-lg" hidden>
+			<div class="mb-3"><textarea class="form-control" name="description" placeholder="Description" id="descriptionID" rows="3"></textarea></div>
+			<input class="form-control datetimepicker" id="datepicker" name="gross_date" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+			<div class="mb-3"><input class="form-control form-control-lg" type="number" name="amount" placeholder="Amount" id="amountID" aria-label=".form-control-lg example" /></div>
+			<div class="mb-3"><input class="form-control form-control-lg" type="number" name="quantity" placeholder="Quantity" id="quantityID" aria-label=".form-control-lg example" /></div>
+			<label for="organizerSingle">Project Name</label><select class="form-select" name="projectname" id="projectNameID" size="1" data-options='{"removeItemButton":true,"placeholder":true}'>
+			</select>
+			<label for="organizerSingle">Funder Name</label><select class="form-select" name="funder" id="funderNameID" size="1" data-options='{"removeItemButton":true,"placeholder":true}'>
+			</select>
+			<label for="organizerSingle">Fund Type</label><select class="form-select" name="gross_marign_typename" id="fundTypeID" size="1" data-options='{"removeItemButton":true,"placeholder":true}'>
+			</select>
+			<button class="btn btn-success me-1 mb-1" type="submit" onclick="add_new_margin()">add new margin</button>
+			<button class="btn btn-success me-1 mb-1" onclick="show_hide(2)">close</button>
+		</div>
+		<div margin:0 auto;">
+			<table id="margins" class="table table-striped table-bordered dt-responsive nowrap">
+				<thead>
+					<tr>
+						<th>project name</th>
+						<th>project id</th>
+						<th>Amount</th>
+						<th>quantity</th>
+						<th>gross_margin_id</th>
+						<th>description</th>
+						<th>gross_date</th>
+						<th>funder</th>
+						<th>gross_margin_typename</th>
+						<th>gross_type</th>
+						<th>user_associated</th>
+						<th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+@section scripts {
+	<script src="~/Content/vendors/choices/choices.min.js"></script>
+	<script src="~/Scripts/signalr.js/jquery.signalR.js"></script>
+	<script src="~/Scripts/signalr.js/jquery.signalR.min.js"></script>
+	<script src="~/Content/assets/js/flatpickr.js"></script>
+	<script src="~/signalr/hubs"></script>
+	<script>
+		$(document).ready(function () {
+			$.connection.hub.start();
+
+			var all_users = loadAllUsers();
+			var all_projects = loadAllProjects();
+			var all_g_types = loadAllGrossTypes();
+
+			//adding choices of Users to select from.
+			var users_choices_view = all_users.map(t => {
+				let obj = {}
+				obj.value = t.user_id;
+				obj.label = t.username;
+				obj.id = t.user_id;
+				return obj
+			})
+
+			var choices = new Choices(document.getElementById("funderNameID"), { choices: users_choices_view, removeItemButton: true });
+
+			//adding choices of Projects to select from.
+			var projects_choices_view = all_projects.map(t => {
+				let obj = {}
+				obj.value = t.project_id;
+				obj.label = t.projectname;
+				obj.id = t.project_id;
+				return obj
+			})
+
+			var choices = new Choices(document.getElementById("projectNameID"), { choices: projects_choices_view, removeItemButton: true });
+
+			//adding choices of gross types to select from.
+			var types_choices_view = all_g_types.map(t => {
+				let obj = {}
+				obj.value = t.id;
+				obj.label = t.gross_marign_typename;
+				obj.id = t.id;
+				return obj
+			})
+
+			var choices = new Choices(document.getElementById("fundTypeID"), { choices: types_choices_view, removeItemButton: true });
+
+
+
+			$("#margins").DataTable({
+				"processing": true, // for show progress bar
+				"serverSide": true, // for process server side
+				"filter": true, // this is for disable filter (search box)
+				"orderMulti": false, // for disable multiple column at once
+				"pageLength": 10,
+				
+				"scrollX": true,
+				"language": {
+					"emptyTable": "لا يوجد بيانات"
+				},
+				"ajax": {
+					"url": "/Admin/fill_gross_margins",
+					"type": "POST",
+					"datatype": "json"
+				},
+				"columnDefs":
+					[{
+						"targets": [0],
+						"searchable": true,
+						"orderable": true
+					}],
+				"columns": [
+					{ "data": "project_name", "name": "project_name", "autoWidth": true },
+					{ "data": "project_id", "name": "project_id", "autoWidth": true },
+					{ "data": "Amount", "name": "Amount", "autoWidth": true },
+					{ "data": "quantity", "name": "quantity", "autoWidth": true },
+					{ "data": "gross_margin_id", "name": "gross_margin_id", "autoWidth": true },
+					{ "data": "description", "name": "description", "autoWidth": true },
+					{ "data": "gross_date", "name": "gross_date", "autoWidth": true },
+					{ "data": "funder", "name": "funder", "autoWidth": true },
+					{ "data": "gross_margin_typename", "name": "gross_margin_typename", "autoWidth": true },
+					{ "data": "gross_type", "name": "gross_type", "autoWidth": true },
+					{ "data": "user_associated", "name": "user_associated", "autoWidth": true },
+					{
+						data: null,
+						render: function (data, type, row) {
+							return "<a class='btn btn-danger' onclick=DeleteData('" + row.gross_margin_id + "'); >Delete</a>";
+						}
+					}
+				]
+
+			});
+
+
+
+			$(function () {
+
+				var con = $.connection.myHub;
+				con.client.addNewMessageToPage = function (message) {
+					var t = $("#margins").DataTable();
+					t.draw();
+				};
+
+			}());
+
+
+
+
+		});
+
+
+
+
+		function DeleteData(marginID) {
+			if (confirm("Are you sure you want to delete ...?")) {
+				Delete(marginID);
+			} else {
+				return false;
+			}
+		}
+
+
+		function Delete(gross_ID) {
+			var url = "/api/gross_marign/Deletegross_marign?id=" + gross_ID;
+
+			$.ajax({
+				url: url,
+				type: "DELETE",
+				datatype: "json",
+				success: function (data) {
+					alert(`the margin has been deleted successfully`);
+
+					var con = $.connection.myHub;
+					con.server.refreshAnyDatatable("refresh");
+
+				}
+
+			});
+		}
+
+
+		function show_hide(number) {
+			if (number == 1) {
+				$("#addNewMarginID").hide();
+				$('#addFourmID').removeAttr("hidden");
+			}
+			else {
+				$('#addFourmID').attr("hidden", true);
+				$("#addNewMarginID").show();
+			}
+
+		}
+
+
+
+		function loadAllUsers() {
+			var users;
+			$.ajax({
+				type: 'GET',
+				url: '../api/Users',
+				dataType: 'json',
+				async: false,
+				success: function (data) {
+					users = data;
+					console.log(data);
+				}
+			});
+			return users;
+		}
+
+		function loadAllProjects() {
+			var projects;
+			$.ajax({
+				type: 'GET',
+				url: '../api/projects',
+				dataType: 'json',
+				async: false,
+				success: function (data) {
+					projects = data;
+					console.log(data);
+				}
+			});
+			return projects;
+		}
+
+		function loadAllGrossTypes() {
+			var gross_types;
+			$.ajax({
+				type: 'GET',
+				url: '../api/gross_marign_type',
+				dataType: 'json',
+				async: false,
+				success: function (data) {
+					gross_types = data;
+					console.log(data);
+				}
+			});
+			return gross_types;
+		}
+
+		function add_new_margin() {
+			var user_id = $("#funderNameID").val();
+			var gross_type = $("#fundTypeID").val();
+			var project_id = $("#projectNameID").val();
+			var description = $("#descriptionID").val();
+			var date = $("#datepicker").val();
+			var amount = $("#amountID").val();
+			var quantity = $("#quantityID").val();
+
+			if (description == "") {
+				return alert("please enter description!");
+			}
+			else if (date == "") {
+				return alert("please choose date!");
+			}
+			else if (project_id == null) {
+				return alert("please choose  project!");
+			}
+
+
+
+			var gross_marign = {}
+			gross_marign.description = description;
+			gross_marign.gross_type = gross_type;
+			gross_marign.project_id = project_id;
+			gross_marign.gross_date = date;
+			gross_marign.Amount = amount;
+			gross_marign.quantity = quantity;
+			gross_marign.user_associated = user_id;
+
+
+			$.ajax({
+				type: 'POST',
+				url: '../api/gross_marign',
+				dataType: 'json',
+				async: false,
+				data: gross_marign,
+				success: function (data) {
+					alert("gross marign has been saved successfully");
+
+					var con = $.connection.myHub;
+					con.server.refreshAnyDatatable("refresh");
+
+				}
+			});
+		}
+
+	</script>
+}

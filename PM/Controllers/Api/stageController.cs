@@ -22,8 +22,8 @@ namespace PM.Controllers.Api
         public HttpResponseMessage Get_stage()
         {
             //var p = db.projects.ToList();
-            var s = db.project_stage.ToList();
-            
+            var s = db.project_stage.Select(st => new { st.stage_id, st.stage_name}).ToList();
+
             //projectStage ps = new projectStage() {projects = p, stages = s };
             //var json = JsonConvert.SerializeObject(ps);
             return Request.CreateResponse(HttpStatusCode.OK, s);

@@ -1,0 +1,105 @@
+﻿<body>
+	<div class="container">
+		<br />
+		<div class="mb-3"><input class="form-control form-control-lg" name="gross_marign_typename" placeholder="new type name" id="grossTypeName" aria-label=".form-control-lg example" /></div>
+		<button class="btn btn-success me-1 mb-1" type="submit" onclick="add_new_gross_type()">add new Gross Type</button>
+
+
+		<div margin:0 auto;">
+			<table id="logs" class="table table-striped table-bordered dt-responsive nowrap">
+				<thead>
+					<tr>
+						<th>Log DateTime</th>
+						<th>Log Description</th>
+						<th>Log ID</th>
+						<th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+@section scripts {
+
+	<script>
+		$(document).ready(function () {
+
+
+			$("#logs").DataTable({
+				"processing": true, // for show progress bar
+				"serverSide": true, // for process server side
+				"filter": true, // this is for disable filter (search box)
+				"orderMulti": false, // for disable multiple column at once
+				"pageLength": 10,
+				"language": {
+					"emptyTable": "لا يوجد بيانات"
+				},
+				"ajax": {
+					"url": "/Admin/fill_logs",
+					"type": "POST",
+					"datatype": "json"
+				},
+				"columnDefs":
+					[{
+						"targets": [0],
+						"searchable": true,
+						"orderable": true
+					}],
+				"columns": [
+					{ "data": "log_date", "name": "log_date", "autoWidth": true },
+					{ "data": "log_text", "name": "log_text", "autoWidth": true },
+					{ "data": "log_id", "name": "log_id", "autoWidth": true },					
+					{
+						data: null,
+						render: function (data, type, row) {
+							return "<a class='btn btn-danger' onclick=DeleteData('" + row.id + "'); >Delete</a>";
+						}
+					}
+				]
+
+			});
+
+
+
+
+
+
+
+		});
+
+
+
+
+		function DeleteData(logID) {
+			if (confirm("Are you sure you want to delete ...?")) {
+				Delete(logID);
+			} else {
+				return false;
+			}
+		}
+
+
+		function Delete(logID) {
+			var url = "/api/logs/Deletelog?id=" + logID;
+
+			$.ajax({
+				url: url,
+				type: "DELETE",
+				datatype: "json",
+				success: function (data) {
+					alert(`the log has been deleted successfully`);
+					var t = $("#logs").DataTable();
+					t.draw();
+
+				}
+
+			});
+		}
+
+
+		
+
+	</script>
+}
+
+

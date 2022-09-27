@@ -1,0 +1,327 @@
+﻿@model PM.ViewModels.projectMoreData
+@if(Model.duplication != null)
+{
+	<script>alert("this project name already exists");</script>
+}
+<link href="~/template/vendors/choices/choices.min.css" rel="stylesheet" />
+<link href="~/template/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" />
+
+@using (Html.BeginForm("add_more_project_data", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id="form" , onsubmit = "return addGM(this)" }))
+{
+    @Html.AntiForgeryToken()
+    
+	<div class="form-horizontal">
+
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.project_id)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.projectname, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.projectname, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.projectname, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.plannedstartdate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@*@Html.EditorFor(model => model.plannedstartdate, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control datetimepicker" name="plannedstartdate" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+				@Html.ValidationMessageFor(model => model.plannedstartdate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.plannedenddate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@*@Html.EditorFor(model => model.plannedenddate, new { htmlAttributes = new { @class = "form-control" } })*@
+				<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+				@Html.ValidationMessageFor(model => model.plannedenddate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.cost, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.cost, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.cost, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		
+		<input type="hidden" name="gm" id="gm_object" />
+		@*@Html.EditorFor(model => model.gm, new { htmlAttributes = new { @class = "form-control", type="hidden", id= "gm_object" } })*@
+
+		<div class="form-group">
+				@Html.LabelFor(model => model.project_manager_id, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.project_manager_id, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.ValidationMessageFor(model => model.project_manager_id, "", new { @class = "text-danger" })
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.deadline_date, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@*@Html.EditorFor(model => model.deadline_date, new { htmlAttributes = new { @class = "form-control" } })*@
+					<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+					@Html.ValidationMessageFor(model => model.deadline_date, "", new { @class = "text-danger" })
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.project_stage_id, "project_stage_id", htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.DropDownListFor(model=>model.project_stage_id, new SelectList(Model.stages, "stage_id", "stage_name"), htmlAttributes: new { @class = "form-control" })
+					@Html.ValidationMessageFor(model => model.project_stage_id, "", new { @class = "text-danger" })
+				</div>
+			</div>
+
+
+
+			<label for="organizerSingle">Institute</label><select class="form-select" name="institute_id" id="instituteID" size="1" data-options='{"removeItemButton":true,"placeholder":true}'>
+				</select>
+
+
+
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.project_status, "project_status", htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.DropDownListFor(model=>model.project_status, new SelectList(Model.status, "status_id", "status_name"), htmlAttributes: new { @class = "form-control" })
+					@Html.ValidationMessageFor(model => model.project_status, "", new { @class = "text-danger" })
+				</div>
+			</div>
+			<h4>Gross Marign:</h4>
+			<div class="form-group">
+				<div class="col"><input name="description" id="gross_descr" class="form-control" type="text" placeholder="description" /></div>
+
+				<input class="form-control datetimepicker" id="gross_date" name="gross_date" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+
+				<div class="col"><input name="quantity" id="quantity" class="form-control" type="number" placeholder="quantity" /></div>
+
+				<div class="col"><input name="Amount" id="amount" class="form-control" type="number" placeholder="amount" /></div>
+
+				<select class="form-select" aria-label="Default select example" id="gross_type" name="gross_type">
+					<option selected="">gross_type</option>
+				</select>
+
+				<select class="form-select" aria-label="Default select example" id="funder" name="user_associated">
+					<option selected="">Funder</option>
+				</select>
+
+				<button class="btn btn-success me-1 mb-1" type="button" onclick="pushInMarignList()">Add marign</button>
+			</div>
+			<table id="gross_table" name="gm">
+			</table>
+
+
+
+
+			<div class="form-group">
+				<label class="form-label">ارفاق ملف</label>
+				<input name="files" id="file" class="form-control" type="file" multiple="multiple" />
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<input type="submit" value="Save" class="btn btn-success me-1 mb-1" id="savebutton"/>
+				</div>
+			</div>
+
+
+
+
+
+			</div>
+}
+
+
+
+@section scripts {
+
+	<script src="~/Content/vendors/choices/choices.min.js"></script>
+	<script src="~/Content/assets/js/flatpickr.js"></script>
+
+	<script>
+		$(document).ready(function () {
+
+			var insts = @Html.Raw(Json.Encode(Model.instituties));
+			console.log(insts);
+			var insts_choices = insts.map(t => {
+				let obj = {}
+				obj.value = t.institute_id;
+				obj.label = t.institutename;
+				obj.id = t.institute_id;
+				return obj
+			});
+			var choices = new Choices(document.getElementById("instituteID"), { choices: insts_choices, removeItemButton: true });
+
+			var gtypes = @Html.Raw(Json.Encode(Model.gross_marign_type));
+			var gtypes_choices = gtypes.map(t => {
+				let obj = {}
+				obj.value = t.id;
+				obj.label = t.gross_marign_typename;
+				obj.id = t.id;
+				return obj
+			});
+			var choices = new Choices(document.getElementById("gross_type"), { choices: gtypes_choices, removeItemButton: true });
+
+			var funder = @Html.Raw(Json.Encode(Model.funder));
+			var funder_choices = funder.map(t => {
+				let obj = {}
+				obj.value = t.funder_id;
+				obj.label = t.funder_name;
+				obj.id = t.funder_id;
+				return obj
+			});
+			var choices = new Choices(document.getElementById("funder"), { choices: funder_choices, removeItemButton: true });
+
+
+			//$("#form").addEventListener("submit", function (e) {
+			//	e.preventDefault();
+			//	alert("FUCK YOU");
+
+			//});
+
+
+		});
+
+		var tr_counter = 0;
+		function pushInMarignList() {
+			var desc = $("#gross_descr").val();
+			var date = $("#gross_date").val();
+			var quan = $("#quantity").val();
+			var amo = $("#amount").val();
+			var type = $("#gross_type").val();
+			var funder = $("#funder").val();
+
+			var type_text = $("#gross_type").text();
+			var funder_text = $("#funder").text();
+
+
+			var tr = document.createElement("tr");
+			tr.setAttribute("id", tr_counter);
+
+
+			var td1 = document.createElement("td");
+			td1.setAttribute("name", "description");
+
+			var td2 = document.createElement("td");
+			td2.setAttribute("name", "gross_date");
+
+			var td3 = document.createElement("td");
+			td3.setAttribute("name", "quantity");
+
+			var td4 = document.createElement("td");
+			td4.setAttribute("name", "Amount");
+
+			var td5 = document.createElement("td");
+			td5.setAttribute("name", "gross_type");
+			td5.setAttribute("value", type);
+			
+
+
+			var td6 = document.createElement("td");
+			td6.setAttribute("name", "user_associated");
+			td6.setAttribute("value", funder);
+			
+
+			var td_delete = document.createElement("td");
+			var button = document.createElement("button");
+			button.setAttribute("class", "btn btn-success me-1 mb-1");
+			button.setAttribute("type", "button");
+			button.setAttribute("onclick", `deleteRow(${tr_counter})`);
+			button.append("Delete");
+
+			td1.append(desc);
+			td2.append(date);
+			td3.append(quan);
+			td4.append(amo);
+			td5.append(type_text);
+			td6.append(funder_text);
+			td_delete.append(button);
+
+			tr.append(td1);
+			tr.append(td2);
+			tr.append(td3);
+			tr.append(td4);
+			tr.append(td5);
+			tr.append(td6);
+			tr.append(td_delete);
+
+			$("#gross_table").append(tr);
+
+			tr_counter++;
+
+
+		}
+
+		function deleteRow(trID) {
+			$(`#${trID}`).remove();
+		}
+
+
+		function addGM() {
+			obj = []
+			
+			var table = document.getElementById('gross_table');
+			var rowLength = table.rows.length;
+
+			for (var i = 0; i < rowLength; i += 1) {
+				var row = table.rows[i];
+
+				var cellLength = row.cells.length;
+				var innerObj = {}
+
+				for (var y = 0; y < cellLength-1; y += 1) {
+					var cell = row.cells[y];
+					
+					if (cell.getAttribute("name") == "gross_type") {
+						innerObj[cell.getAttribute("name")] = cell.getAttribute("value");
+					}
+					else if (cell.getAttribute("name") == "user_associated") {
+					
+						innerObj[cell.getAttribute("name")] = cell.getAttribute("value");
+					}
+					else {
+						innerObj[cell.getAttribute("name")] = cell.innerText;
+					}
+					
+					
+					
+				}
+
+
+				obj.push(innerObj);
+
+			}
+			console.log("obj", obj);
+			$("#gm_object").val(JSON.stringify(obj));
+			console.log("final", $("#gm_object").val(JSON.stringify(obj)));
+			 
+
+
+
+		}
+		function test() {
+
+			alert("fuck you");
+			return false;
+		}
+	</script>
+	
+	
+	
+	
+	}
+

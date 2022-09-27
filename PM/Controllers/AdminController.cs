@@ -1101,54 +1101,91 @@ namespace PM.Controllers
 		}
 
         [HttpPost]
-        public ActionResult create_project(project p,HttpPostedFileBase attachment)
+        public ActionResult create_project(project p) //HttpPostedFileBase attachment)
 		{
-            var query = (from proj in pm.projects
-                         where proj.projectname == p.projectname
-                         select proj).FirstOrDefault();
-            //checking for name duplication
-            if (query != null)
+            try
             {
-                TempData["duplicationError"] = "هذا الاسم قد تم استخدامه سابقا";
+
+                var query = (from proj in pm.projects
+                             where proj.projectname == p.projectname
+                             select proj).FirstOrDefault();
+                //checking for name duplication
+                if (query != null)
+                {
+                    TempData["duplicationError"] = "هذا الاسم قد تم استخدامه سابقا";
+                    return RedirectToAction("project_main_page");
+                }
+                //static assigning will be handled later....
+                //handling if the user didnt enter a stage.
+                if (p.project_stage_id == null)
+                    p.project_stage_id = 1;
+                p.client = 6;
+                p.project_status = 1;
+                pm.projects.Add(p);
+                pm.SaveChanges();
+
+                //var projectWithId = (from proj in pm.projects
+                //                     where proj.projectname == p.projectname
+                //                     select proj).FirstOrDefault();
+
+                //if (attachment != null)
+                //{
+                //    //saving the file in the appropriate folder
+
+                //    string path = Server.MapPath("~/project_attachments");
+                //    string filename = Path.GetFileName(attachment.FileName);
+                //    string full_path = Path.Combine(path, filename);
+                //    attachment.SaveAs(full_path);
+
+                //    //adding a project attachment
+                //    attachemnt a = new attachemnt { attachment_name = attachment.FileName };
+                //    pm.attachemnts.Add(a);
+                //    pm.SaveChanges();
+
+                //    //getting the id that is automatically generated in db of that attachment
+                //    var attachmentQuery = (from attach in pm.attachemnts
+                //                           where attach.attachment_name == attachment.FileName
+                //                           select attach).FirstOrDefault();
+
+                //    project_attachment pa = new project_attachment { project_id = projectWithId.project_id, attachment_id = attachmentQuery.attachment_id };
+                //    pm.project_attachment.Add(pa);
+                //    pm.SaveChanges();
+
+                //}
+                TempData["projectCreatedSuccessfully"] = "تم انشاء المشروع بنجاح";
+
+                //adding project creation log
+                #region adding project creation to the log
+
+                string log_text = "Project with id = " + p.project_id.ToString() + " and name = " + p.projectname + " has been created successfully";
+                DateTime now = DateTime.Now;
+                log new_log = new log
+                {
+                    log_text = log_text,
+                    log_date = now
+                };
+                pm.logs.Add(new_log);
+                pm.SaveChanges();
+                
+                var get_new_log = (from l in pm.logs
+                                   where l.log_text == log_text
+                                   select l).FirstOrDefault();
+
+                project_log pl = new project_log
+                {
+                    log_id = get_new_log.log_id,
+                    project_id = p.project_id
+                };
+                pm.project_log.Add(pl);
+                pm.SaveChanges();
+                #endregion
+
                 return RedirectToAction("project_main_page");
             }
-            //static assigning will be handled later....
-            //handling if the user didnt enter a stage.
-            if (p.project_stage_id == null)
-                p.project_stage_id = 1;
-            p.client = 1;
-            pm.projects.Add(p);
-            pm.SaveChanges();
-
-            var projectWithId = (from proj in pm.projects
-                                 where proj.projectname == p.projectname
-                                 select proj).FirstOrDefault();
-
-            if (attachment != null)
-            {
-                //saving the file in the appropriate folder
-                 
-                string path = Server.MapPath("~/project_attachments");
-                string filename = Path.GetFileName(attachment.FileName);
-                string full_path = Path.Combine(path, filename);
-                attachment.SaveAs(full_path);
-
-                //adding a project attachment
-                attachemnt a = new attachemnt { attachment_name = attachment.FileName };
-                pm.attachemnts.Add(a);
-                pm.SaveChanges();
-
-                //getting the id that is automatically generated in db of that attachment
-                var attachmentQuery = (from attach in pm.attachemnts
-                                       where attach.attachment_name == attachment.FileName
-                                       select attach).FirstOrDefault();
-
-                project_attachment pa = new project_attachment { project_id = projectWithId.project_id, attachment_id = attachmentQuery.attachment_id };
-                pm.project_attachment.Add(pa);
-                pm.SaveChanges();
-            }
-            TempData["projectCreatedSuccessfully"] = "تم انشاء المشروع بنجاح";
-            return RedirectToAction("project_main_page");
+            catch
+			{
+                throw;
+			}
 		}
 
         public ActionResult show_attachment_list()
@@ -1247,7 +1284,461 @@ namespace PM.Controllers
 
 		}
 
-       
+        public ActionResult show_gross_margins()
+		{
+
+            return View();
+		}
+
+        public ActionResult fill_gross_margins()
+		{
+            //this action for sending data to datatable table using Ajax
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                //Getting all Customer data
+
+                var query = (from g in pm.gross_marign
+                             select new grossMarginView
+                             {
+                                 project_name = g.project.projectname,
+                                 project_id = g.project.project_id,
+                                 Amount = g.Amount,
+                                 quantity = g.quantity,
+                                 gross_margin_id = g.gross_marign_id,
+                                 description = g.description,
+                                 gross_date = g.gross_date,
+                                 funder = g.user.username,
+                                 gross_margin_typename = g.gross_marign_type.gross_marign_typename,
+                                 gross_type = g.gross_type,
+                                 user_associated = g.user_associated
+                             });
+
+
+                Dictionary<string, Func<grossMarginView, object>> field_mapper = new Dictionary<string, Func<grossMarginView, object>>()
+                    {
+                        {"project_name", t => t.project_name},
+                        {"Amount", t => t.Amount},
+                        {"quantity", t => t.quantity},
+                        {"gross_date", t => t.gross_date},
+                        {"funder", t => t.funder},
+                        {"gross_margin_typename", t => t.gross_margin_typename}
+
+                    };
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.gross_margin_typename.Contains(searchValue) || m.project_name.Contains(searchValue)
+                    || m.funder.Contains(searchValue) || m.description.Contains(searchValue));
+
+                }
+
+
+                IEnumerable<grossMarginView> dataa;
+                if (sortColumnDir == "asc")
+                {
+                     dataa = query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                    //recordsTotal = query.Count();
+                    //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = dataa });
+                }
+                else
+                {
+                     dataa = query.OrderByDescending(field_mapper[sortColumn]);
+                    //recordsTotal = query.Count();
+                    //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = dataa });
+
+                }
+
+
+
+                //total number of rows count     
+                recordsTotal = dataa.Count();
+                ////Paging     
+                var data = dataa.ToList();
+
+                ////Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+		}
+
+        public ActionResult show_gross_types()
+		{
+            return View();
+		}
+
+        public ActionResult fill_gross_types()
+        {
+            //this action for sending data to datatable table using Ajax
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                //Getting all gross_marign_type data
+                //var main_query = from gt in pm.gross_marign_type
+                                 //select gt;
+
+
+                var query = from gt in pm.gross_marign_type
+                            select new grossTypes
+                            {
+                                id = gt.id,
+                                gross_marign_typename = gt.gross_marign_typename,
+                                number_of_marigns_associated = gt.gross_marign.Count()
+                             };
+
+
+
+
+                Dictionary<string, Func<grossTypes, object>> field_mapper = new Dictionary<string, Func<grossTypes, object>>()
+                    {
+                        {"gross_marign_typename", t => t.gross_marign_typename}
+
+                    };
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.gross_marign_typename.Contains(searchValue));
+
+                }
+
+
+                IEnumerable<grossTypes> dataa;
+                if (sortColumnDir == "asc")
+                {
+                    dataa = query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                    //recordsTotal = query.Count();
+                    //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = dataa });
+                }
+                else
+                {
+                    dataa = query.OrderByDescending(field_mapper[sortColumn]);
+                    //recordsTotal = query.Count();
+                    //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = dataa });
+
+                }
+
+
+
+                //total number of rows count     
+                recordsTotal = dataa.Count();
+                ////Paging     
+                var data = dataa.ToList();
+
+                ////Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult show_logs()
+		{
+            return View();
+		}
+
+        public ActionResult fill_logs()
+        {
+            //this action for sending data to datatable table using Ajax
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+
+                var query = from l in pm.logs
+                            select new logView
+                            {
+                                log_id = l.log_id,
+                                log_text = l.log_text,
+                                log_date = l.log_date.ToString()
+                            };
+
+
+
+
+                Dictionary<string, Func<logView, object>> field_mapper = new Dictionary<string, Func<logView, object>>()
+                    {
+                        {"log_date", t => t.log_date}
+
+                    };
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.log_text.Contains(searchValue) || m.log_id.ToString().Contains(searchValue) || m.log_date.ToString().Contains(searchValue));
+
+                }
+
+
+                IEnumerable<logView> dataa;
+                if (sortColumnDir == "asc")
+                {
+                    dataa = query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                }
+                else
+                {
+                    dataa = query.OrderByDescending(field_mapper[sortColumn]);
+                }
+
+
+
+                //total number of rows count     
+                recordsTotal = dataa.Count();
+                ////Paging     
+                var data = dataa.ToList();
+
+                ////Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        public ActionResult add_more_project_data(int project_id)
+		{
+			try
+			{
+                pm.Configuration.ProxyCreationEnabled = false;
+                var p = (from x in pm.projects
+                         where x.project_id == project_id
+                         select new projectMoreData
+                         {
+                             projectname = x.projectname,
+                             description = x.description,
+                             client = x.client,
+                             project_id = x.project_id
+                         }).FirstOrDefault();
+
+
+
+                return View(p);
+            }
+			catch
+			{
+                throw;
+			}
+            
+		}
+
+        [HttpPost]
+        public ActionResult add_more_project_data(projectMoreData pmd, HttpPostedFileBase[] files)
+		{
+			try
+			{
+                if (ModelState.IsValid)
+                {
+                    //converting the json to gross_marign list
+                    var gm_list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<gross_marign>>(pmd.gm);
+
+                    #region adding the project first
+                    var query = (from proj in pm.projects
+                                 where proj.projectname == pmd.projectname && proj.project_id != pmd.project_id
+                                 select proj).FirstOrDefault();
+
+                    //checking for name duplication
+                    if (query != null)
+                    {
+                        pmd.duplication = "duplicated";
+                        return View(pmd);
+                    }
+
+
+                    var p = (from proj in pm.projects
+                             where proj.project_id == pmd.project_id
+                             select proj).FirstOrDefault();
+
+
+                    p.projectname = pmd.projectname;
+                    p.plannedstartdate = pmd.plannedstartdate;
+                    p.plannedenddate = pmd.plannedenddate;
+                    p.description = pmd.description;
+                    p.cost = pmd.cost;
+                    p.deadline_date = pmd.deadline_date;
+                    p.institute_id = pmd.institute_id;
+                    p.project_status = pmd.project_status;
+                    p.project_stage_id = pmd.project_stage_id;
+
+
+
+                    //handling if the user didnt enter a stage.                     
+                    if (pmd.project_stage_id == null)
+                        p.project_stage_id = 1;
+                    //static assigning will be handled later....
+                    p.client = 6;
+                    pm.SaveChanges();
+                    #endregion
+
+
+                    #region second adding attachments
+                    if (files[0] != null)
+                    {
+                        foreach (HttpPostedFileBase file in files)
+                        {
+
+                            string path = Server.MapPath("~/project_attachments");
+                            string filename = Path.GetFileName(file.FileName);
+                            string full_path = Path.Combine(path, filename);
+                            var file_redudency = pm.attachemnts.FirstOrDefault(x => x.attachment_name == file.FileName);
+                            if (file_redudency == null)
+                            {
+                                //this if for not saving a file more than once but we need file size to make sure it is the right file
+                                file.SaveAs(full_path);
+                            }
+
+
+
+                            //adding a project attachment
+                            attachemnt a = new attachemnt
+                            {
+                                attachment_name = file.FileName,
+                                attachment_path = full_path
+                            };
+                            pm.attachemnts.Add(a);
+                            pm.SaveChanges();
+
+                            //getting the id that is automatically generated in db of that attachment
+                            //var attachmentQuery = (from attach in pm.attachemnts
+                            //					   where attach.attachment_name == file.FileName
+                            //					   select attach).FirstOrDefault();
+
+                            //if(attachmentQuery != null)
+                            //{
+                            //}
+
+                            project_attachment pa = new project_attachment { project_id = p.project_id, attachment_id = a.attachment_id };
+                            pm.project_attachment.Add(pa);
+                            pm.SaveChanges();
+
+
+
+
+                        }
+                    }
+                    #endregion
+
+                    DateTime now = DateTime.Now; //taking time right after the saving in the database to be accurate as possible.
+
+                    #region third adding gross_marign
+
+                    //looping over the gross_marign list
+                    for (int i = 0; i < gm_list.Count(); i++)
+                    {
+                        gm_list[i].project_id = pmd.project_id;
+                        pm.gross_marign.Add(gm_list[i]);
+                    }
+                    pm.SaveChanges();
+
+
+
+
+
+                    #endregion
+
+                    #region adding project update to the log
+
+                    string log_text = $"project with name {pmd.projectname} and id {pmd.project_id} has been updated FROM name: {pmd.projectname} TO {p.projectname}, " +
+                        $"plannedstartdate: {pmd.plannedstartdate} TO {p.plannedstartdate}, plannedenddate: {pmd.plannedenddate} TO {p.plannedenddate}, description:{pmd.description} TO {p.description}, " +
+                        $"cost: {pmd.cost} TO {p.cost}, deadline_date: {pmd.deadline_date} TO  {p.deadline_date}" +
+                        $"institute_id = {pmd.institute_id} TO {p.institute_id}, project_status: {pmd.project_status} TO {p.project_status},  project_stage_id = {pmd.project_stage_id} TO {p.project_stage_id}";
+
+                    for (int l = 0; l < gm_list.Count(); l++)
+                    {
+                        log_text = log_text + $", gross_marign_id = {gm_list[l].gross_marign_id}, gross_description = {gm_list[l].description}, gross_date = {gm_list[l].gross_date}" +
+                                $", quantity = {gm_list[l].quantity}, Amount = {gm_list[l].Amount}, type = {gm_list[l].gross_type}, user_associated = {gm_list[l].user_associated}";
+                    }
+
+                    log new_log = new log
+                    {
+                        log_text = log_text,
+                        log_date = now
+                    };
+                    pm.logs.Add(new_log);
+                    pm.SaveChanges();
+
+                    //var get_new_log = (from l in pm.logs
+                    //                   where l.log_text == log_text
+                    //                   select l).FirstOrDefault();
+
+                    project_log pl = new project_log
+                    {
+                        log_id = new_log.log_id,
+                        project_id = p.project_id
+                    };
+                    pm.project_log.Add(pl);
+                    pm.SaveChanges();
+                    #endregion
+
+
+
+                    return RedirectToAction("project_main_page");
+                }
+				else
+				{
+                    return View(pmd);
+				}
+            }
+            catch
+			{
+                throw;
+			}
+            
+		}
 
     }
 }

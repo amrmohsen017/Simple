@@ -17,14 +17,14 @@ namespace PM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public project()
         {
+            this.gross_marign = new HashSet<gross_marign>();
+            this.messages = new HashSet<message>();
             this.milestones = new HashSet<milestone>();
+            this.project_access = new HashSet<project_access>();
             this.project_log = new HashSet<project_log>();
             this.project_attachment = new HashSet<project_attachment>();
             this.project_tag = new HashSet<project_tag>();
             this.project_updates = new HashSet<project_updates>();
-            this.gross_marign = new HashSet<gross_marign>();
-            this.messages = new HashSet<message>();
-            this.project_access = new HashSet<project_access>();
         }
     
         public int project_id { get; set; }
@@ -38,25 +38,27 @@ namespace PM.Models
         public Nullable<System.DateTime> deadline_date { get; set; }
         public Nullable<int> project_stage_id { get; set; }
         public Nullable<int> client { get; set; }
+        public int project_status { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<gross_marign> gross_marign { get; set; }
         public virtual institute institute { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<message> messages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<milestone> milestones { get; set; }
         public virtual user user { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<project_access> project_access { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project_log> project_log { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project_attachment> project_attachment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project_tag> project_tag { get; set; }
+        public virtual status status { get; set; }
         public virtual project_stage project_stage { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project_updates> project_updates { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<gross_marign> gross_marign { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<message> messages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<project_access> project_access { get; set; }
     }
 }

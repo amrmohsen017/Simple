@@ -19,11 +19,11 @@ namespace PM.Models
         {
             this.blocklist_tasks = new HashSet<blocklist_tasks>();
             this.blocklist_tasks1 = new HashSet<blocklist_tasks>();
+            this.task_access = new HashSet<task_access>();
             this.task_assignedemployee = new HashSet<task_assignedemployee>();
             this.task_attachments = new HashSet<task_attachments>();
             this.task_logs = new HashSet<task_logs>();
             this.task_tags = new HashSet<task_tags>();
-            this.task_access = new HashSet<task_access>();
         }
     
         public int task_id { get; set; }
@@ -35,21 +35,26 @@ namespace PM.Models
         public Nullable<int> task_supervisor { get; set; }
         public string task_description { get; set; }
         public Nullable<int> task_status { get; set; }
+        public Nullable<int> task_stage { get; set; }
+        public string taskscol { get; set; }
+        public int project_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<blocklist_tasks> blocklist_tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<blocklist_tasks> blocklist_tasks1 { get; set; }
+        public virtual status status { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<task_access> task_access { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task_assignedemployee> task_assignedemployee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task_attachments> task_attachments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task_logs> task_logs { get; set; }
+        public virtual task_stage task_stage1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<task_tags> task_tags { get; set; }
         public virtual user user { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<task_access> task_access { get; set; }
     }
 }

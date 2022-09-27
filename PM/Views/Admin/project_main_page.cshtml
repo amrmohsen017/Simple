@@ -1,4 +1,5 @@
-﻿
+﻿<link href="~/template/vendors/choices/choices.min.css" rel="stylesheet" />
+<link href="~/template/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" />
 @{
 	ViewBag.Title = "project_main_page";
 	Layout = "~/Views/Shared/new_layout.cshtml";
@@ -178,32 +179,55 @@
 										<input class="form-control" id="project_name" required="required" name="projectname" />
 									</div>
 
-									<label class="form-label" for="datepicker">Start Date</label>
+									@*<label class="form-label" for="datepicker">Start Date</label>
 									<input class="form-control datetimepicker" name="plannedstartdate" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
 
 									<label class="form-label" for="datepicker">End Date</label>
-									<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+									<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />*@
 
 
 									<select class="form-select" aria-label="Default select example" id="stage_dropdown" name="project_stage_id">
 										<option selected="">اختر المرحلة</option>
 									</select>
 
-									<label for="organizerMultiple">Institutions</label>
+									@*<label for="organizerMultiple">Institutions</label>
 									<select class="form-select" id="stages_options" name="institute_id" data-options='{"placeholder":true}'>
 									</select>
 
 									<div class="input-group mb-3"><span class="input-group-text">$</span><input class="form-control" id="cost" name="cost" type="text" aria-label="Amount (to the nearest dollar)" /><span class="input-group-text">.00</span></div>
 
 									<label class="form-label" for="datetimepicker">DeadLine Datetime</label>
-									<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"disableMobile":true}' />
+									<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"disableMobile":true}' />*@
 
 									<div class="mb-3"><label class="form-label" for="exampleFormControlTextarea1">Description</label><textarea class="form-control" id="project_desc" name="description" required="required" rows="3"></textarea></div>
-
+									@*<h4>Gross Marign</h4>								
+									<div class="row border" >											
+										<div class="col"><input name="description" id="gross_descr" class="form-control" type="text" placeholder="description" /></div>
+										<input class="form-control datetimepicker" id="gross_date" name="gross_date" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+										<div class="col"><input name="quantity" id="quantity" class="form-control" type="number" placeholder="quantity" /></div>
+										<div class="col"><input name="Amount" id="amount" class="form-control" type="number" placeholder="amount" /></div>
+										<select class="form-select" aria-label="Default select example" id="gross_type" name="gross_type">
+											<option selected="">gross_type</option>
+										</select>
+										<select class="form-select" aria-label="Default select example" id="funder" name="user_associated">
+											<option selected="">Funder</option>
+										</select>	
+										<button class="btn btn-success me-1 mb-1" type="button" onclick="pushInMarignList()">Add marign</button>
+									</div>	
+									<table id="parent_list" name="gm">
+										<tr>											 
+											<td name="description">hello</td>
+											<td name="quantity">500</td>
+											<td name="Amount">1000</td>
+											<td name="gross_type">2</td>
+											<td name="user_associated">6</td>
+										</tr>
+									</table>
+								
 									<div class="mb-3">
 										<label class="form-label">ارفاق ملف</label>
 										<input name="attachment" id="file" class="form-control" type="file" />
-									</div>
+									</div>*@
 
 									<button class="btn btn-success me-1 mb-1" type="submit" id="create_project">Create</button>
 								}
@@ -238,16 +262,18 @@
 
 
 @section scripts {
-
+	<script src="~/Content/assets/js/flatpickr.js"></script>
+	<script src="~/Content/vendors/choices/choices.min.js"></script>
 	<script>
-		
+
 		$(document).ready(function () {
-			//var choices = null;
 
 			var all_stages = loadAllStages();
-			//console.log(all_stages);
 			var all_projects = loadAllProjects();
-			var all_institutes = loadAllInstitutes(); //getting all institutes in db to view inside the dropdownlist.
+			console.log(all_stages);
+			//var all_institutes = loadAllInstitutes(); 
+			//var all_users = loadAllUsers();
+			//var all_marigns_types = loadAllMarignsTypes();
 
 			var kanbanContainer = $("#kanban_container");
 			$("#kanban_column").attr("style", "display: none !important;")
@@ -258,6 +284,7 @@
 			//adding columns equal to stages we have in DB.
 			$.each(all_stages, function (index, val) {
 				var kanbanColumn = mainKanbanColumn.clone();
+				console.log(val.stage_id);
 				var stage_id = val.stage_id.toString();
 				kanbanColumn.attr("id", "kanban_column_" + stage_id); //changing the kanban column id.
 				kanbanColumn.find("#column_scrollbar").attr("id", "column_scrollbar_" + stage_id);
@@ -275,6 +302,8 @@
 				item.attr("id", "kanban_item_" + project_id); //changing the kanban item to have the project id
 				item.find("#project_data").attr("id", "project_data_" + project_id);
 				item.find("#project_hint").text(val.projectname); //setting the card to its equivalent project name
+				/*item.find("#project_data_" + project_id).append("<br>");*/
+				item.append(`<a href="add_more_project_data?project_id=${project_id}">add more data for ${val.projectname}</a>`);
 				$("#column_scrollbar_" + project_stage_id).append(item); //appending the project card to the equivalent stage.
 
 
@@ -289,7 +318,6 @@
 				const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
 
 				if (!regularExp.test(projectname)) {
-					console.log(projectname);
 					alert("لا يمكن ادخال ارقام فقط");
 					return false;
 				}
@@ -297,28 +325,40 @@
 
 			})
 
-			
+
 			//adding choices of institutions to select from.
-			var choices_view = all_institutes.map(t => {
-				let obj = {}
-				obj.value = t.institute_id;
-				obj.label = t.institutename;
-				obj.id = t.institute_id;
-				return obj
-			})
-			console.log(choices_view);
-			var choices = new Choices(document.getElementById("stages_options"), { choices:choices_view, removeItemButton: true });
+			//var choices_view = all_institutes.map(t => {
+			//	let obj = {}
+			//	obj.value = t.institute_id;
+			//	obj.label = t.institutename;
+			//	obj.id = t.institute_id;
+			//	return obj
+			//})
+
+			//var choices = new Choices(document.getElementById("stages_options"), { choices: choices_view, removeItemButton: true });
 
 			//adding values of stages to dropdownlist of stages.
 
-			$.each(all_stages, function (index,val) {
+			$.each(all_stages, function (index, val) {
 
 				$("#stage_dropdown").append("<option value='" + val.stage_id.toString() + "'>" + val.stage_name + "</option>");
 
 			});
 
-			
-			
+			//$.each(all_marigns_types, function (index, val) {
+
+			//	$("#gross_type").append("<option value='" + val.id.toString() + "'>" + val.gross_marign_typename + "</option>");
+
+			//});
+
+			//$.each(all_users, function (index, val) {
+
+			//	$("#funder").append("<option value='" + val.user_id.toString() + "'>" + val.username + "</option>");
+
+			//});
+
+
+
 
 
 		});
@@ -353,28 +393,55 @@
 			return projects;
 		}
 
-		function loadAllInstitutes() {
-			var instituties = null;
-			$.ajax({
-				type: 'GET',
-				url: '../api/Institutes',
-				dataType: 'json',
-				async: false,
-				success: function (data) {
-					instituties = data;
-				}
-			});
-			return instituties;
-		}
+		//function loadAllInstitutes() {
+		//	var instituties = null;
+		//	$.ajax({
+		//		type: 'GET',
+		//		url: '../api/Institutes',
+		//		dataType: 'json',
+		//		async: false,
+		//		success: function (data) {
+		//			instituties = data;
+		//		}
+		//	});
+		//	return instituties;
+		//}
+
+		//function loadAllMarignsTypes() {
+		//	var types = null;
+		//	$.ajax({
+		//		type: 'GET',
+		//		url: '../api/gross_marign_type',
+		//		dataType: 'json',
+		//		async: false,
+		//		success: function (data) {
+		//			types = data;
+		//		}
+		//	});
+		//	return types;
+		//}
+
+		//function loadAllUsers() {
+		//	var users = null;
+		//	$.ajax({
+		//		type: 'GET',
+		//		url: '../api/Users',
+		//		dataType: 'json',
+		//		async: false,
+		//		success: function (data) {
+		//			users = data;
+		//		}
+		//	});
+		//	return users;
+		//}
 
 
 		//this function for adding a new project
 		function addCard(item_id) {
 			var card_item = $("#kanban_item");
-			console.log(card_item);
 			var word_list = item_id.split("_");
 			var id_number = word_list[word_list.length - 1]; //getting the last char in id string
-			//console.log(column_scrollBar_className);
+
 			$("#column_scrollbar_" + id_number).append(card_item.clone());
 
 		}
@@ -397,18 +464,10 @@
 		}
 
 
-		function add_attachments(kanban_item_full_id)
-		{
+		function add_attachments(kanban_item_full_id) {
 			//getting the id number only
 			var word_list = kanban_item_full_id.split("_");
 			var id_number = word_list[word_list.length - 1];
-
-			//creating the attachment header from scratch
-			//var h_div = "<div class='d-flex justify-content-between mb-2' id='attachment_header'></div>";
-			//var h_div2 = "<h5 class='mb-0 fs-0'>المرفقات</h5>";
-			//$("#attachment_column").append(h_div);
-			//$("#attachment_header").append(h_div2);
-			//var header = $("#attachment_header").clone();
 
 
 			//creating the item from scratch
@@ -433,16 +492,16 @@
 			$("#attachment_column").empty();
 			//$("#attachment_header").empty();
 			//$("#attachment_column").append(header); //adding the attachment header after deleting it from .empty() method.
-			
-			
+
+
 			$.ajax({
 				type: 'GET',
-				url: '../api/attachemnts/'+id_number,
+				url: '../api/attachemnts/' + id_number,
 				dataType: 'json',
 				success: function (data) {
-					if (data == null) { return false;}
+					if (data == null) { return false; }
 
-					$.each(data, function (index,val){
+					$.each(data, function (index, val) {
 						var item = main_item.clone();
 						item.attr("id", "attachment_item_" + id_number);
 						item.find("#href_id").attr("href", "../project_attachments/" + val);
@@ -459,5 +518,11 @@
 
 
 		}
+
+
+		
+
+
+
 	</script>
 }

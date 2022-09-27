@@ -9,8 +9,7 @@
 
 namespace PM.Models
 {
-	using Newtonsoft.Json;
-	using System;
+    using System;
     using System.Collections.Generic;
     
     public partial class attachemnt
@@ -18,10 +17,10 @@ namespace PM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public attachemnt()
         {
-            this.task_attachments = new HashSet<task_attachments>();
-            this.project_attachment = new HashSet<project_attachment>();
             this.message_attachments = new HashSet<message_attachments>();
             this.reply_attachments = new HashSet<reply_attachments>();
+            this.task_attachments = new HashSet<task_attachments>();
+            this.project_attachment = new HashSet<project_attachment>();
         }
     
         public int attachment_id { get; set; }
@@ -30,14 +29,12 @@ namespace PM.Models
         public string attachment_url { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        
-        public virtual ICollection<task_attachments> task_attachments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        
-        public virtual ICollection<project_attachment> project_attachment { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<message_attachments> message_attachments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<reply_attachments> reply_attachments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<task_attachments> task_attachments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<project_attachment> project_attachment { get; set; }
     }
 }

@@ -19,8 +19,12 @@ namespace PM.Models
         public System.DateTime gross_date { get; set; }
         public Nullable<double> quantity { get; set; }
         public Nullable<double> Amount { get; set; }
-        public Nullable<int> project_id { get; set; }
+        public int project_id { get; set; }
+        public Nullable<int> gross_type { get; set; }
+        public Nullable<int> user_associated { get; set; }
     
         public virtual project project { get; set; }
+        public virtual gross_marign_type gross_marign_type { get; set; }
+        public virtual user user { get; set; }
     }
 }

@@ -30,40 +30,42 @@ namespace PM.Models
         public virtual DbSet<city> cities { get; set; }
         public virtual DbSet<department> departments { get; set; }
         public virtual DbSet<governmnet> governmnets { get; set; }
+        public virtual DbSet<gross_marign> gross_marign { get; set; }
+        public virtual DbSet<gross_marign_type> gross_marign_type { get; set; }
         public virtual DbSet<institute> institutes { get; set; }
         public virtual DbSet<institute_address> institute_address { get; set; }
         public virtual DbSet<institute_type> institute_type { get; set; }
-        public virtual DbSet<job> jobs { get; set; }
         public virtual DbSet<job_section> job_section { get; set; }
+        public virtual DbSet<job> jobs { get; set; }
         public virtual DbSet<log> logs { get; set; }
+        public virtual DbSet<message_access> message_access { get; set; }
+        public virtual DbSet<message_attachments> message_attachments { get; set; }
+        public virtual DbSet<message_reply> message_reply { get; set; }
+        public virtual DbSet<message_tag> message_tag { get; set; }
+        public virtual DbSet<message> messages { get; set; }
         public virtual DbSet<milestone> milestones { get; set; }
         public virtual DbSet<project> projects { get; set; }
+        public virtual DbSet<project_access> project_access { get; set; }
         public virtual DbSet<project_attachment> project_attachment { get; set; }
-        public virtual DbSet<project_tag> project_tag { get; set; }
         public virtual DbSet<project_log> project_log { get; set; }
         public virtual DbSet<project_stage> project_stage { get; set; }
+        public virtual DbSet<project_tag> project_tag { get; set; }
         public virtual DbSet<project_updates> project_updates { get; set; }
+        public virtual DbSet<reply_attachments> reply_attachments { get; set; }
         public virtual DbSet<section> sections { get; set; }
         public virtual DbSet<section_institute> section_institute { get; set; }
         public virtual DbSet<section_type> section_type { get; set; }
         public virtual DbSet<station> stations { get; set; }
         public virtual DbSet<status> status { get; set; }
         public virtual DbSet<tag> tags { get; set; }
+        public virtual DbSet<task_access> task_access { get; set; }
         public virtual DbSet<task_assignedemployee> task_assignedemployee { get; set; }
         public virtual DbSet<task_attachments> task_attachments { get; set; }
         public virtual DbSet<task_logs> task_logs { get; set; }
+        public virtual DbSet<task_stage> task_stage { get; set; }
         public virtual DbSet<task_tags> task_tags { get; set; }
         public virtual DbSet<task> tasks { get; set; }
         public virtual DbSet<user> users { get; set; }
         public virtual DbSet<stationdetail> stationdetails { get; set; }
-        public virtual DbSet<gross_marign> gross_marign { get; set; }
-        public virtual DbSet<message_access> message_access { get; set; }
-        public virtual DbSet<message_attachments> message_attachments { get; set; }
-        public virtual DbSet<message_reply> message_reply { get; set; }
-        public virtual DbSet<message_tag> message_tag { get; set; }
-        public virtual DbSet<message> messages { get; set; }
-        public virtual DbSet<project_access> project_access { get; set; }
-        public virtual DbSet<reply_attachments> reply_attachments { get; set; }
-        public virtual DbSet<task_access> task_access { get; set; }
     }
 }

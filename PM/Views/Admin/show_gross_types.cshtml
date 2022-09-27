@@ -1,0 +1,154 @@
+﻿<body>
+	<div class="container">
+		<br />		
+		<div class="mb-3"><input class="form-control form-control-lg" name="gross_marign_typename" placeholder="new type name" id="grossTypeName" aria-label=".form-control-lg example" /></div>
+		<button class="btn btn-success me-1 mb-1" type="submit" onclick="add_new_gross_type()">add new Gross Type</button>
+			
+		
+		<div margin:0 auto;">
+			<table id="types" class="table table-striped table-bordered dt-responsive nowrap">
+				<thead>
+					<tr>
+						<th>Gross Margin Type</th>
+						<th>id</th>
+						<th>Number of Marigns associated</th>
+						<th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+@section scripts {
+	<script src="~/Scripts/signalr.js/jquery.signalR.js"></script>
+	<script src="~/Scripts/signalr.js/jquery.signalR.min.js"></script>
+	<script src="~/signalr/hubs"></script>
+	<script>
+		$(document).ready(function () {
+			$.connection.hub.start();
+
+
+			$("#types").DataTable({
+				"processing": true, // for show progress bar
+				"serverSide": true, // for process server side
+				"filter": true, // this is for disable filter (search box)
+				"orderMulti": false, // for disable multiple column at once
+				"pageLength": 10,
+				"language": {
+					"emptyTable": "لا يوجد بيانات"
+				},
+				"ajax": {
+					"url": "/Admin/fill_gross_types",
+					"type": "POST",
+					"datatype": "json"
+				},
+				"columnDefs":
+					[{
+						"targets": [0],
+						"searchable": true,
+						"orderable": true
+					}],
+				"columns": [
+					{ "data": "gross_marign_typename", "name": "gross_marign_typename", "autoWidth": true },
+					{ "data": "id", "name": "id", "autoWidth": true },
+					{ "data": "number_of_marigns_associated", "name": "number_of_marigns_associated", "autoWidth": true },
+					
+					{
+						data: null,
+						render: function (data, type, row) {
+							return "<a class='btn btn-danger' onclick=DeleteData('" + row.id + "'); >Delete</a>";
+						}
+					}
+				]
+
+			});
+
+
+
+			$(function () {
+
+				var con = $.connection.myHub;
+				con.client.addNewMessageToPage = function (message) {
+					var t = $("#types").DataTable();
+					t.draw();
+				};
+
+			}());
+
+
+
+
+		});
+
+
+
+
+		function DeleteData(marginID) {
+			if (confirm("Are you sure you want to delete ...?")) {
+				Delete(marginID);
+			} else {
+				return false;
+			}
+		}
+
+
+		function Delete(gross_ID) {
+			var url = "/api/gross_marign/Deletegross_marign?id=" + gross_ID;
+
+			$.ajax({
+				url: url,
+				type: "DELETE",
+				datatype: "json",
+				success: function (data) {
+					alert(`the margin has been deleted successfully`);
+
+					var con = $.connection.myHub;
+					con.server.refreshAnyDatatable("refresh");
+
+				}
+
+			});
+		}
+
+
+		function add_new_gross_type() {
+			const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
+			var name = $("#grossTypeName").val();
+
+			if (name == "") {
+				return alert("please enter type name first!");
+			}
+			if (!regularExp.test(name)) {
+				return alert("numbers only are not allowed!");
+			}
+
+
+			var gross_marign_type = {}
+			gross_marign_type.gross_marign_typename = name;
+
+
+			$.ajax({
+				type: 'POST',
+				url: '../api/gross_marign_type',
+				dataType: 'json',
+				data: gross_marign_type,
+				success: function (data) {
+					if (data == "duplicated") {
+						alert("this name already exist please select another name!");
+					}
+					else {
+
+						alert("gross marign type has been added successfully");
+
+						var con = $.connection.myHub;
+						con.server.refreshAnyDatatable("refresh");
+					}
+					
+
+				}
+			});
+		}
+
+	</script>
+}
+
