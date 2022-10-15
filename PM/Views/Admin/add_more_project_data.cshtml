@@ -64,7 +64,8 @@
 		<div class="form-group">
 				@Html.LabelFor(model => model.project_manager_id, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-10">
-					@Html.EditorFor(model => model.project_manager_id, new { htmlAttributes = new { @class = "form-control" } })
+					@*@Html.EditorFor(model => model.project_manager_id, new { htmlAttributes = new { @class = "form-control" } })*@
+					@Html.DropDownListFor(model=>model.project_manager_id, new SelectList(Model.funder, "funder_id", "funder_name"), htmlAttributes: new { @class = "form-control" })
 					@Html.ValidationMessageFor(model => model.project_manager_id, "", new { @class = "text-danger" })
 				</div>
 			</div>

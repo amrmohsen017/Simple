@@ -977,11 +977,16 @@ namespace PM.Controllers
                 int recordsTotal = 0;
 
                 // Getting all Customer data    
-                var query = (from ps in pm.project_stage
-                                    select ps);
+                var query = from ps in pm.project_stage
+                            select new stagesView
+                            {
+                                stage_id = ps.stage_id,
+                                stage_name = ps.stage_name
+                            };
+                            
 
 
-                Dictionary<string, Func<project_stage, object>> field_mapper = new Dictionary<string, Func<project_stage, object>>()
+                Dictionary<string, Func<stagesView, object>> field_mapper = new Dictionary<string, Func<stagesView, object>>()
                     {
                         {"stage_name", t => t.stage_name},
                     };
@@ -1092,13 +1097,15 @@ namespace PM.Controllers
 		}
 
 
-
+        
         public ActionResult project_main_page()
 		{
+            projectsPanelView ppv = new projectsPanelView();
             ViewBag.projectCreatedSuccessfully = TempData["projectCreatedSuccessfully"];
             ViewBag.duplicationError = TempData["duplicationError"];
-            return View();
+            return View(ppv);
 		}
+
 
         [HttpPost]
         public ActionResult create_project(project p) //HttpPostedFileBase attachment)
@@ -1739,6 +1746,382 @@ namespace PM.Controllers
 			}
             
 		}
+
+        public ActionResult project_logs(int project_id)
+		{
+			try
+			{
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                // Getting all Customer data    
+                var query = from l in pm.project_log
+                            where l.project_id==project_id
+                            select new logView
+                            {
+                                log_id = l.log.log_id,
+                                log_text = l.log.log_text,
+                                log_date=l.log.log_date.ToString()
+                            };
+
+
+
+                Dictionary<string, Func<logView, object>> field_mapper = new Dictionary<string, Func<logView, object>>()
+                    {
+                        {"log_text", t => t.log_text},
+                    };
+
+                if (sortColumnDir == "asc")
+                {
+                    query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                }
+                else
+                {
+                    query.OrderByDescending(field_mapper[sortColumn]);
+
+                }
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.log_text.Contains(searchValue));
+                }
+
+                //total number of rows count     
+                recordsTotal = query.Count();
+                //Paging     
+                var data = query.ToList();
+                //Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+		}
+
+        public ActionResult project_gross(int project_id)
+		{
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                // Getting all Customer data    
+                var query = from g in pm.gross_marign
+                            where g.project_id == project_id
+                            select new grossMarginView
+                            {
+                                gross_margin_id = g.gross_marign_id,
+                                description = g.description,
+                                Amount = g.Amount,
+                                quantity=g.quantity,
+                                gross_date=g.gross_date,
+                                user_associated=g.user_associated,
+                                gross_type=g.gross_type,
+                                gross_margin_typename=g.gross_marign_type.gross_marign_typename,
+                                funder=g.user.username
+                            };
+
+
+
+                Dictionary<string, Func<grossMarginView, object>> field_mapper = new Dictionary<string, Func<grossMarginView, object>>()
+                    {
+                        {"description", t => t.description},
+                    };
+
+                if (sortColumnDir == "asc")
+                {
+                    query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                }
+                else
+                {
+                    query.OrderByDescending(field_mapper[sortColumn]);
+
+                }
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.description.Contains(searchValue));
+                }
+
+                //total number of rows count     
+                recordsTotal = query.Count();
+                //Paging     
+                var data = query.ToList();
+                //Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        public ActionResult project_attachment(int project_id)
+		{
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                // Getting all Customer data    
+                var query = from a in pm.project_attachment
+                            where a.project_id == project_id
+                            select new projectAttchment
+                            {
+                                attachment_path = a.attachemnt.attachment_path,
+                                attachment_name = a.attachemnt.attachment_name,
+                                attachment_id = a.attachemnt.attachment_id
+                            };
+
+
+
+                Dictionary<string, Func<projectAttchment, object>> field_mapper = new Dictionary<string, Func<projectAttchment, object>>()
+                    {
+                        {"attachment_name", t => t.attachment_name},
+                    };
+
+                if (sortColumnDir == "asc")
+                {
+                    query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                }
+                else
+                {
+                    query.OrderByDescending(field_mapper[sortColumn]);
+
+                }
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.attachment_name.Contains(searchValue));
+                }
+
+                //total number of rows count     
+                recordsTotal = query.Count();
+                //Paging     
+                var data = query.ToList();
+                //Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult edit_project_fields(int project_id,string value, string field_name)
+		{
+
+			try
+			{
+                var p = (from proj in pm.projects
+                         where proj.project_id == project_id
+                         select proj).FirstOrDefault();
+                string old_data = null;
+                switch (field_name)
+                {
+                    case "description":
+                        old_data = p.description;
+                        p.description = value;
+                        break;
+                    case "plannedstartdate":
+                        old_data = p.plannedstartdate.ToString();
+                        p.plannedstartdate = Convert.ToDateTime(value);                       
+                        break;
+                    case "plannedenddate":
+                        old_data = p.plannedenddate.ToString();
+                        p.plannedenddate = Convert.ToDateTime(value);
+                        break;
+                    case "deadline_date":
+                        old_data = p.deadline_date.ToString();
+                        p.deadline_date = Convert.ToDateTime(value);
+                        break;
+                    case "cost":
+                        old_data = p.cost.ToString();
+                        p.cost = Convert.ToInt32(value);
+                        break;
+                    case "institute_id":
+                        old_data = p.institute_id.ToString();
+                        p.institute_id = Convert.ToInt32(value);
+                        break;
+                }
+
+                pm.SaveChanges();
+
+
+
+
+
+                #region adding project update to the log
+                string log_text = "project field " + field_name + " changed from " + old_data + " to " + value;
+                log l = new log()
+                {
+                    log_date = DateTime.Now,
+                    log_text = log_text
+                };
+
+                pm.logs.Add(l);
+                pm.SaveChanges();
+
+                project_log pl = new project_log
+                {
+                    log_id = l.log_id,
+                    project_id = project_id
+                };
+                pm.project_log.Add(pl);
+                pm.SaveChanges();
+
+                #endregion
+
+                return Json(new { Success = true });
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+		}
+
+        public ActionResult delete_proj_gross(int project_id,int gross_id)
+		{
+			try
+			{
+                var g = (from gm in pm.gross_marign
+                         where gm.project_id == project_id
+                         select gm).FirstOrDefault();
+
+                string log_text = "project with id=" + project_id + " removed Gross Marign with data gross_marign_id=" + g.gross_marign_id.ToString() +
+                    " description=" + g.description + " gross_date=" + g.gross_date.ToString() + " quantity=" + g.quantity + " Amount=" + g.Amount.ToString() +
+                    " funder=" + g.user.username + " type=" + g.gross_marign_type.gross_marign_typename;
+
+                pm.gross_marign.Remove(g);
+
+
+                pm.SaveChanges();
+
+                
+
+                log l = new log()
+                {
+                    log_date = DateTime.Now,
+                    log_text = log_text
+                };
+
+                pm.logs.Add(l);
+                pm.SaveChanges();
+
+                project_log pl = new project_log
+                {
+                    log_id = l.log_id,
+                    project_id = project_id
+                };
+                pm.project_log.Add(pl);
+                pm.SaveChanges();
+
+                return Json(new { Success = true });
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+
+        }
+
+        public ActionResult delete_proj_attachment(int project_id, int attachment_id)
+        {
+            try
+            {
+                var proj_a = (from a in pm.project_attachment
+                         where a.project_id == project_id && a.attachment_id == attachment_id
+                         select a).FirstOrDefault();
+
+                var delete_file = proj_a.attachemnt;
+
+                string log_text = "project with id=" + project_id + " removed Attachment with data attachment_id=" + proj_a.attachemnt.attachment_id +
+                    " attachment_name=" + proj_a.attachemnt.attachment_name + " attachment_path=" + proj_a.attachemnt.attachment_path + " attachment_url=" + proj_a.attachemnt.attachment_url;
+
+
+                
+                pm.project_attachment.Remove(proj_a);
+                pm.attachemnts.Remove(delete_file);
+               
+                pm.SaveChanges();
+
+				//string path = Server.MapPath(proj_a.attachemnt.attachment_path);
+				FileInfo file = new FileInfo(proj_a.attachemnt.attachment_path);
+				if (file.Exists)//check file exsit or not  
+				{
+					file.Delete();
+				}
+
+
+				log l = new log()
+                {
+                    log_date = DateTime.Now,
+                    log_text = log_text
+                };
+
+                pm.logs.Add(l);
+                pm.SaveChanges();
+
+                project_log pl = new project_log
+                {
+                    log_id = l.log_id,
+                    project_id = project_id
+                };
+                pm.project_log.Add(pl);
+                pm.SaveChanges();
+
+                return Json(new { Success = true });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
 
     }
 }

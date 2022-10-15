@@ -462,8 +462,11 @@
     <Compile Include="ViewModels\FileUpload.cs" />
     <Compile Include="ViewModels\grossMarginView.cs" />
     <Compile Include="ViewModels\grossTypes.cs" />
+    <Compile Include="ViewModels\institutesView.cs" />
     <Compile Include="ViewModels\logView.cs" />
     <Compile Include="ViewModels\projectMoreData.cs" />
+    <Compile Include="ViewModels\projectsPanelView.cs" />
+    <Compile Include="ViewModels\stagesView.cs" />
     <Compile Include="ViewModels\TaskUpdates.cs" />
     <Compile Include="ViewModels\TaskInfo.cs" />
     <Compile Include="ViewModels\Jobsection.cs" />

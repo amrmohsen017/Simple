@@ -35,8 +35,8 @@ namespace PM.ViewModels
         public List<WhatIneed> funder { get; set; }
         public class WhatIneed {
 
-            public int funder_id;
-            public string funder_name; 
+            public int funder_id { get; set; }
+            public string funder_name { get; set; }
 
         }
 		public projectMoreData()

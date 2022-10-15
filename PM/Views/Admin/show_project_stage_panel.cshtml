@@ -218,9 +218,14 @@
 				if (regularExp.test(new_stage)) {
 					$.ajax({
 						type: "POST",
-						url: "/Admin/add_stage?new_stage=" +new_stage					
+						url: "/Admin/add_stage?new_stage=" + new_stage,
+						success: function (data) {
+							alert(`the stage ${new_stage} has been created successfully`);
+							var table = $("#stages").DataTable();
+							table.draw();
+
+						}
 					});
-					dataTable.draw();
 
 				}
 				else {
