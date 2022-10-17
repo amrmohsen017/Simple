@@ -16,289 +16,289 @@
 {
 	<script>alert("@ViewBag.projectCreatedSuccessfully");</script>
 }
+<div class="input-group mb-3"><input class="form-control" id="search_input" type="text" aria-describedby="basic-addon1" /></div>
+<button type="button" id="search_button" class="btn btn-falcon-primary" onclick="search()">Search</button>
+
 <div class="kanban-container scrollbar me-n3" id="kanban_container">
-	<div class="kanban-column" id="kanban_column">
-		<div class="kanban-column-header">
-			<h5 class="fs-0 mb-0 stage_name">Documentation <span class="text-500">(8)</span></h5>
-			<div class="dropdown font-sans-serif btn-reveal-trigger">
-				<button class="btn btn-sm btn-reveal py-0 px-2" type="button" id="kanbanColumn0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-				<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="kanbanColumn0">
-					<a class="dropdown-item" id="add_card">Add Project</a><a class="dropdown-item" href="#!" id="edit_card">Edit</a>
-					<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!" id="remove_card">Remove</a>
+	@*<div class="kanban-column" id="kanban_column">
+			<div class="kanban-column-header">
+				<h5 class="fs-0 mb-0 stage_name">Documentation <span class="text-500">(8)</span></h5>
+				<div class="dropdown font-sans-serif btn-reveal-trigger">
+					<button class="btn btn-sm btn-reveal py-0 px-2" type="button" id="kanbanColumn0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
+					<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="kanbanColumn0">
+						<a class="dropdown-item" id="add_card">Add Project</a><a class="dropdown-item" href="#!" id="edit_card">Edit</a>
+						<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!" id="remove_card">Remove</a>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="kanban-items-container scrollbar" id="column_scrollbar">
-			@*<div class="kanban-item" id="kanban_item">
-				<div class="card kanban-item-card hover-actions-trigger">
-					<div class="card-body">
-						<div class="position-relative">
-							<div class="dropdown font-sans-serif">
-								<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
-								<div class="dropdown-menu dropdown-menu-end py-0">
-									<a class="dropdown-item" href="#!">Edit</a>
-									<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+			<div class="kanban-items-container scrollbar" id="column_scrollbar">
+				<div class="kanban-item" id="kanban_item">
+					<div class="card kanban-item-card hover-actions-trigger">
+						<div class="card-body">
+							<div class="position-relative">
+								<div class="dropdown font-sans-serif">
+									<button class="btn btn-sm btn-falcon-default kanban-item-dropdown-btn hover-actions" type="button" data-boundary="viewport" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h" data-fa-transform="shrink-2"></span></button>
+									<div class="dropdown-menu dropdown-menu-end py-0">
+										<a class="dropdown-item" href="#!">Edit</a>
+										<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+									</div>
+								</div>
+							</div>
+							<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#project_details" id="project_data" onclick="project_details(this.id)"><strong id="project_hint">project_name</strong></p>
+						</div>
+					</div>
+			</div>
+
+		</div>*@
+
+	@*<div class="kanban-column-footer"><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button"><span class="fas fa-plus me-2"></span>انشاء مشروغ جديد</button></div>*@
+</div>
+
+
+@* this is the code of the popup window *@
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="project_details">
+	<div value="" id="project_id" hidden></div>
+	<div class="modal-dialog modal-lg mt-6" role="document">
+		<div class="modal-content border-0">
+			<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
+			<div class="modal-body p-0">
+				<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+					<h4 class="mb-1" id="project_name_window">Add a new illustration to the landing page</h4>
+					<p class="fs--2 mb-0" id="manager">managed by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
+				</div>
+				<div class="p-4">
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" role="tab" aria-controls="tab-main" aria-selected="true" href="#main_data">Main Data</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-gross" aria-selected="false" href="#gross_marign">Gross Marigns</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-attachments" aria-selected="false" href="#attachments">Attachments</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-logs" aria-selected="false" href="#project_logs">Project Logs</a></li>
+					</ul>
+
+					<div class="tab-content border-x border-bottom p-3">
+						<div id="main_data" role="tabpanel" aria-labelledby="main-tab" class="tab-pane fade show active">
+							<div @*class="col-lg-9"*@>
+								@* institute section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">الهيئة العاملة على المشروع</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="institute_name" type="text" readonly>*@
+											<div class="input-group mb-3"><input class="form-control" id="institute_name" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<div id="institute_div" style="display:none;">
+												<select aria-label="Default select example" size="1" id="institute_id" name="institute">
+													<option selected="">institutes</option>
+												</select>
+											</div>
+										</div>
+										<button type="button" id="institute_edit_button" class="btn btn-falcon-primary" onclick="show_dropdown()">Edit</button>
+										<button type="button" id="institute_save_button" class="btn btn-falcon-primary" onclick="save_field('institute_id')" style="display:none;">Save</button>
+										<button type="button" id="institute_cancel_button" class="btn btn-danger" onclick="cancel_edit()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+								@* start date section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">تاريخ البداية</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="projec_start_date" type="text" readonly>*@
+											<div class="input-group mb-3"><input class="form-control" id="projec_start_date" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<input class="form-control datetimepicker" id="plannedstartdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' style="display:none;" />
+										</div>
+										<button type="button" id="startdate_edit_button" class="btn btn-falcon-primary" onclick="show_startdatepicker()">Edit</button>
+										<button type="button" id="startdate_save_button" class="btn btn-falcon-primary" onclick="save_field('plannedstartdate')" style="display:none;">Save</button>
+										<button type="button" id="startdate_cancel_button" class="btn btn-danger" onclick="cancel_startdate()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+								@* end date section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">تاريخ الانتهاء</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="projec_end_date" type="text" readonly>*@
+											<div class="input-group mb-3"><input class="form-control" id="projec_end_date" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<input class="form-control datetimepicker" id="plannedenddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' style="display:none;" />
+										</div>
+										<button type="button" id="enddate_edit_button" class="btn btn-falcon-primary" onclick="show_enddatepicker()">Edit</button>
+										<button type="button" id="enddate_save_button" class="btn btn-falcon-primary" onclick="save_field('plannedenddate')" style="display:none;">Save</button>
+										<button type="button" id="enddate_cancel_button" class="btn btn-danger" onclick="cancel_enddate()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+								@* deadline date section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">deadline date</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="projec_dead_date" type="text" readonly>*@
+											<div class="input-group mb-3"><input class="form-control" id="projec_dead_date" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<input class="form-control datetimepicker" id="deadline_date" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' style="display:none;" />
+										</div>
+										<button type="button" id="deadline_edit_button" class="btn btn-falcon-primary" onclick="show_deadline()">Edit</button>
+										<button type="button" id="deadline_save_button" class="btn btn-falcon-primary" onclick="save_field('deadline_date')" style="display:none;">Save</button>
+										<button type="button" id="deadline_cancel_button" class="btn btn-danger" onclick="cancel_deadline()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+								@* description section *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">وصف المشروع</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="project_desc_window" type="text" readonly>*@
+											@*<div class="input-group mb-3"><input class="form-control" id="project_desc_window" type="text" aria-describedby="basic-addon1" readonly /></div>*@
+											<div class="input-group"><textarea class="form-control" id="project_desc_window" aria-label="With textarea"></textarea></div>
+											<div class="input-group" id="edit_desc" style="display:none;"><textarea class="form-control" id="description" aria-label="With textarea"></textarea></div>
+										</div>
+										<button type="button" id="desc_edit_button" class="btn btn-falcon-primary" onclick="show_desc()">Edit</button>
+										<button type="button" id="desc_save_button" class="btn btn-falcon-primary" onclick="save_field('description')" style="display:none;">Save</button>
+										<button type="button" id="desc_cancel_button" class="btn btn-danger" onclick="cancel_desc()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg> @*<i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com*@ <svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg> @*<i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com*@ </span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">التكلفة</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="cost" type="text" readonly>*@
+											<div class="input-group mb-3" id="cost_show"><input class="form-control" id="cost_field" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<div class="input-group mb-3" id="cost_edit" style="display:none;"><input class="form-control" id="cost" type="text" aria-describedby="basic-addon1" /></div>
+										</div>
+										<button type="button" id="cost_edit_button" class="btn btn-falcon-primary" onclick="show_cost()">Edit</button>
+										<button type="button" id="cost_save_button" class="btn btn-falcon-primary" onclick="save_field('cost')" style="display:none;">Save</button>
+										<button type="button" id="cost_cancel_button" class="btn btn-danger" onclick="cancel_cost()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
 								</div>
 							</div>
 						</div>
-						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#project_details" id="project_data" onclick="project_details(this.id)"><strong id="project_hint">project_name</strong></p>
-					</div>
-				</div>*@
-			</div>
+						<div id="gross_marign" role="tabpanel" aria-labelledby="gross-tab" class="tab-pane fade">
 
 
+						</div>
+						<div id="attachments" role="tabpanel" aria-labelledby="attachments-tab" class="tab-pane fade">
 
-
-		</div>
-
-		<div class="kanban-column-footer"><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button"><span class="fas fa-plus me-2"></span>انشاء مشروغ جديد</button></div>
-	</div>
-
-
-	@* this is the code of the popup window *@
-	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="project_details">
-		<div value="" id="project_id" hidden></div>
-		<div class="modal-dialog modal-lg mt-6" role="document">
-			<div class="modal-content border-0">
-				<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
-				<div class="modal-body p-0">
-					<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
-						<h4 class="mb-1" id="project_name_window">Add a new illustration to the landing page</h4>
-						<p class="fs--2 mb-0" id="manager">managed by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
-					</div>
-					<div class="p-4">
-
-							<ul class="nav nav-tabs" role="tablist">
-								<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" role="tab" aria-controls="tab-main" aria-selected="true" href="#main_data">Main Data</a></li>
-								<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-gross" aria-selected="false" href="#gross_marign">Gross Marigns</a></li>
-								<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-attachments" aria-selected="false" href="#attachments">Attachments</a></li>
-								<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-logs" aria-selected="false" href="#project_logs">Project Logs</a></li>
-							</ul>
-
-							<div  class="tab-content border-x border-bottom p-3">
-								<div id="main_data" role="tabpanel" aria-labelledby="main-tab" class="tab-pane fade show active">
-									<div @*class="col-lg-9"*@>
-										@* institute section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">الهيئة العاملة على المشروع</h5>
-												<div class="d-flex">
-													@*<input class="text-word-break fs--1" id="institute_name" type="text" readonly>*@
-													<div class="input-group mb-3"><input class="form-control" id="institute_name" type="text" aria-describedby="basic-addon1" readonly /></div>
-													<div id="institute_div" style="display:none;">
-														<select aria-label="Default select example" size="1" id="institute_id" name="institute">
-															<option selected="">institutes</option>
-														</select>
-													</div>
-												</div>
-												<button type="button" id="institute_edit_button" class="btn btn-falcon-primary" onclick="show_dropdown()">Edit</button>
-												<button type="button" id="institute_save_button" class="btn btn-falcon-primary" onclick="save_field('institute_id')" style="display:none;">Save</button>
-												<button type="button" id="institute_cancel_button" class="btn btn-danger" onclick="cancel_edit()" style="display:none;">Cancel</button>
-												<hr class="my-4">
-											</div>
-										</div>
-										@* start date section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">تاريخ البداية</h5>
-												<div class="d-flex">
-													@*<input class="text-word-break fs--1" id="projec_start_date" type="text" readonly>*@
-													<div class="input-group mb-3"><input class="form-control" id="projec_start_date" type="text" aria-describedby="basic-addon1" readonly /></div>
-													<input class="form-control datetimepicker" id="plannedstartdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' style="display:none;"/>
-												</div>
-												<button type="button" id="startdate_edit_button" class="btn btn-falcon-primary" onclick="show_startdatepicker()">Edit</button>
-												<button type="button" id="startdate_save_button" class="btn btn-falcon-primary" onclick="save_field('plannedstartdate')" style="display:none;">Save</button>
-												<button type="button" id="startdate_cancel_button" class="btn btn-danger" onclick="cancel_startdate()" style="display:none;">Cancel</button>
-												<hr class="my-4">
-											</div>
-										</div>
-										@* end date section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">تاريخ الانتهاء</h5>
-												<div class="d-flex">
-													@*<input class="text-word-break fs--1" id="projec_end_date" type="text" readonly>*@
-													<div class="input-group mb-3"><input class="form-control" id="projec_end_date" type="text" aria-describedby="basic-addon1" readonly /></div>
-													<input class="form-control datetimepicker" id="plannedenddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' style="display:none;" />
-												</div>
-												<button type="button" id="enddate_edit_button" class="btn btn-falcon-primary" onclick="show_enddatepicker()">Edit</button>
-												<button type="button" id="enddate_save_button" class="btn btn-falcon-primary" onclick="save_field('plannedenddate')" style="display:none;">Save</button>
-												<button type="button" id="enddate_cancel_button" class="btn btn-danger" onclick="cancel_enddate()" style="display:none;">Cancel</button>
-												<hr class="my-4">
-											</div>
-										</div>
-										@* deadline date section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">deadline date</h5>
-												<div class="d-flex">
-													@*<input class="text-word-break fs--1" id="projec_dead_date" type="text" readonly>*@
-													<div class="input-group mb-3"><input class="form-control" id="projec_dead_date" type="text" aria-describedby="basic-addon1" readonly /></div>
-													<input class="form-control datetimepicker" id="deadline_date" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' style="display:none;" />
-												</div>
-												<button type="button" id="deadline_edit_button" class="btn btn-falcon-primary" onclick="show_deadline()">Edit</button>
-												<button type="button" id="deadline_save_button" class="btn btn-falcon-primary" onclick="save_field('deadline_date')" style="display:none;">Save</button>
-												<button type="button" id="deadline_cancel_button" class="btn btn-danger" onclick="cancel_deadline()" style="display:none;">Cancel</button>
-												<hr class="my-4">
-											</div>
-										</div>
-										@* description section *@
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">وصف المشروع</h5>
-												<div class="d-flex">
-													@*<input class="text-word-break fs--1" id="project_desc_window" type="text" readonly>*@
-													@*<div class="input-group mb-3"><input class="form-control" id="project_desc_window" type="text" aria-describedby="basic-addon1" readonly /></div>*@
-													<div class="input-group"><textarea class="form-control" id="project_desc_window" aria-label="With textarea"></textarea></div>
-													<div class="input-group" id="edit_desc" style="display:none;"><textarea class="form-control" id="description" aria-label="With textarea"></textarea></div>
-												</div>
-												<button type="button" id="desc_edit_button" class="btn btn-falcon-primary" onclick="show_desc()">Edit</button>
-												<button type="button" id="desc_save_button" class="btn btn-falcon-primary" onclick="save_field('description')" style="display:none;">Save</button>
-												<button type="button" id="desc_cancel_button" class="btn btn-danger" onclick="cancel_desc()" style="display:none;">Cancel</button>
-												<hr class="my-4">
-											</div>
-										</div>	
-										<div class="d-flex">
-											<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg> @*<i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com*@ <svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg> @*<i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com*@ </span>
-											<div class="flex-1">
-												<h5 class="mb-2 fs-0">التكلفة</h5>
-												<div class="d-flex">
-													@*<input class="text-word-break fs--1" id="cost" type="text" readonly>*@
-													<div class="input-group mb-3" id="cost_show"><input class="form-control" id="cost_field"  type="text" aria-describedby="basic-addon1" readonly /></div>
-													<div class="input-group mb-3" id="cost_edit" style="display:none;"><input class="form-control" id="cost" type="text" aria-describedby="basic-addon1" /></div>
-												</div>
-												<button type="button" id="cost_edit_button" class="btn btn-falcon-primary" onclick="show_cost()">Edit</button>
-												<button type="button" id="cost_save_button" class="btn btn-falcon-primary" onclick="save_field('cost')" style="display:none;">Save</button>
-												<button type="button" id="cost_cancel_button" class="btn btn-danger" onclick="cancel_cost()" style="display:none;">Cancel</button>
-												<hr class="my-4">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div id="gross_marign" role="tabpanel" aria-labelledby="gross-tab" class="tab-pane fade">
-
-
-								</div>
-								<div  id="attachments" role="tabpanel" aria-labelledby="attachments-tab" class="tab-pane fade">
-
-									<div class="d-flex">
-											@* Our Code will be generated here in runtime*@
-										
-									</div>
-								</div>
-								<div id="project_logs" role="tabpanel" aria-labelledby="logs-tab" class="tab-pane fade" >
-
-								</div>
-
+							<div class="d-flex">
+								@* Our Code will be generated here in runtime*@
 
 							</div>
+						</div>
+						<div id="project_logs" role="tabpanel" aria-labelledby="logs-tab" class="tab-pane fade">
+
+						</div>
+
 
 					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 
 
 
-	@* this is the code of the popup window for creating a project*@
-	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="add_project_window">
-		<div class="modal-dialog modal-lg mt-6" role="document">
-			<div class="modal-content border-0">
-				<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
-				<div class="modal-body p-0">
-					<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
-						<h4 class="mb-1" id="kanban-modal-label-1">Add a new illustration to the landing page</h4>
-						<p class="fs--2 mb-0">Added by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
-					</div>
-					<div class="p-4">
-						<div class="row">
-							<div class="col-lg-9">
-								@using (Html.BeginForm("create_project", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-								{
-									@* all project data needed to be created *@
-									<div class="mb-3">
-										<label class="form-label" for="exampleFormControlInput1">project name</label>
-										<input class="form-control" id="project_name" required="required" name="projectname" />
-									</div>
+@* this is the code of the popup window for creating a project*@
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="add_project_window">
+	<div class="modal-dialog modal-lg mt-6" role="document">
+		<div class="modal-content border-0">
+			<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
+			<div class="modal-body p-0">
+				<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+					<h4 class="mb-1" id="kanban-modal-label-1">Add a new illustration to the landing page</h4>
+					<p class="fs--2 mb-0">Added by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>
+				</div>
+				<div class="p-4">
+					<div class="row">
+						<div class="col-lg-9">
+							@using (Html.BeginForm("create_project", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+							{
+								@* all project data needed to be created *@
+								<div class="mb-3">
+									<label class="form-label" for="exampleFormControlInput1">project name</label>
+									<input class="form-control" id="project_name" required="required" name="projectname" />
+								</div>
 
-									@*<label class="form-label" for="datepicker">Start Date</label>
-										<input class="form-control datetimepicker" name="plannedstartdate" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+								@*<label class="form-label" for="datepicker">Start Date</label>
+									<input class="form-control datetimepicker" name="plannedstartdate" id="startdate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
 
-										<label class="form-label" for="datepicker">End Date</label>
-										<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />*@
+									<label class="form-label" for="datepicker">End Date</label>
+									<input class="form-control datetimepicker" name="plannedenddate" id="enddate" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />*@
 
 
-									<select class="form-select" aria-label="Default select example" id="stage_dropdown" name="project_stage_id">
-										<option selected="">اختر المرحلة</option>
+								<select class="form-select" aria-label="Default select example" id="stage_dropdown" name="project_stage_id">
+									<option selected="">اختر المرحلة</option>
+								</select>
+
+								@*<label for="organizerMultiple">Institutions</label>
+									<select class="form-select" id="stages_options" name="institute_id" data-options='{"placeholder":true}'>
 									</select>
 
-									@*<label for="organizerMultiple">Institutions</label>
-										<select class="form-select" id="stages_options" name="institute_id" data-options='{"placeholder":true}'>
+									<div class="input-group mb-3"><span class="input-group-text">$</span><input class="form-control" id="cost" name="cost" type="text" aria-label="Amount (to the nearest dollar)" /><span class="input-group-text">.00</span></div>
+
+									<label class="form-label" for="datetimepicker">DeadLine Datetime</label>
+									<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"disableMobile":true}' />*@
+
+								<div class="mb-3"><label class="form-label" for="exampleFormControlTextarea1">Description</label><textarea class="form-control" id="project_desc" name="description" required="required" rows="3"></textarea></div>
+								@*<h4>Gross Marign</h4>
+									<div class="row border" >
+										<div class="col"><input name="description" id="gross_descr" class="form-control" type="text" placeholder="description" /></div>
+										<input class="form-control datetimepicker" id="gross_date" name="gross_date" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+										<div class="col"><input name="quantity" id="quantity" class="form-control" type="number" placeholder="quantity" /></div>
+										<div class="col"><input name="Amount" id="amount" class="form-control" type="number" placeholder="amount" /></div>
+										<select class="form-select" aria-label="Default select example" id="gross_type" name="gross_type">
+											<option selected="">gross_type</option>
 										</select>
+										<select class="form-select" aria-label="Default select example" id="funder" name="user_associated">
+											<option selected="">Funder</option>
+										</select>
+										<button class="btn btn-success me-1 mb-1" type="button" onclick="pushInMarignList()">Add marign</button>
+									</div>
+									<table id="parent_list" name="gm">
+										<tr>
+											<td name="description">hello</td>
+											<td name="quantity">500</td>
+											<td name="Amount">1000</td>
+											<td name="gross_type">2</td>
+											<td name="user_associated">6</td>
+										</tr>
+									</table>
 
-										<div class="input-group mb-3"><span class="input-group-text">$</span><input class="form-control" id="cost" name="cost" type="text" aria-label="Amount (to the nearest dollar)" /><span class="input-group-text">.00</span></div>
+									<div class="mb-3">
+										<label class="form-label">ارفاق ملف</label>
+										<input name="attachment" id="file" class="form-control" type="file" />
+									</div>*@
 
-										<label class="form-label" for="datetimepicker">DeadLine Datetime</label>
-										<input class="form-control datetimepicker" name="deadline_date" id="deadline" type="text" placeholder="d/m/y H:i" data-options='{"disableMobile":true}' />*@
+								<button class="btn btn-success me-1 mb-1" type="submit" id="create_project">Create</button>
+							}
+						</div>
+						<div class="col-lg-3">
+							<h6 class="mt-5 mt-lg-0">Add To Card</h6>
+							<ul class="nav flex-lg-column fs--1">
+								<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-user fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>--><!-- <span class="fas fa-user me-2"></span> Font Awesome fontawesome.com -->
+								<!--Members</a></li>
+								<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-tag fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"></path></svg>-->
+								<!-- <span class="fas fa-tag me-2"></span> Font Awesome fontawesome.com --><!--Label</a></li>-->
+								<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-paperclip fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z"></path></svg><!-- <span class="fas fa-paperclip me-2"></span> Font Awesome fontawesome.com -->Attachments</a></li>
+								<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-check fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>--><!-- <span class="fas fa-check me-2"></span> Font Awesome fontawesome.com --><!--Checklists</a></li>-->
+							</ul>
 
-									<div class="mb-3"><label class="form-label" for="exampleFormControlTextarea1">Description</label><textarea class="form-control" id="project_desc" name="description" required="required" rows="3"></textarea></div>
-									@*<h4>Gross Marign</h4>
-										<div class="row border" >
-											<div class="col"><input name="description" id="gross_descr" class="form-control" type="text" placeholder="description" /></div>
-											<input class="form-control datetimepicker" id="gross_date" name="gross_date" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
-											<div class="col"><input name="quantity" id="quantity" class="form-control" type="number" placeholder="quantity" /></div>
-											<div class="col"><input name="Amount" id="amount" class="form-control" type="number" placeholder="amount" /></div>
-											<select class="form-select" aria-label="Default select example" id="gross_type" name="gross_type">
-												<option selected="">gross_type</option>
-											</select>
-											<select class="form-select" aria-label="Default select example" id="funder" name="user_associated">
-												<option selected="">Funder</option>
-											</select>
-											<button class="btn btn-success me-1 mb-1" type="button" onclick="pushInMarignList()">Add marign</button>
-										</div>
-										<table id="parent_list" name="gm">
-											<tr>
-												<td name="description">hello</td>
-												<td name="quantity">500</td>
-												<td name="Amount">1000</td>
-												<td name="gross_type">2</td>
-												<td name="user_associated">6</td>
-											</tr>
-										</table>
-
-										<div class="mb-3">
-											<label class="form-label">ارفاق ملف</label>
-											<input name="attachment" id="file" class="form-control" type="file" />
-										</div>*@
-
-									<button class="btn btn-success me-1 mb-1" type="submit" id="create_project">Create</button>
-								}
-							</div>
-							<div class="col-lg-3">
-								<h6 class="mt-5 mt-lg-0">Add To Card</h6>
-								<ul class="nav flex-lg-column fs--1">
-									<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-user fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>--><!-- <span class="fas fa-user me-2"></span> Font Awesome fontawesome.com -->
-									<!--Members</a></li>
-									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-tag fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"></path></svg>-->
-									<!-- <span class="fas fa-tag me-2"></span> Font Awesome fontawesome.com --><!--Label</a></li>-->
-									<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-paperclip fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z"></path></svg><!-- <span class="fas fa-paperclip me-2"></span> Font Awesome fontawesome.com -->Attachments</a></li>
-									<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-check fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>--><!-- <span class="fas fa-check me-2"></span> Font Awesome fontawesome.com --><!--Checklists</a></li>-->
-								</ul>
-
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 </div>
 <div><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button"><span class="fas fa-plus me-2"></span>انشاء مشروغ جديد</button></div>
@@ -327,18 +327,144 @@
 			console.log('choices', inst_choices)
 			var choices = new Choices(document.getElementById("institute_id"), { choices: inst_choices, removeItemButton: true });
 
+
+			search();
+
 			//creating item
+			//var scratched_item = jQuery('<div>', {
+			//	id: 'kanban_item',
+			//	class: 'kanban-item'
+			//});
+
+
+
+			//var div = '<div class="card kanban-item-card hover-actions-trigger">\
+			//					<div class="card-body">\
+			//						<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#project_details" id="project_data" onclick="project_details(this.id)">\
+			//							<strong id="project_hint"></strong>\
+			//						</p>\
+			//					</div>\
+			//				  </div>';
+
+
+			//scratched_item.append(div);
+
+
+
+
+
+			//var kanbanContainer = $("#kanban_container");
+			//$("#kanban_column").attr("style", "display: none !important;")
+			//var kanbanItem = $("#kanban_item");
+			//var mainKanbanColumn = $("#kanban_column").clone();
+			//mainKanbanColumn.attr("style", "display: visible;")
+
+			////adding columns equal to stages we have in DB.
+			//$.each(all_stages, function (index, val) {
+			//	var kanbanColumn = mainKanbanColumn.clone();
+			//	var stage_id = val.stage_id.toString();
+			//	kanbanColumn.attr("id", "kanban_column_" + stage_id); //changing the kanban column id.
+			//	kanbanColumn.find("#column_scrollbar").attr("id", "column_scrollbar_" + stage_id);
+			//	kanbanColumn.find("#add_card").attr("id", "add_card_" + stage_id);
+			//	kanbanColumn.find(".stage_name").text(val.stage_name); //changing the name of the column to the stage name.
+			//	kanbanContainer.append(kanbanColumn); //adding the columns we created according to the stages we have in DB.
+			//});
+
+
+			////adding projects to columns according to its stages id.
+			//$.each(all_projects, function (index, val) {
+			//	var project_id = val.project_id.toString();
+			//	var project_stage_id = val.project_stage_id.toString();
+			//	var item = scratched_item.clone();
+
+			//	item.attr("id", "kanban_item_" + project_id); //changing the kanban item to have the project id
+			//	item.find("#project_data").attr("id", "project_data_" + project_id);
+			//	item.find("#project_hint").text(val.projectname); //setting the card to its equivalent project name
+			//	/*item.find("#project_data_" + project_id).append("<br>");*/
+			//	item.append(`<a href="add_more_project_data?project_id=${project_id}">add more data for ${val.projectname}</a>`);
+			//	$("#column_scrollbar_" + project_stage_id).append(item); //appending the project card to the equivalent stage.
+
+
+			//});
+
+			////validation on creating the project.
+			//$("#create_project").click(function () {
+
+			//	var projectname = $("#project_name").val();
+
+			//	//validation
+			//	const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
+
+			//	if (!regularExp.test(projectname)) {
+			//		alert("لا يمكن ادخال ارقام فقط");
+			//		return false;
+			//	}
+
+
+			//})
+
+
+
+			//$.each(all_stages, function (index, val) {
+
+			//	$("#stage_dropdown").append("<option value='" + val.stage_id.toString() + "'>" + val.stage_name + "</option>");
+
+			//});
+
+
+
+
+
+		});
+
+		function search() {
+
+			var all_stages = @Html.Raw(Json.Encode(Model.stages_dict));
+			var all_projects = @Html.Raw(Json.Encode(Model.projects));
+			var search_text = $("#search_input").val();
+			$("#kanban_container").empty();
+			//var searched_stages = [];
+			var searched_projects = [];
+			var searched_stages = new Set();
+			if (search_text != "") {
+				
+
+
+				for (const key in all_projects) {
+					if (all_projects[key].projectname.includes(search_text)) {
+
+						searched_projects.push(all_projects[key]);
+
+						searched_stages.add(all_stages[all_projects[key].project_stage_id]);
+					}
+
+				}
+
+
+				for (const key in all_stages) {
+
+					if (all_stages[key].stage_name.includes(search_text)) {
+						searched_stages.add(all_stages[key]);
+					}
+
+				}
+				
+				all_stages = Array.from(searched_stages);
+				all_projects = searched_projects;
+				console.log('projects after', all_projects);
+				console.log('stages after', all_stages);
+
+			}
+
+
 			var scratched_item = jQuery('<div>', {
 				id: 'kanban_item',
 				class: 'kanban-item'
 			});
 
-			//scratched_item.setAttribute('class', 'kanban-item');
-			//scratched_item.setAttribute('id', 'kanban_item');
 
 
-
-			var div = '<div class="card kanban-item-card hover-actions-trigger">\
+			var item_div = '<div class="card kanban-item-card hover-actions-trigger">\
 								<div class="card-body">\
 									<p class="mb-0 fw-medium font-sans-serif stretched-link" data-bs-toggle="modal" data-bs-target="#project_details" id="project_data" onclick="project_details(this.id)">\
 										<strong id="project_hint"></strong>\
@@ -347,18 +473,38 @@
 							  </div>';
 
 
-			scratched_item.append(div);
-			//console.log(scratched_item);
+			scratched_item.append(item_div);
 
+			var scratched_column = jQuery('<div>', {
+				id: 'kanban_column',
+				class: 'kanban-column'
+			});
 
+			var column_div = '<div class="kanban-column-header">\
+								<h5 class="fs-0 mb-0 stage_name"><span class="text-500">(8)</span></h5>\
+								<div class="dropdown font-sans-serif btn-reveal-trigger">\
+									<button class="btn btn-sm btn-reveal py-0 px-2" type="button" id="kanbanColumn0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>\
+									<div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="kanbanColumn0">\
+										<a class="dropdown-item" id="add_card">Add Project</a><a class="dropdown-item" href="#!" id="edit_card">Edit</a>\
+										<div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!" id="remove_card">Remove</a>\
+									</div>\
+								</div>\
+							  </div>\
+							  <div class="kanban-items-container scrollbar" id="column_scrollbar"></div>';
+
+			var create_proj_div = '<div class="kanban-column-footer"><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button"><span class="fas fa-plus me-2"></span>انشاء مشروغ جديد</button></div>'
+
+			scratched_column.append(column_div);
 
 
 
 			var kanbanContainer = $("#kanban_container");
-			$("#kanban_column").attr("style", "display: none !important;")
-			var kanbanItem = $("#kanban_item");
-			var mainKanbanColumn = $("#kanban_column").clone();
-			mainKanbanColumn.attr("style", "display: visible;")
+			kanbanContainer.append(create_proj_div);
+			//$("#kanban_column").attr("style", "display: none !important;")
+
+			//var kanbanItem = $("#kanban_item");
+			var mainKanbanColumn = scratched_column.clone();
+			//mainKanbanColumn.attr("style", "display: visible;")
 
 			//adding columns equal to stages we have in DB.
 			$.each(all_stages, function (index, val) {
@@ -371,8 +517,6 @@
 				kanbanContainer.append(kanbanColumn); //adding the columns we created according to the stages we have in DB.
 			});
 
-			console.log('kc', mainKanbanColumn);
-			console.log('ki', scratched_item);
 
 			//adding projects to columns according to its stages id.
 			$.each(all_projects, function (index, val) {
@@ -387,38 +531,7 @@
 				item.append(`<a href="add_more_project_data?project_id=${project_id}">add more data for ${val.projectname}</a>`);
 				$("#column_scrollbar_" + project_stage_id).append(item); //appending the project card to the equivalent stage.
 
-
 			});
-
-			//validation on creating the project.
-			$("#create_project").click(function () {
-
-				var projectname = $("#project_name").val();
-
-				//validation
-				const regularExp = new RegExp('^[a-zA-z\u0621-\u064A ]+[a-zA-z0-9\u0621-\u064A\u0660-\u0669]+');
-
-				if (!regularExp.test(projectname)) {
-					alert("لا يمكن ادخال ارقام فقط");
-					return false;
-				}
-
-
-			})
-
-
-			//adding choices of institutions to select from.
-			//var choices_view = all_institutes.map(t => {
-			//	let obj = {}
-			//	obj.value = t.institute_id;
-			//	obj.label = t.institutename;
-			//	obj.id = t.institute_id;
-			//	return obj
-			//})
-
-			//var choices = new Choices(document.getElementById("stages_options"), { choices: choices_view, removeItemButton: true });
-
-			//adding values of stages to dropdownlist of stages.
 
 			$.each(all_stages, function (index, val) {
 
@@ -426,25 +539,7 @@
 
 			});
 
-			//$.each(all_marigns_types, function (index, val) {
-
-			//	$("#gross_type").append("<option value='" + val.id.toString() + "'>" + val.gross_marign_typename + "</option>");
-
-			//});
-
-			//$.each(all_users, function (index, val) {
-
-			//	$("#funder").append("<option value='" + val.user_id.toString() + "'>" + val.username + "</option>");
-
-			//});
-
-
-
-
-
-		});
-
-
+		}
 
 
 
@@ -854,7 +949,7 @@
 			//if (!alert("are you sure you want to update institute?")) {
 			//	return false;
 			//}
-			
+
 			$.ajax({
 				type: 'POST',
 				url: `../Admin/edit_project_fields?project_id=${project_id}&value=${value}&field_name=${element_id}`,

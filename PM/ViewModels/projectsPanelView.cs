@@ -44,6 +44,7 @@ namespace PM.ViewModels
 		public List<projectView> all_projects;
 
 		public Dictionary<string, projectView> projects = new Dictionary<string, projectView>();
+		public Dictionary<string, stagesView> stages_dict = new Dictionary<string, stagesView>();
 		public List<stagesView> stages { get; set; }
 
 		public List<institutesView> institutes { get; set; }
@@ -115,12 +116,21 @@ namespace PM.ViewModels
 				projects[p.project_id.ToString()] = p;
 			}
 
+
+
 			stages = (from s in pm.project_stage
 					  select new stagesView
 					  {
 						  stage_id = s.stage_id,
 						  stage_name = s.stage_name
 					  }).ToList();
+
+
+			foreach (var s in stages)
+			{
+				stages_dict[s.stage_id.ToString()] = s;
+			}
+
 
 			institutes = (from i in pm.institutes
 						  select new institutesView
