@@ -94,6 +94,14 @@
           <Property Name="type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="typename" Type="varchar" MaxLength="150" Nullable="false" />
         </EntityType>
+        <EntityType Name="job_roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="job_id" Type="int" Nullable="false" />
+          <Property Name="role_id" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="job_section">
           <Key>
             <PropertyRef Name="idjobsection" />
@@ -167,6 +175,7 @@
           <Property Name="last_date_reply" Type="datetime" Precision="0" />
           <Property Name="project_id" Type="int" Nullable="false" />
           <Property Name="follow" Type="tinyint" Nullable="false" />
+          <Property Name="message_text" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="milestone">
           <Key>
@@ -237,9 +246,9 @@
         </EntityType>
         <EntityType Name="project_updates">
           <Key>
-            <PropertyRef Name="updat_-id" />
+            <PropertyRef Name="update_id" />
           </Key>
-          <Property Name="updat_-id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="update_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="update-name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="update-date" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="update_status" Type="int" Nullable="false" />
@@ -255,6 +264,15 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="reply_id" Type="int" Nullable="false" />
           <Property Name="attachment_id" Type="int" Nullable="false" />
+          <Property Name="message_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="role_category" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="section">
           <Key>
@@ -328,11 +346,11 @@
         </EntityType>
         <EntityType Name="task_logs">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="task_id" Type="int" Nullable="false" />
           <Property Name="log_id" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="task_stage">
           <Key>
@@ -363,8 +381,8 @@
           <Property Name="task-description" Type="mediumtext" />
           <Property Name="task_status" Type="int" />
           <Property Name="task_stage" Type="int" />
-          <Property Name="taskscol" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="project_id" Type="int" Nullable="false" />
+          <Property Name="has_sub" Type="tinyint" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -378,6 +396,36 @@
           <Property Name="job_id" Type="int" />
           <Property Name="institute_id" Type="int" Nullable="false" />
           <Property Name="level-code" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'def.project_management.messagedetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="messagedetails">
+          <Key>
+            <PropertyRef Name="messageNum" />
+            <PropertyRef Name="archiveNum" />
+            <PropertyRef Name="messageType" />
+            <PropertyRef Name="messageDate" />
+            <PropertyRef Name="messageDateSentRecieved" />
+            <PropertyRef Name="messageFollow" />
+            <PropertyRef Name="projectName" />
+            <PropertyRef Name="replyText" />
+            <PropertyRef Name="replyDate" />
+            <PropertyRef Name="attachment" />
+            <PropertyRef Name="userAccess" />
+          </Key>
+          <Property Name="messageNum" Type="int" Nullable="false" />
+          <Property Name="archiveNum" Type="int" Nullable="false" />
+          <Property Name="messageType" Type="int" Nullable="false" />
+          <Property Name="messageDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="messageDateSentRecieved" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="lastDateReplay" Type="datetime" Precision="0" />
+          <Property Name="messageFollow" Type="tinyint" Nullable="false" />
+          <Property Name="projectName" Type="tinytext" Nullable="false" />
+          <Property Name="replyText" Type="mediumtext" Nullable="false" />
+          <Property Name="replyDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="attachment" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="tagName" Type="varchar" MaxLength="150" />
+          <Property Name="userAccess" Type="varchar" MaxLength="150" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'def.project_management.stationdetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -611,6 +659,18 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="jobid2">
+          <End Role="jobs" Type="Self.jobs" Multiplicity="1" />
+          <End Role="job_roles" Type="Self.job_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobs">
+              <PropertyRef Name="job_id" />
+            </Principal>
+            <Dependent Role="job_roles">
+              <PropertyRef Name="job_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="log_forign2">
           <End Role="logs" Type="Self.logs" Multiplicity="1" />
           <End Role="task_logs" Type="Self.task_logs" Multiplicity="*" />
@@ -656,6 +716,18 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             </Principal>
             <Dependent Role="messages">
               <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="mesaage_reply">
+          <End Role="messages" Type="Self.messages" Multiplicity="1" />
+          <End Role="reply_attachments" Type="Self.reply_attachments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="messages">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="reply_attachments">
+              <PropertyRef Name="message_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -767,6 +839,18 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="project-mang">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="project_manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="project-status4">
           <End Role="status" Type="Self.status" Multiplicity="1" />
           <End Role="project" Type="Self.project" Multiplicity="*" />
@@ -800,6 +884,18 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             </Principal>
             <Dependent Role="reply_attachments">
               <PropertyRef Name="reply_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="roleid2">
+          <End Role="roles" Type="Self.roles" Multiplicity="1" />
+          <End Role="job_roles" Type="Self.job_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="job_roles">
+              <PropertyRef Name="role_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1138,6 +1234,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySet Name="institute" EntityType="Self.institute" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="institute_address" EntityType="Self.institute_address" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="institute_type" EntityType="Self.institute_type" Schema="project_management" store:Type="Tables" />
+          <EntitySet Name="job_roles" EntityType="Self.job_roles" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="job_section" EntityType="Self.job_section" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="jobs" EntityType="Self.jobs" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="logs" EntityType="Self.logs" Schema="project_management" store:Type="Tables" />
@@ -1155,6 +1252,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySet Name="project_tag" EntityType="Self.project_tag" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="project_updates" EntityType="Self.project_updates" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="reply_attachments" EntityType="Self.reply_attachments" Schema="project_management" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="section" EntityType="Self.section" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="section_institute" EntityType="Self.section_institute" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="section_type" EntityType="Self.section_type" Schema="project_management" store:Type="Tables" />
@@ -1169,6 +1267,23 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySet Name="task_tags" EntityType="Self.task_tags" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="tasks" EntityType="Self.tasks" Schema="project_management" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="project_management" store:Type="Tables" />
+          <EntitySet Name="messagedetails" EntityType="Self.messagedetails" store:Type="Views" store:Schema="project_management">
+            <DefiningQuery>SELECT 
+`messagedetails`.`messageNum`, 
+`messagedetails`.`archiveNum`, 
+`messagedetails`.`messageType`, 
+`messagedetails`.`messageDate`, 
+`messagedetails`.`messageDateSentRecieved`, 
+`messagedetails`.`lastDateReplay`, 
+`messagedetails`.`messageFollow`, 
+`messagedetails`.`projectName`, 
+`messagedetails`.`replyText`, 
+`messagedetails`.`replyDate`, 
+`messagedetails`.`attachment`, 
+`messagedetails`.`tagName`, 
+`messagedetails`.`userAccess`
+ FROM `messagedetails` AS `messagedetails`</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="stationdetails" EntityType="Self.stationdetails" store:Type="Views" store:Schema="project_management">
             <DefiningQuery>SELECT 
 `stationdetails`.`stationcode`, 
@@ -1249,6 +1364,10 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             <End Role="jobs" EntitySet="jobs" />
             <End Role="job_section" EntitySet="job_section" />
           </AssociationSet>
+          <AssociationSet Name="jobid2" Association="Self.jobid2">
+            <End Role="jobs" EntitySet="jobs" />
+            <End Role="job_roles" EntitySet="job_roles" />
+          </AssociationSet>
           <AssociationSet Name="log_forign2" Association="Self.log_forign2">
             <End Role="logs" EntitySet="logs" />
             <End Role="task_logs" EntitySet="task_logs" />
@@ -1264,6 +1383,10 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <AssociationSet Name="mesaage_project" Association="Self.mesaage_project">
             <End Role="project" EntitySet="project" />
             <End Role="messages" EntitySet="messages" />
+          </AssociationSet>
+          <AssociationSet Name="mesaage_reply" Association="Self.mesaage_reply">
+            <End Role="messages" EntitySet="messages" />
+            <End Role="reply_attachments" EntitySet="reply_attachments" />
           </AssociationSet>
           <AssociationSet Name="message_attach" Association="Self.message_attach">
             <End Role="messages" EntitySet="messages" />
@@ -1301,6 +1424,10 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             <End Role="project" EntitySet="project" />
             <End Role="milestone" EntitySet="milestone" />
           </AssociationSet>
+          <AssociationSet Name="project-mang" Association="Self.project-mang">
+            <End Role="users" EntitySet="users" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
           <AssociationSet Name="project-status4" Association="Self.project-status4">
             <End Role="status" EntitySet="status" />
             <End Role="project" EntitySet="project" />
@@ -1312,6 +1439,10 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <AssociationSet Name="reply_attach" Association="Self.reply_attach">
             <End Role="message_reply" EntitySet="message_reply" />
             <End Role="reply_attachments" EntitySet="reply_attachments" />
+          </AssociationSet>
+          <AssociationSet Name="roleid2" Association="Self.roleid2">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="job_roles" EntitySet="job_roles" />
           </AssociationSet>
           <AssociationSet Name="sationcode-institute" Association="Self.sationcode-institute">
             <End Role="station" EntitySet="station" />
@@ -1437,6 +1568,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySet Name="institutes" EntityType="project_managementModel.institute" />
           <EntitySet Name="institute_address" EntityType="project_managementModel.institute_address" />
           <EntitySet Name="institute_type" EntityType="project_managementModel.institute_type" />
+          <EntitySet Name="job_roles" EntityType="project_managementModel.job_roles" />
           <EntitySet Name="job_section" EntityType="project_managementModel.job_section" />
           <EntitySet Name="jobs" EntityType="project_managementModel.job" />
           <EntitySet Name="logs" EntityType="project_managementModel.log" />
@@ -1454,6 +1586,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySet Name="project_tag" EntityType="project_managementModel.project_tag" />
           <EntitySet Name="project_updates" EntityType="project_managementModel.project_updates" />
           <EntitySet Name="reply_attachments" EntityType="project_managementModel.reply_attachments" />
+          <EntitySet Name="roles" EntityType="project_managementModel.role" />
           <EntitySet Name="sections" EntityType="project_managementModel.section" />
           <EntitySet Name="section_institute" EntityType="project_managementModel.section_institute" />
           <EntitySet Name="section_type" EntityType="project_managementModel.section_type" />
@@ -1468,6 +1601,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySet Name="task_tags" EntityType="project_managementModel.task_tags" />
           <EntitySet Name="tasks" EntityType="project_managementModel.task" />
           <EntitySet Name="users" EntityType="project_managementModel.user" />
+          <EntitySet Name="messagedetails" EntityType="project_managementModel.messagedetail" />
           <EntitySet Name="stationdetails" EntityType="project_managementModel.stationdetail" />
           <AssociationSet Name="attach_attach" Association="project_managementModel.attach_attach">
             <End Role="attachemnt" EntitySet="attachemnts" />
@@ -1553,6 +1687,14 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             <End Role="station" EntitySet="stations" />
             <End Role="institute_address" EntitySet="institute_address" />
           </AssociationSet>
+          <AssociationSet Name="jobid2" Association="project_managementModel.jobid2">
+            <End Role="job" EntitySet="jobs" />
+            <End Role="job_roles" EntitySet="job_roles" />
+          </AssociationSet>
+          <AssociationSet Name="roleid2" Association="project_managementModel.roleid2">
+            <End Role="role" EntitySet="roles" />
+            <End Role="job_roles" EntitySet="job_roles" />
+          </AssociationSet>
           <AssociationSet Name="job_id" Association="project_managementModel.job_id">
             <End Role="job" EntitySet="jobs" />
             <End Role="job_section" EntitySet="job_section" />
@@ -1609,6 +1751,10 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             <End Role="project" EntitySet="projects" />
             <End Role="message" EntitySet="messages" />
           </AssociationSet>
+          <AssociationSet Name="mesaage_reply" Association="project_managementModel.mesaage_reply">
+            <End Role="message" EntitySet="messages" />
+            <End Role="reply_attachments" EntitySet="reply_attachments" />
+          </AssociationSet>
           <AssociationSet Name="project_key2" Association="project_managementModel.project_key2">
             <End Role="project" EntitySet="projects" />
             <End Role="milestone" EntitySet="milestones" />
@@ -1632,6 +1778,10 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <AssociationSet Name="project_key" Association="project_managementModel.project_key">
             <End Role="project" EntitySet="projects" />
             <End Role="project_tag" EntitySet="project_tag" />
+          </AssociationSet>
+          <AssociationSet Name="project_mang" Association="project_managementModel.project_mang">
+            <End Role="user" EntitySet="users" />
+            <End Role="project" EntitySet="projects" />
           </AssociationSet>
           <AssociationSet Name="project_status4" Association="project_managementModel.project_status4">
             <End Role="status" EntitySet="status" />
@@ -1831,6 +1981,16 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <Property Name="typename" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="institutes" Relationship="project_managementModel.type_id" FromRole="institute_type" ToRole="institute" />
         </EntityType>
+        <EntityType Name="job_roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="job_id" Type="Int32" Nullable="false" />
+          <Property Name="role_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="job" Relationship="project_managementModel.jobid2" FromRole="job_roles" ToRole="job" />
+          <NavigationProperty Name="role" Relationship="project_managementModel.roleid2" FromRole="job_roles" ToRole="role" />
+        </EntityType>
         <EntityType Name="job_section">
           <Key>
             <PropertyRef Name="idjobsection" />
@@ -1848,6 +2008,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <Property Name="job_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="jobname" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="followupcode" Type="Int32" />
+          <NavigationProperty Name="job_roles" Relationship="project_managementModel.jobid2" FromRole="job" ToRole="job_roles" />
           <NavigationProperty Name="job_section" Relationship="project_managementModel.job_id" FromRole="job" ToRole="job_section" />
           <NavigationProperty Name="users" Relationship="project_managementModel.gobforign" FromRole="job" ToRole="user" />
         </EntityType>
@@ -1919,12 +2080,14 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <Property Name="last_date_reply" Type="DateTime" />
           <Property Name="project_id" Type="Int32" Nullable="false" />
           <Property Name="follow" Type="SByte" Nullable="false" />
+          <Property Name="message_text" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="institute" Relationship="project_managementModel.messsage_institute" FromRole="message" ToRole="institute" />
           <NavigationProperty Name="message_access" Relationship="project_managementModel.mesaage_access" FromRole="message" ToRole="message_access" />
           <NavigationProperty Name="message_attachments" Relationship="project_managementModel.message_attach" FromRole="message" ToRole="message_attachments" />
           <NavigationProperty Name="message_reply" Relationship="project_managementModel.message_reply1" FromRole="message" ToRole="message_reply" />
           <NavigationProperty Name="message_tag" Relationship="project_managementModel.message_tag1" FromRole="message" ToRole="message_tag" />
           <NavigationProperty Name="project" Relationship="project_managementModel.mesaage_project" FromRole="message" ToRole="project" />
+          <NavigationProperty Name="reply_attachments" Relationship="project_managementModel.mesaage_reply" FromRole="message" ToRole="reply_attachments" />
         </EntityType>
         <EntityType Name="milestone">
           <Key>
@@ -1962,6 +2125,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <NavigationProperty Name="project_log" Relationship="project_managementModel.project_forign" FromRole="project" ToRole="project_log" />
           <NavigationProperty Name="project_attachment" Relationship="project_managementModel.project_forignkey" FromRole="project" ToRole="project_attachment" />
           <NavigationProperty Name="project_tag" Relationship="project_managementModel.project_key" FromRole="project" ToRole="project_tag" />
+          <NavigationProperty Name="user1" Relationship="project_managementModel.project_mang" FromRole="project" ToRole="user" />
           <NavigationProperty Name="status" Relationship="project_managementModel.project_status4" FromRole="project" ToRole="status" />
           <NavigationProperty Name="project_stage" Relationship="project_managementModel.proj_stage" FromRole="project" ToRole="project_stage" />
           <NavigationProperty Name="project_updates" Relationship="project_managementModel.update_prokect" FromRole="project" ToRole="project_updates" />
@@ -2017,9 +2181,9 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
         </EntityType>
         <EntityType Name="project_updates">
           <Key>
-            <PropertyRef Name="updat__id" />
+            <PropertyRef Name="update_id" />
           </Key>
-          <Property Name="updat__id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="update_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="update_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="update_date" Type="DateTime" Nullable="false" />
           <Property Name="update_status" Type="Int32" Nullable="false" />
@@ -2038,8 +2202,19 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="reply_id" Type="Int32" Nullable="false" />
           <Property Name="attachment_id" Type="Int32" Nullable="false" />
+          <Property Name="message_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="attachemnt" Relationship="project_managementModel.attach_attach2" FromRole="reply_attachments" ToRole="attachemnt" />
           <NavigationProperty Name="message_reply" Relationship="project_managementModel.reply_attach" FromRole="reply_attachments" ToRole="message_reply" />
+          <NavigationProperty Name="message" Relationship="project_managementModel.mesaage_reply" FromRole="reply_attachments" ToRole="message" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="role_category" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="job_roles" Relationship="project_managementModel.roleid2" FromRole="role" ToRole="job_roles" />
         </EntityType>
         <EntityType Name="section">
           <Key>
@@ -2133,11 +2308,11 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
         </EntityType>
         <EntityType Name="task_logs">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="task_id" Type="Int32" Nullable="false" />
           <Property Name="log_id" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="log" Relationship="project_managementModel.log_forign2" FromRole="task_logs" ToRole="log" />
           <NavigationProperty Name="task" Relationship="project_managementModel.task_forign4" FromRole="task_logs" ToRole="task" />
         </EntityType>
@@ -2173,8 +2348,8 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <Property Name="task_description" Type="String" MaxLength="16777215" FixedLength="false" Unicode="false" />
           <Property Name="task_status" Type="Int32" />
           <Property Name="task_stage" Type="Int32" />
-          <Property Name="taskscol" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="project_id" Type="Int32" Nullable="false" />
+          <Property Name="has_sub" Type="SByte" />
           <NavigationProperty Name="blocklist_tasks" Relationship="project_managementModel.task1" FromRole="task" ToRole="blocklist_tasks" />
           <NavigationProperty Name="blocklist_tasks1" Relationship="project_managementModel.task2" FromRole="task" ToRole="blocklist_tasks" />
           <NavigationProperty Name="status" Relationship="project_managementModel.task_status7" FromRole="task" ToRole="status" />
@@ -2204,11 +2379,40 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <NavigationProperty Name="message_access" Relationship="project_managementModel.user_access" FromRole="user" ToRole="message_access" />
           <NavigationProperty Name="message_reply" Relationship="project_managementModel.user_reply" FromRole="user" ToRole="message_reply" />
           <NavigationProperty Name="projects" Relationship="project_managementModel.client_forign" FromRole="user" ToRole="project" />
+          <NavigationProperty Name="projects1" Relationship="project_managementModel.project_mang" FromRole="user" ToRole="project" />
           <NavigationProperty Name="project_access" Relationship="project_managementModel.user_access2" FromRole="user" ToRole="project_access" />
           <NavigationProperty Name="project_updates" Relationship="project_managementModel.update_author" FromRole="user" ToRole="project_updates" />
           <NavigationProperty Name="task_access" Relationship="project_managementModel.user_access4" FromRole="user" ToRole="task_access" />
           <NavigationProperty Name="task_assignedemployee" Relationship="project_managementModel.user_forign" FromRole="user" ToRole="task_assignedemployee" />
           <NavigationProperty Name="tasks" Relationship="project_managementModel.supervisor_key" FromRole="user" ToRole="task" />
+        </EntityType>
+        <EntityType Name="messagedetail">
+          <Key>
+            <PropertyRef Name="messageNum" />
+            <PropertyRef Name="archiveNum" />
+            <PropertyRef Name="messageType" />
+            <PropertyRef Name="messageDate" />
+            <PropertyRef Name="messageDateSentRecieved" />
+            <PropertyRef Name="messageFollow" />
+            <PropertyRef Name="projectName" />
+            <PropertyRef Name="replyText" />
+            <PropertyRef Name="replyDate" />
+            <PropertyRef Name="attachment" />
+            <PropertyRef Name="userAccess" />
+          </Key>
+          <Property Name="messageNum" Type="Int32" Nullable="false" />
+          <Property Name="archiveNum" Type="Int32" Nullable="false" />
+          <Property Name="messageType" Type="Int32" Nullable="false" />
+          <Property Name="messageDate" Type="DateTime" Nullable="false" />
+          <Property Name="messageDateSentRecieved" Type="DateTime" Nullable="false" />
+          <Property Name="lastDateReplay" Type="DateTime" />
+          <Property Name="messageFollow" Type="SByte" Nullable="false" />
+          <Property Name="projectName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="replyText" Type="String" Nullable="false" MaxLength="16777215" FixedLength="false" Unicode="false" />
+          <Property Name="replyDate" Type="DateTime" Nullable="false" />
+          <Property Name="attachment" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="tagName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="userAccess" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="stationdetail">
           <Key>
@@ -2476,6 +2680,30 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="jobid2">
+          <End Type="project_managementModel.job" Role="job" Multiplicity="1" />
+          <End Type="project_managementModel.job_roles" Role="job_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="job">
+              <PropertyRef Name="job_id" />
+            </Principal>
+            <Dependent Role="job_roles">
+              <PropertyRef Name="job_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="roleid2">
+          <End Type="project_managementModel.role" Role="role" Multiplicity="1" />
+          <End Type="project_managementModel.job_roles" Role="job_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="job_roles">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="job_id">
           <End Type="project_managementModel.job" Role="job" Multiplicity="0..1" />
           <End Type="project_managementModel.job_section" Role="job_section" Multiplicity="*" />
@@ -2644,6 +2872,18 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="mesaage_reply">
+          <End Type="project_managementModel.message" Role="message" Multiplicity="1" />
+          <End Type="project_managementModel.reply_attachments" Role="reply_attachments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="message">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="reply_attachments">
+              <PropertyRef Name="message_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="project_key2">
           <End Type="project_managementModel.project" Role="project" Multiplicity="1" />
           <End Type="project_managementModel.milestone" Role="milestone" Multiplicity="*" />
@@ -2713,6 +2953,18 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
             </Principal>
             <Dependent Role="project_tag">
               <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="project_mang">
+          <End Type="project_managementModel.user" Role="user" Multiplicity="0..1" />
+          <End Type="project_managementModel.project" Role="project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="project_manager_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3061,6 +3313,15 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="job_roles">
+            <EntityTypeMapping TypeName="project_managementModel.job_roles">
+              <MappingFragment StoreEntitySet="job_roles">
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="job_id" ColumnName="job_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="job_section">
             <EntityTypeMapping TypeName="project_managementModel.job_section">
               <MappingFragment StoreEntitySet="job_section">
@@ -3130,6 +3391,7 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySetMapping Name="messages">
             <EntityTypeMapping TypeName="project_managementModel.message">
               <MappingFragment StoreEntitySet="messages">
+                <ScalarProperty Name="message_text" ColumnName="message_text" />
                 <ScalarProperty Name="follow" ColumnName="follow" />
                 <ScalarProperty Name="project_id" ColumnName="project_id" />
                 <ScalarProperty Name="last_date_reply" ColumnName="last_date_reply" />
@@ -3227,16 +3489,26 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
                 <ScalarProperty Name="update_status" ColumnName="update_status" />
                 <ScalarProperty Name="update_date" ColumnName="update-date" />
                 <ScalarProperty Name="update_name" ColumnName="update-name" />
-                <ScalarProperty Name="updat__id" ColumnName="updat_-id" />
+                <ScalarProperty Name="update_id" ColumnName="update_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="reply_attachments">
             <EntityTypeMapping TypeName="project_managementModel.reply_attachments">
               <MappingFragment StoreEntitySet="reply_attachments">
+                <ScalarProperty Name="message_id" ColumnName="message_id" />
                 <ScalarProperty Name="attachment_id" ColumnName="attachment_id" />
                 <ScalarProperty Name="reply_id" ColumnName="reply_id" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="project_managementModel.role">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="role_category" ColumnName="role_category" />
+                <ScalarProperty Name="role_name" ColumnName="role_name" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3322,9 +3594,9 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySetMapping Name="task_logs">
             <EntityTypeMapping TypeName="project_managementModel.task_logs">
               <MappingFragment StoreEntitySet="task_logs">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="log_id" ColumnName="log_id" />
                 <ScalarProperty Name="task_id" ColumnName="task_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3348,8 +3620,8 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
           <EntitySetMapping Name="tasks">
             <EntityTypeMapping TypeName="project_managementModel.task">
               <MappingFragment StoreEntitySet="tasks">
+                <ScalarProperty Name="has_sub" ColumnName="has_sub" />
                 <ScalarProperty Name="project_id" ColumnName="project_id" />
-                <ScalarProperty Name="taskscol" ColumnName="taskscol" />
                 <ScalarProperty Name="task_stage" ColumnName="task_stage" />
                 <ScalarProperty Name="task_status" ColumnName="task_status" />
                 <ScalarProperty Name="task_description" ColumnName="task-description" />
@@ -3374,6 +3646,25 @@ warning 6002: The table/view 'def.project_management.stationdetails' does not ha
                 <ScalarProperty Name="pass" ColumnName="pass" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="messagedetails">
+            <EntityTypeMapping TypeName="project_managementModel.messagedetail">
+              <MappingFragment StoreEntitySet="messagedetails">
+                <ScalarProperty Name="userAccess" ColumnName="userAccess" />
+                <ScalarProperty Name="tagName" ColumnName="tagName" />
+                <ScalarProperty Name="attachment" ColumnName="attachment" />
+                <ScalarProperty Name="replyDate" ColumnName="replyDate" />
+                <ScalarProperty Name="replyText" ColumnName="replyText" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="messageFollow" ColumnName="messageFollow" />
+                <ScalarProperty Name="lastDateReplay" ColumnName="lastDateReplay" />
+                <ScalarProperty Name="messageDateSentRecieved" ColumnName="messageDateSentRecieved" />
+                <ScalarProperty Name="messageDate" ColumnName="messageDate" />
+                <ScalarProperty Name="messageType" ColumnName="messageType" />
+                <ScalarProperty Name="archiveNum" ColumnName="archiveNum" />
+                <ScalarProperty Name="messageNum" ColumnName="messageNum" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

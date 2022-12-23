@@ -12,25 +12,19 @@ namespace PM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class job
+    public partial class role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public job()
+        public role()
         {
             this.job_roles = new HashSet<job_roles>();
-            this.job_section = new HashSet<job_section>();
-            this.users = new HashSet<user>();
         }
     
-        public int job_id { get; set; }
-        public string jobname { get; set; }
-        public Nullable<int> followupcode { get; set; }
+        public int role_id { get; set; }
+        public string role_name { get; set; }
+        public int role_category { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<job_roles> job_roles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<job_section> job_section { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<user> users { get; set; }
     }
 }

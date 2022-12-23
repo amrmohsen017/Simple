@@ -11,6 +11,7 @@ namespace PM.ViewModels
 		public int gross_margin_id { get; set; }
 		public string description { get; set; }
 		public DateTime gross_date { get; set; }
+		public string gross_date_string { get; set; }
 		public double? quantity { get; set; }
 		public double? Amount { get; set; }
 

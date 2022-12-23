@@ -36,8 +36,8 @@ namespace PM.Models
         public string task_description { get; set; }
         public Nullable<int> task_status { get; set; }
         public Nullable<int> task_stage { get; set; }
-        public string taskscol { get; set; }
         public int project_id { get; set; }
+        public Nullable<sbyte> has_sub { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<blocklist_tasks> blocklist_tasks { get; set; }

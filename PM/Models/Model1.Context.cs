@@ -35,6 +35,7 @@ namespace PM.Models
         public virtual DbSet<institute> institutes { get; set; }
         public virtual DbSet<institute_address> institute_address { get; set; }
         public virtual DbSet<institute_type> institute_type { get; set; }
+        public virtual DbSet<job_roles> job_roles { get; set; }
         public virtual DbSet<job_section> job_section { get; set; }
         public virtual DbSet<job> jobs { get; set; }
         public virtual DbSet<log> logs { get; set; }
@@ -52,6 +53,7 @@ namespace PM.Models
         public virtual DbSet<project_tag> project_tag { get; set; }
         public virtual DbSet<project_updates> project_updates { get; set; }
         public virtual DbSet<reply_attachments> reply_attachments { get; set; }
+        public virtual DbSet<role> roles { get; set; }
         public virtual DbSet<section> sections { get; set; }
         public virtual DbSet<section_institute> section_institute { get; set; }
         public virtual DbSet<section_type> section_type { get; set; }
@@ -66,6 +68,7 @@ namespace PM.Models
         public virtual DbSet<task_tags> task_tags { get; set; }
         public virtual DbSet<task> tasks { get; set; }
         public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<messagedetail> messagedetails { get; set; }
         public virtual DbSet<stationdetail> stationdetails { get; set; }
     }
 }

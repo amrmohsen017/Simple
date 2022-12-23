@@ -21,6 +21,7 @@ namespace PM.Models
             this.message_access = new HashSet<message_access>();
             this.message_reply = new HashSet<message_reply>();
             this.projects = new HashSet<project>();
+            this.projects1 = new HashSet<project>();
             this.project_access = new HashSet<project_access>();
             this.project_updates = new HashSet<project_updates>();
             this.task_access = new HashSet<task_access>();
@@ -47,6 +48,8 @@ namespace PM.Models
         public virtual ICollection<message_reply> message_reply { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project> projects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<project> projects1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project_access> project_access { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

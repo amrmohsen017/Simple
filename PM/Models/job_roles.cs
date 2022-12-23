@@ -12,15 +12,13 @@ namespace PM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class reply_attachments
+    public partial class job_roles
     {
-        public int ID { get; set; }
-        public int reply_id { get; set; }
-        public int attachment_id { get; set; }
-        public int message_id { get; set; }
+        public int id { get; set; }
+        public int job_id { get; set; }
+        public int role_id { get; set; }
     
-        public virtual attachemnt attachemnt { get; set; }
-        public virtual message_reply message_reply { get; set; }
-        public virtual message message { get; set; }
+        public virtual job job { get; set; }
+        public virtual role role { get; set; }
     }
 }

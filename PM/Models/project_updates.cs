@@ -14,7 +14,7 @@ namespace PM.Models
     
     public partial class project_updates
     {
-        public int updat__id { get; set; }
+        public int update_id { get; set; }
         public string update_name { get; set; }
         public System.DateTime update_date { get; set; }
         public int update_status { get; set; }

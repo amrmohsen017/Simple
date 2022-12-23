@@ -21,6 +21,7 @@ namespace PM.Models
             this.message_attachments = new HashSet<message_attachments>();
             this.message_reply = new HashSet<message_reply>();
             this.message_tag = new HashSet<message_tag>();
+            this.reply_attachments = new HashSet<reply_attachments>();
         }
     
         public int ID { get; set; }
@@ -33,6 +34,7 @@ namespace PM.Models
         public Nullable<System.DateTime> last_date_reply { get; set; }
         public int project_id { get; set; }
         public sbyte follow { get; set; }
+        public string message_text { get; set; }
     
         public virtual institute institute { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -44,5 +46,7 @@ namespace PM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<message_tag> message_tag { get; set; }
         public virtual project project { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<reply_attachments> reply_attachments { get; set; }
     }
 }

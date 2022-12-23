@@ -8,46 +8,23 @@ namespace PM.ViewModels
 {
 	public class projectsPanelView
 	{
-		public class projectView
-		{
-			public int project_id { get; set; }
-			public string projectname { get; set; }
-			public DateTime? plannedstartdate { get; set; }
-			public DateTime? plannedenddate { get; set; }
-			public string description { get; set; }
-			public double? cost { get; set; }
-			public int? institute_id { get; set; }
-
-			public int? project_manager_id { get; set; }
-			public DateTime? deadline_date { get; set; }
-			public int? project_stage_id { get; set; }
-			public int? client { get; set; }
-			public int project_status { get; set; }
-
-			//all_names
-			public string stage_name { get; set; }
-			public string client_name { get; set; }
-			public string status_name { get; set; }
-			public string institute_name { get; set; }
-			public string projectManager_name { get; set; }
-
-
-			//all connected tables
-			//public List<grossMarginView> gross_marign_list { get; set; }
-
-			//public List<logView> logs_list { get; set; }
-			//public List<projectAttchment> files { get; set; }		
-
-		}
-
 
 		public List<projectView> all_projects;
 
 		public Dictionary<string, projectView> projects = new Dictionary<string, projectView>();
 		public Dictionary<string, stagesView> stages_dict = new Dictionary<string, stagesView>();
+		public Dictionary<string, UserView> users_dict = new Dictionary<string, UserView>();
+		public Dictionary<string, grossTypes> types_dict = new Dictionary<string, grossTypes>();
+		public Dictionary<string, projectStatusView> status_dict = new Dictionary<string, projectStatusView>();
 		public List<stagesView> stages { get; set; }
-
+		public List<tagView> tags { get; set; }
 		public List<institutesView> institutes { get; set; }
+
+		public List<UserView> users { get; set; }
+
+		public List<grossTypes> types { get; set; }
+
+		public List<projectStatusView> statuses { get; set; }
 
 
 
@@ -55,28 +32,63 @@ namespace PM.ViewModels
 		{
 			project_managementEntities1 pm = new project_managementEntities1();
 
-			 all_projects = (from p in pm.projects
-								select new projectView
-								{
-									project_id = p.project_id,
-									projectname = p.projectname,
-									plannedstartdate = p.plannedstartdate,
-									plannedenddate = p.plannedenddate,
-									description = p.description,
-									cost = p.cost,
-									institute_id = p.institute_id,
-									project_manager_id = p.project_manager_id,
-									deadline_date = p.deadline_date,
-									project_stage_id = p.project_stage_id,
-									client = p.client,
-									project_status = p.project_status,
+			all_projects = (from p in pm.projects
+							orderby p.project_id
+							select new projectView
+							{
+								project_id = p.project_id,
+								projectname = p.projectname,
+								plannedstartdate = p.plannedstartdate,
+								plannedenddate = p.plannedenddate,
+								plannedstartdate_string = p.plannedstartdate.ToString(),
+								plannedenddate_string = p.plannedenddate.ToString(),
+								description = p.description,
+								cost = p.cost,
+								institute_id = p.institute_id,
+								project_manager_id = p.project_manager_id,
+								deadline_date = p.deadline_date,
+								deadline_date_string = p.deadline_date.ToString(),
+								project_stage_id = p.project_stage_id,
+								client = p.client,
+								project_status = p.project_status,
 
-									stage_name = p.project_stage.stage_name,
-									institute_name = p.institute.institutename,
-									status_name = p.status.status_name,
-									client_name = p.user.username
+								stage_name = p.project_stage.stage_name,
+								institute_name = p.institute.institutename,
+								status_name = p.status.status_name,
+								client_name = p.user.username,
 
-									}).ToList();
+								project_tags = (from t in pm.project_tag
+												where t.project_id == p.project_id
+												select new tagView
+												{
+													tag_id = t.tag.tag_id,
+													tagname = t.tag.tagname
+
+												}).ToList(),
+
+								project_update_progress = (from u in pm.project_updates
+														   where u.project_id == p.project_id
+														   orderby u.update_date descending
+														   select new projectUpdatesView
+														   {
+															   update_id = u.update_id,
+															   description = u.update_description,
+															   update_name = u.update_name,
+															   update_date = u.update_date,
+															   update_date_string = u.update_date.ToString(),
+															   status = u.update_status,
+															   status_name = u.status.status_name,
+															   progress = u.update_progress,
+															   updater = u.update_author_id,
+															   updater_name = u.user.username,
+															   project_id = u.project_id
+														   }).ToList()
+
+
+							}).Take(2).ToList();
+
+			
+									
 
 									//gross_marign_list = (from g in pm.gross_marign
 									//					 select new grossMarginView
@@ -125,10 +137,58 @@ namespace PM.ViewModels
 						  stage_name = s.stage_name
 					  }).ToList();
 
+			tags = (from t in pm.tags
+					  select new tagView
+					  {
+						  tag_id=t.tag_id,
+						  tagname=t.tagname
+					  }).ToList();
+
+			users = (from u in pm.users
+					 select new UserView
+					 {
+						 user_id = u.user_id,
+						 username = u.username,
+						 telephone = u.telephone,
+						 email = u.email,
+						 job_id = u.job_id,
+						 institute_id = u.institute_id,
+						 level_code = u.level_code
+					 }).ToList();
+
+			types = (from t in pm.gross_marign_type
+					select new grossTypes
+					{
+						id = t.id,
+						gross_marign_typename = t.gross_marign_typename
+					}).ToList();
+
+			statuses = (from s in pm.status
+					 select new projectStatusView
+					 {
+						 status_id = s.status_id,
+						 status_name = s.status_name
+					 }).ToList();
+
 
 			foreach (var s in stages)
 			{
 				stages_dict[s.stage_id.ToString()] = s;
+			}
+
+			foreach (var u in users)
+			{
+				users_dict[u.user_id.ToString()] = u;
+			}
+
+			foreach (var t in types)
+			{
+				types_dict[t.id.ToString()] = t;
+			}
+
+			foreach (var s in statuses)
+			{
+				status_dict[s.status_id.ToString()] = s;
 			}
 
 
@@ -146,6 +206,11 @@ namespace PM.ViewModels
 
 
 						  }).ToList();
+
+
 		}
+
+
+		
     }
 }

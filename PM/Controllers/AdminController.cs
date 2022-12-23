@@ -168,7 +168,12 @@ namespace PM.Controllers
 
             var query = (from sec in pm.section_type
                          orderby sec.sectiontype
-                         select sec).ToList();
+                         select new sectionTypeView
+                         {
+                             sectiontype_id = sec.sectiontype_id,
+                             sectiontype = sec.sectiontype
+                         }).ToList();
+
             ViewBag.deleteSectionTypeAlert = TempData["deleteSectionTypeAlert"];
             ViewBag.updateSectionTypeSuccess = TempData["updateSectionTypeSuccess"];
             return View(query.ToPagedList(pageNumber ?? 1, 10));
@@ -242,7 +247,13 @@ namespace PM.Controllers
             //this action is navigated from section_type_panel with id
 
             section_type s = pm.section_type.Find(id);
-            return View(s);
+            sectionTypeView s_2 = new sectionTypeView
+            {
+                sectiontype = s.sectiontype,
+                sectiontype_id = s.sectiontype_id
+            };
+
+            return View(s_2);
         }
         [HttpPost]
         public ActionResult edit_section_type(section_type st)
@@ -1845,7 +1856,8 @@ namespace PM.Controllers
                                 user_associated=g.user_associated,
                                 gross_type=g.gross_type,
                                 gross_margin_typename=g.gross_marign_type.gross_marign_typename,
-                                funder=g.user.username
+                                funder=g.user.username,
+                                gross_date_string= g.gross_date.ToString()
                             };
 
 
@@ -1881,7 +1893,8 @@ namespace PM.Controllers
             }
             catch (Exception)
             {
-                throw;
+                 throw;
+               
             }
         }
 
@@ -1952,6 +1965,80 @@ namespace PM.Controllers
             }
         }
 
+        public ActionResult project_updates(int project_id)
+		{
+			try
+			{
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                string columnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
+                string sortColumn = Request.Form.GetValues($"columns[{columnIndex}][data]").FirstOrDefault();
+                //var sortColumn = Request.Form.GetValues("columns[" + columnName + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form.GetValues("search[value]").FirstOrDefault();
+
+
+                //Paging Size (10,20,50,100)    
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                // Getting all Customer data    
+                var query = from u in pm.project_updates
+                            where u.project_id == project_id
+                            select new projectUpdatesView
+                            {
+                                update_id = u.update_id,
+                                description = u.update_description,
+                                update_name = u.update_name,
+                                update_date = u.update_date,
+                                update_date_string = u.update_date.ToString(),
+                                status = u.update_status,
+								status_name = u.status.status_name,
+								progress = u.update_progress,
+                                updater = u.update_author_id,
+                                updater_name = u.user.username,
+                                project_id = u.project_id
+                            };
+
+
+
+                Dictionary<string, Func<projectUpdatesView, object>> field_mapper = new Dictionary<string, Func<projectUpdatesView, object>>()
+                    {
+                        {"update_name", t => t.update_name},
+                    };
+
+                if (sortColumnDir == "asc")
+                {
+                    query.OrderBy(field_mapper[sortColumn]).Skip(skip).Take(pageSize);
+                    // hack of the day :)
+                }
+                else
+                {
+                    query.OrderByDescending(field_mapper[sortColumn]);
+
+                }
+
+                //Search    
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m => m.description.Contains(searchValue));
+                }
+
+                //total number of rows count     
+                recordsTotal = query.Count();
+                //Paging     
+                var data = query.ToList();
+                //Returning Json Data    
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+		}
+
         public ActionResult edit_project_fields(int project_id,string value, string field_name)
 		{
 
@@ -1986,6 +2073,10 @@ namespace PM.Controllers
                     case "institute_id":
                         old_data = p.institute_id.ToString();
                         p.institute_id = Convert.ToInt32(value);
+                        break;
+                    case "stage_id":
+                        old_data = p.project_stage_id.ToString();
+                        p.project_stage_id = Convert.ToInt32(value);
                         break;
                 }
 
@@ -2122,6 +2213,363 @@ namespace PM.Controllers
             }
 
         }
+
+
+        public ActionResult project_main_page_search(string searchText)
+		{
+            Dictionary<string, projectView> projects = new Dictionary<string, projectView>();
+            Dictionary<string,stagesView> stages = new Dictionary<string, stagesView>();
+
+
+            var stages_query = (from s in pm.project_stage
+                                where s.stage_name.Contains(searchText)
+                                select new stagesView
+                                {
+                                    stage_id = s.stage_id,
+                                    stage_name = s.stage_name
+
+                                }).ToList();
+
+
+
+			var projects_query = (from p in pm.projects
+								  where p.projectname.Contains(searchText) || p.cost.ToString() == searchText || p.institute.institutename.Contains(searchText) ||
+								  p.user.username.Contains(searchText) || p.status.status_name.Contains(searchText) || p.project_stage.stage_name.Contains(searchText)
+								  select new projectView
+								  {
+									  project_id = p.project_id,
+									  projectname = p.projectname,
+									  plannedstartdate = p.plannedstartdate,
+									  plannedenddate = p.plannedenddate,
+									  description = p.description,
+									  cost = p.cost,
+									  institute_id = p.institute_id,
+									  project_manager_id = p.project_manager_id,
+									  deadline_date = p.deadline_date,
+									  project_stage_id = p.project_stage_id,
+									  client = p.client,
+									  project_status = p.project_status,
+
+									  stage_name = p.project_stage.stage_name,
+									  institute_name = p.institute.institutename,
+									  status_name = p.status.status_name,
+									  client_name = p.user.username
+								  }).ToList();
+
+
+
+            if (stages_query != null && projects_query == null)
+			{
+
+                 projects_query = (from p in pm.projects
+                                      where p.project_stage.stage_name.Contains(searchText)
+                                      select new projectView
+                                      {
+                                          project_id = p.project_id,
+                                          projectname = p.projectname,
+                                          plannedstartdate = p.plannedstartdate,
+                                          plannedenddate = p.plannedenddate,
+                                          description = p.description,
+                                          cost = p.cost,
+                                          institute_id = p.institute_id,
+                                          project_manager_id = p.project_manager_id,
+                                          deadline_date = p.deadline_date,
+                                          project_stage_id = p.project_stage_id,
+                                          client = p.client,
+                                          project_status = p.project_status,
+
+                                          stage_name = p.project_stage.stage_name,
+                                          institute_name = p.institute.institutename,
+                                          status_name = p.status.status_name,
+                                          client_name = p.user.username
+                                      }).ToList();
+            }
+
+            if (stages_query == null && projects_query != null)
+            {
+                stages_query = (from p in projects_query
+                                select new stagesView
+                                {
+                                    stage_id = (int)p.project_stage_id,
+                                    stage_name = p.stage_name
+                                }).ToList();
+            }
+
+
+            foreach (var p in projects_query)
+            {
+                projects[p.project_id.ToString()] = p;
+            }
+            foreach (var s in stages_query)
+            {
+                stages[s.stage_id.ToString()] = s;
+            }
+
+            return Json(new { projects, stages }, JsonRequestBehavior.AllowGet);
+		}
+
+        public ActionResult save_project_tags(List<int> tags_ids, int project_id)
+		{
+			try
+			{
+				#region adding tags
+				var t_list = (from t in pm.project_tag
+                              where t.project_id == project_id
+                              select t).ToList();
+               
+
+                foreach (var t in t_list)
+				{
+                    pm.project_tag.Remove(t);
+                }
+                foreach (var t_id in tags_ids)
+                {                
+                    pm.project_tag.Add(new project_tag { tag_id = t_id, project_id = project_id });
+                }
+                pm.SaveChanges();
+                #endregion
+
+
+                #region adding logs
+                string log_text = "project with id =" + project_id.ToString() + " changed the tags from" + t_list.ToString() + " into " + tags_ids.ToString();
+                log l = new log()
+                {
+                    log_text = log_text,
+                    log_date = DateTime.Now
+                };
+                pm.logs.Add(l);
+                pm.project_log.Add(new project_log { log_id = l.log_id, project_id = project_id });
+                pm.SaveChanges();
+                #endregion
+
+                return Json(new { success="success" }, JsonRequestBehavior.AllowGet);
+
+            }
+			catch (Exception)
+			{
+                throw;
+			}
+            
+		}
+
+        public ActionResult load_more(int skip = 2,int take = 2)
+		{
+			try
+			{
+                List<projectView> all_projects;
+                Dictionary<string, projectView> projects = new Dictionary<string, projectView>();
+
+                all_projects = (from p in pm.projects
+                                orderby p.project_id
+                                select new projectView
+                                {
+                                    project_id = p.project_id,
+                                    projectname = p.projectname,
+                                    plannedstartdate = p.plannedstartdate,
+                                    plannedenddate = p.plannedenddate,
+                                    plannedstartdate_string = p.plannedstartdate.ToString(),
+                                    plannedenddate_string = p.plannedenddate.ToString(),
+                                    description = p.description,
+                                    cost = p.cost,
+                                    institute_id = p.institute_id,
+                                    project_manager_id = p.project_manager_id,
+                                    deadline_date = p.deadline_date,
+                                    deadline_date_string = p.deadline_date.ToString(),
+                                    project_stage_id = p.project_stage_id,
+                                    client = p.client,
+                                    project_status = p.project_status,
+
+                                    stage_name = p.project_stage.stage_name,
+                                    institute_name = p.institute.institutename,
+                                    status_name = p.status.status_name,
+                                    client_name = p.user.username,
+
+                                    project_tags = (from t in pm.project_tag
+                                                    where t.project_id == p.project_id
+                                                    select new tagView
+                                                    {
+                                                        tag_id = t.tag.tag_id,
+                                                        tagname = t.tag.tagname
+
+                                                    }).ToList(),
+
+                                    project_update_progress = (from u in pm.project_updates
+                                                       where u.project_id == p.project_id
+                                                       orderby u.update_date descending
+                                                               select new projectUpdatesView
+                                                               {
+                                                                   update_id = u.update_id,
+                                                                   description = u.update_description,
+                                                                   update_name = u.update_name,
+                                                                   update_date = u.update_date,
+                                                                   update_date_string = u.update_date.ToString(),
+                                                                   status = u.update_status,
+                                                                   status_name = u.status.status_name,
+                                                                   progress = u.update_progress,
+                                                                   updater = u.update_author_id,
+                                                                   updater_name = u.user.username,
+                                                                   project_id = u.project_id
+                                                               }).ToList()
+
+                                }).Skip(skip).ToList();
+                all_projects = all_projects.Take(take).ToList();
+
+
+				foreach (var p in all_projects)
+				{
+					projects[p.project_id.ToString()] = p;
+				}
+
+				return Json(new { projects }, JsonRequestBehavior.AllowGet);
+
+            }
+			catch(Exception)
+			{
+                throw;
+			}
+		}
+
+        [HttpPost]
+        public ActionResult save_gross_margin(gross_marign gross_obj)
+		{
+			try
+			{
+                if(gross_obj != null)
+				{
+                    pm.gross_marign.Add(gross_obj);
+				}
+
+                #region adding logs
+                string log_text = "project with id =" + gross_obj.project_id.ToString() + " added new margin with ID " + gross_obj.gross_marign_id.ToString() + " and " + gross_obj.description;
+                log l = new log()
+                {
+                    log_text = log_text,
+                    log_date = DateTime.Now
+                };
+                pm.logs.Add(l);
+                pm.project_log.Add(new project_log { log_id = l.log_id, project_id = gross_obj.project_id });
+                pm.SaveChanges();
+                #endregion
+
+
+                return Json(gross_obj, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+		}
+
+        [HttpGet]
+        public ActionResult project_total_margin(int id)
+		{
+			try
+			{
+                var margins = (from m in pm.gross_marign
+                               where m.project_id == id
+                               select m).ToList();
+                int size = margins.Count();
+                double? total = 0;
+                for(int i=0;i<size;i++)
+				{
+                    total = total + (margins[i].Amount * margins[i].quantity);
+				}
+
+                return Json(total, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+		}
+
+        public ActionResult save_progress(int project_id, float update_progress, string update_name, int status_id, string status_name)
+		{
+			try
+			{
+                project_updates pu = new project_updates()
+                {
+                    project_id = project_id,
+                    update_name = update_name,
+                    update_date = DateTime.Now,
+                    update_status = status_id,
+                    update_progress = update_progress,
+                    //take care this is manually entered!
+                    update_author_id = 6
+
+                };
+
+                pm.project_updates.Add(pu);
+
+                string log_text = "Project with id = " + project_id.ToString() + "updated to progress "+ update_progress.ToString() + " and its name is "+ update_name+" and with status id "+ status_id.ToString();
+                DateTime now = DateTime.Now;
+                log l = new log()
+                {
+                    log_date = DateTime.Now,
+                    log_text = log_text
+                };
+
+                pm.logs.Add(l);
+                
+
+                project_log pl = new project_log
+                {
+                    log_id = l.log_id,
+                    project_id = project_id
+                };
+
+
+                pm.project_log.Add(pl);
+                pm.SaveChanges();
+
+                projectUpdatesView psv = new projectUpdatesView()
+                {
+                    update_id = pu.update_id,
+                    description = pu.update_description,
+                    update_name = pu.update_name,
+                    update_date = pu.update_date,
+                    update_date_string = pu.update_date.ToString(),
+                    status = pu.update_status,
+                    status_name = status_name,
+                    progress = pu.update_progress,
+                    updater = pu.update_author_id,
+                    project_id = pu.project_id
+                };
+
+
+
+                return Json(psv, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+		}
+
+        public ActionResult save_new_manager(UserView project_manager)
+		{
+			try
+			{
+                user u = new user()
+                {
+                    username = project_manager.username,
+                    pass = project_manager.pass,
+                    level_code = project_manager.level_code,
+                    institute_id = project_manager.institute_id
+                };
+
+                pm.users.Add(u);             
+                pm.SaveChanges();
+
+
+
+                return Json(project_manager, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception)
+			{
+                throw;
+			}
+		}      
 
     }
 }

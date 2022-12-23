@@ -14,9 +14,9 @@ namespace PM.Models
     
     public partial class task_logs
     {
-        public int id { get; set; }
         public int task_id { get; set; }
         public int log_id { get; set; }
+        public int ID { get; set; }
     
         public virtual log log { get; set; }
         public virtual task task { get; set; }

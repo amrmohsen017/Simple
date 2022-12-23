@@ -16,8 +16,7 @@
 {
 	<script>alert("@ViewBag.projectCreatedSuccessfully");</script>
 }
-<div class="input-group mb-3"><input class="form-control" id="search_input" type="text" aria-describedby="basic-addon1" /></div>
-<button type="button" id="search_button" class="btn btn-falcon-primary" onclick="search()">Search</button>
+<div class="input-group mb-3"><input class="form-control" id="search_input" type="text" aria-describedby="basic-addon1" onkeyup="draw(all_projects = null, all_stages = null, loaded_projects = null, search = true)"/></div>
 
 <div class="kanban-container scrollbar me-n3" id="kanban_container">
 	@*<div class="kanban-column" id="kanban_column">
@@ -73,11 +72,32 @@
 						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-gross" aria-selected="false" href="#gross_marign">Gross Marigns</a></li>
 						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-attachments" aria-selected="false" href="#attachments">Attachments</a></li>
 						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-logs" aria-selected="false" href="#project_logs">Project Logs</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-update" aria-selected="false" href="#project_update">Project Updates</a></li>
 					</ul>
 
 					<div class="tab-content border-x border-bottom p-3">
 						<div id="main_data" role="tabpanel" aria-labelledby="main-tab" class="tab-pane fade show active">
 							<div @*class="col-lg-9"*@>
+								@*project Manager*@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">Project Manager</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="institute_name" type="text" readonly>*@
+											<div class="input-group mb-3"><input class="form-control" id="project_manager_readonly" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<div id="project_manager_choices_div" style="display:none;">
+												<select aria-label="Default select example" size="1" id="project_manager_choices" name="project_manager">
+													<option selected="">Project Manager</option>
+												</select>
+											</div>
+										</div>
+										<button type="button" id="project_manager_edit_button" class="btn btn-falcon-primary" onclick="show_project_manager()">Edit</button>
+										@*<button type="button" id="project_manager_save_button" class="btn btn-falcon-primary" onclick="save_project_manager()" style="display:none;">Save</button>*@
+										<button type="button" id="project_manager_cancel_button" class="btn btn-danger" onclick="cancel_project_manager()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
 								@* institute section *@
 								<div class="d-flex">
 									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
@@ -95,6 +115,46 @@
 										<button type="button" id="institute_edit_button" class="btn btn-falcon-primary" onclick="show_dropdown()">Edit</button>
 										<button type="button" id="institute_save_button" class="btn btn-falcon-primary" onclick="save_field('institute_id')" style="display:none;">Save</button>
 										<button type="button" id="institute_cancel_button" class="btn btn-danger" onclick="cancel_edit()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">Stage</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="institute_name" type="text" readonly>*@
+											<div class="input-group mb-3"><input class="form-control" id="stage_name" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<div id="stage_edit" style="display:none;">
+												<select aria-label="Default select example" size="1" id="stage_id" name="stage">
+													<option selected="">Stages</option>
+												</select>
+											</div>
+										</div>
+										<button type="button" id="stage_edit_button" class="btn btn-falcon-primary" onclick="show_dropdown_stage()">Edit</button>
+										<button type="button" id="stage_save_button" class="btn btn-falcon-primary" onclick="save_field('stage_id')" style="display:none;">Save</button>
+										<button type="button" id="stage_cancel_button" class="btn btn-danger" onclick="cancel_stage()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">Tags</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="institute_name" type="text" readonly>*@
+											<div id="tags">
+												<select multiple aria-label="Default select example" id="tags_choices">
+												</select>
+											</div>
+											<div id="tags_edit" style="display:none;">
+												<select multiple aria-label="Default select example" id="tags_choices_edit" name="">
+												</select>
+											</div>
+										</div>
+										@*<button type="button" id="tag_edit_button" class="btn btn-falcon-primary" onclick="show_dropdown_tag()">Edit</button>*@
+										<button type="button" id="tag_save_button" class="btn btn-falcon-primary" onclick="save_tags()">Save</button>
+										@*<button type="button" id="tag_cancel_button" class="btn btn-danger" onclick="cancel_tag()" style="display:none;">Cancel</button>*@
 										<hr class="my-4">
 									</div>
 								</div>
@@ -146,6 +206,33 @@
 										<hr class="my-4">
 									</div>
 								</div>
+
+
+
+								@* Project Updates Bar *@
+								<div class="d-flex">
+									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-tag fa-w-16 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z" transform="translate(-256 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-tag" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
+									<div class="flex-1">
+										<h5 class="mb-2 fs-0">Project Updates</h5>
+										<div class="d-flex">
+											@*<input class="text-word-break fs--1" id="projec_dead_date" type="text" readonly>*@
+											@*<div class="input-group mb-3"><input class="form-control" id="project_update_status" type="text" aria-describedby="basic-addon1" readonly /></div>*@
+											<div id="update_status_div" class="input-group mb-3"><input class="form-control" id="project_update_status" type="text" aria-describedby="basic-addon1" readonly /></div>
+											<br>
+											<label class="form-label" id="project_updates_range_value"></label><input class="form-range" id="project_updates_range" type="range" min="0" max="100" oninput="change_range(this.value)" />
+											<div id="update_name_div" class="input-group mb-3" style="display:none;"><input class="form-control" placeholder="Update Name" id="project_update_name" type="text" aria-describedby="basic-addon1" /></div>
+											<select id="update_status_dropdown" style="display:none;" class="form-control">
+												<option value="new status">New Status</option>
+
+											</select>
+										</div>
+										<button type="button" id="update_edit_button" class="btn btn-falcon-primary" onclick="edit_update()">Edit</button>
+										<button type="button" id="update_save_button" class="btn btn-falcon-primary" onclick="save_update_range()" style="display:none;">Save</button>
+										<button type="button" id="update_cancel_button" class="btn btn-danger" onclick="cancel_update()" style="display:none;">Cancel</button>
+										<hr class="my-4">
+									</div>
+								</div>
+
 								@* description section *@
 								<div class="d-flex">
 									<span class="fa-stack ms-n1 me-3"><svg class="svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-200" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg><!-- <i class="fas fa-circle fa-stack-2x text-200"></i> Font Awesome fontawesome.com --><svg class="svg-inline--fa fa-align-left fa-w-14 fa-inverse fa-stack-1x text-primary" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="align-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.5em;"><g transform="translate(224 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" transform="translate(-224 -256)"></path></g></g></svg><!-- <i class="fa-inverse fa-stack-1x text-primary fas fa-align-left" data-fa-transform="shrink-2"></i> Font Awesome fontawesome.com --></span>
@@ -181,6 +268,30 @@
 							</div>
 						</div>
 						<div id="gross_marign" role="tabpanel" aria-labelledby="gross-tab" class="tab-pane fade">
+							<div id="gross_data_table_div">
+
+							</div>
+
+							<div class="input-group input-group-lg"><span class="input-group-text" id="inputGroup-sizing-lg">Total Margin</span><input class="form-control" id="total_margin" type="number" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" readonly /></div>
+							<br>
+							<button id="add_new_margin_button" type="button" class="btn btn-falcon-primary" onclick="show_add_new_margin()">Add new Margin </button>
+							<button id="cancel_new_margin_button" type="button" class="btn btn-danger" onclick="cancel_new_margin()" style="display:none;">Cancel</button>
+							<button id="save_new_margin_button" type="button" class="btn btn-falcon-primary" onclick="save_new_margin()" style="display:none;">Save New Margin</button>
+
+							<div id="add_new_margin_div" style="display:none;">
+								<div class="input-group"><span class="input-group-text">Description</span><textarea class="form-control" id="description_text_area"></textarea>.</div>
+								<input id="quantity_input" placeholder="Quantity" type="number">
+								<input id="amount_input" placeholder="Amount" type="number">
+								<select id="gross_funder_input">
+									<option value="funder">Funder</option>
+
+								</select>
+								<select id="gross_type_input">
+									<option value="type">Type</option>
+
+								</select>
+								<input class="form-control datetimepicker" id="date_input" type="text" placeholder="d/m/y" data-options='{"disableMobile":true}' />
+							</div>
 
 
 						</div>
@@ -192,6 +303,12 @@
 							</div>
 						</div>
 						<div id="project_logs" role="tabpanel" aria-labelledby="logs-tab" class="tab-pane fade">
+
+						</div>
+						<div id="project_update" role="tabpanel" aria-labelledby="logs-update" class="tab-pane fade">
+							<div id="project_update_table_div">
+
+							</div>
 
 						</div>
 
@@ -300,8 +417,58 @@
 	</div>
 </div>
 
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="kanban-modal-label-1" aria-hidden="true" id="add_new_manager_popup">
+	<div class="modal-dialog modal-lg mt-6" role="document">
+		<div class="modal-content border-0">
+			<div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1"><button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button></div>
+			<div class="modal-body p-0">
+				<div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+					<h4 class="mb-1" id="kanban-modal-label-1">Add New Manager</h4>
+					@*<p class="fs--2 mb-0">Added by <a class="link-600 fw-semi-bold" href="#!">Antony</a></p>*@
+				</div>
+				<div class="p-4">
+					<div class="row">
+						<div class="col-lg-9">
+							<div class="input-group mb-3"><input class="form-control" id="project_manager_username" type="text" aria-describedby="basic-addon1" placeholder="Manager Username" /></div>
+							<div class="input-group mb-3"><input class="form-control" id="project_manager_password" type="password" aria-describedby="basic-addon1" placeholder="Password" /></div>
+							<div class="input-group mb-3"><input class="form-control" id="project_manager_level_code" type="number" aria-describedby="basic-addon1" placeholder="Level Code" /></div>
+							<div>
+								<label>Institute</label>
+								<select aria-label="Default select example" size="1" id="project_manager_institute">
+								</select>
+							</div>
+							<button type="button" id="add_project_manager_save_button" class="btn btn-falcon-primary" onclick="save_new_project_manager()">Add</button>
+						</div>
+						<div class="col-lg-3">
+							@*<h6 class="mt-5 mt-lg-0">Add To Card</h6>*@
+							<ul class="nav flex-lg-column fs--1">
+								<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-user fa-w-14 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path></svg>--><!-- <span class="fas fa-user me-2"></span> Font Awesome fontawesome.com -->
+								<!--Members</a></li>
+								<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-tag fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"></path></svg>-->
+								<!-- <span class="fas fa-tag me-2"></span> Font Awesome fontawesome.com --><!--Label</a></li>-->
+								<!--<li class="nav-item me-2 me-lg-0"><a class="nav-link nav-link-card-details" href="#!"> <svg class="svg-inline--fa fa-check fa-w-16 me-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>--><!-- <span class="fas fa-check me-2"></span> Font Awesome fontawesome.com --><!--Checklists</a></li>-->
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div><button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button"><span class="fas fa-plus me-2"></span>انشاء مشروغ جديد</button></div>
+
+
+
+
+<div>
+	<button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" id="load_more_button" value="2" onclick="load_more()">load more...</button>
+	<button class="btn btn-link btn-sm d-block w-100 btn-add-card text-decoration-none text-600" data-bs-toggle="modal" data-bs-target="#add_project_window" type="button">
+		<span class="fas fa-plus me-2"></span>add new project
+	</button>
+</div>
 
 
 
@@ -314,9 +481,11 @@
 
 			var all_stages = @Html.Raw(Json.Encode(Model.stages));
 			var all_projects = @Html.Raw(Json.Encode(Model.projects));
-
 			var institutes = @Html.Raw(Json.Encode(Model.institutes));
-			console.log('inst',institutes)
+			//var tags = @Html.Raw(Json.Encode(Model.tags));
+
+
+
 			var inst_choices = institutes.map(t => {
 				let obj = {}
 				obj.value = t.institute_id;
@@ -324,11 +493,85 @@
 				obj.id = t.institute_id;
 				return obj
 			});
-			console.log('choices', inst_choices)
+
 			var choices = new Choices(document.getElementById("institute_id"), { choices: inst_choices, removeItemButton: true });
+			var choices_2 = new Choices(document.getElementById("project_manager_institute"), { choices: inst_choices, removeItemButton: true });
 
 
-			search();
+
+			var stage_choices = all_stages.map(t => {
+				let obj = {}
+				obj.value = t.stage_id;
+				obj.label = t.stage_name;
+				obj.id = t.stage_id;
+				return obj
+			});
+
+
+
+
+			var s_choices = new Choices(document.getElementById("stage_id"), { choices: stage_choices, removeItemButton: true });
+
+
+			var funder_dropDownList = $("#gross_funder_input");
+			var funder_options = @Html.Raw(Json.Encode(Model.users_dict));
+			$.each(funder_options, function (index,val) {
+				funder_dropDownList.append(
+					`<option value="${val.user_id}">${val.username}</option>`
+				);
+			});
+
+			var project_managers = @Html.Raw(Json.Encode(Model.users));
+			var project_manager_choices = project_managers.map(t => {
+				let obj = {}
+				obj.value = t.user_id;
+				obj.label = t.username;
+				obj.id = t.user_id;
+				return obj
+			});
+
+
+
+
+			var p_m__choices = new Choices(document.getElementById("project_manager_choices"), { choices: project_manager_choices, removeItemButton: true, noResultsText: '<button id="add_new_manager_btn" onclick="add_new_manager()" class="btn btn-outline-dark  rounded-pill">Add new Manager?</button>', });
+
+		
+
+
+			var type_dropDownList = $("#gross_type_input");
+			var type_options = @Html.Raw(Json.Encode(Model.types_dict));
+			$.each(type_options, function (index,val) {
+				type_dropDownList.append(
+					`<option value="${val.id}">${val.gross_marign_typename}</option>`
+				);
+			});
+
+
+			var status_dropDownList = $("#update_status_dropdown");
+			var status_options = @Html.Raw(Json.Encode(Model.status_dict));
+			$.each(status_options, function (index,val) {
+				status_dropDownList.append(
+					`<option value="${val.status_id}">${val.status_name}</option>`
+				);
+			});
+
+
+
+
+
+			//var tags_edit_choices = tags.map(t => {
+			//	let obj = {}
+			//	obj.value = t.tag_id;
+			//	obj.label = t.tagname;
+			//	obj.id = t.tag_id;
+			//	return obj
+			//});
+			//var t_choices = new Choices(document.getElementById("tags_choices_edit"), { choices: tags_edit_choices, removeItemButton: true });
+
+
+
+
+			draw(all_projects, all_stages, loaded_projects=null,search=false);
 
 			//creating item
 			//var scratched_item = jQuery('<div>', {
@@ -417,44 +660,70 @@
 
 		});
 
-		function search() {
-
-			var all_stages = @Html.Raw(Json.Encode(Model.stages_dict));
-			var all_projects = @Html.Raw(Json.Encode(Model.projects));
-			var search_text = $("#search_input").val();
-			$("#kanban_container").empty();
-			//var searched_stages = [];
-			var searched_projects = [];
-			var searched_stages = new Set();
-			if (search_text != "") {
-				
 
 
-				for (const key in all_projects) {
-					if (all_projects[key].projectname.includes(search_text)) {
 
-						searched_projects.push(all_projects[key]);
-
-						searched_stages.add(all_stages[all_projects[key].project_stage_id]);
-					}
-
-				}
+		var cached_projects = null;
+		var cached_stages = null;
 
 
-				for (const key in all_stages) {
+		function draw(all_projects,all_stages,loaded_projects=null,search=false) {
 
-					if (all_stages[key].stage_name.includes(search_text)) {
-						searched_stages.add(all_stages[key]);
-					}
 
-				}
-				
-				all_stages = Array.from(searched_stages);
-				all_projects = searched_projects;
-				console.log('projects after', all_projects);
-				console.log('stages after', all_stages);
+
+			//first draw of the screen.
+			if (all_projects != null && all_stages != null && loaded_projects == null && search == false) {
+				cached_projects = all_projects;
+				cached_stages = all_stages;
+
 
 			}
+			//if user used loadmore... button
+			if (all_projects == null && all_stages == null && loaded_projects != null && search == false) {
+
+				all_stages = cached_stages;
+				Object.assign(cached_projects, loaded_projects.projects);
+				all_projects = cached_projects;
+
+			}
+			//if user used the search bar
+			if (all_projects == null && all_stages == null && loaded_projects == null && search == true) {
+
+				var search_text = $("#search_input").val();
+
+
+				if (search_text != "") {
+
+
+					$.ajax({
+						type: 'GET',
+						async: false,
+						url: `../Admin/project_main_page_search?searchText=${search_text}`,
+						dataType: 'json',
+						success: function (data) {
+							all_stages = data.stages;
+							all_projects = data.projects;
+							//console.log('search', all_projects);
+							//console.log('search', all_stages);
+
+						}
+
+					});
+
+
+
+				}
+				else {
+					all_stages = cached_stages;
+					all_projects = cached_projects;
+				}
+
+			}
+
+			console.log(all_projects);
+			$("#kanban_container").empty();
+
+
 
 
 			var scratched_item = jQuery('<div>', {
@@ -544,6 +813,7 @@
 
 
 
+
 		//this function for adding a new project
 		function addCard(item_id) {
 			var card_item = $("#kanban_item");
@@ -554,7 +824,8 @@
 
 		}
 
-
+		var t_choices = null;
+		var choices_cache = {};
 
 		function project_details(project_id) {
 			var word_list = project_id.split("_");
@@ -564,20 +835,89 @@
 
 
 
-			var all_projects = @Html.Raw(Json.Encode(Model.projects));
-
+			//var all_projects = @Html.Raw(Json.Encode(Model.projects));
+			var all_projects = cached_projects;
+			console.log('cached', cached_projects);
 			var project = all_projects[id];
-			console.log('project', project);
+
 			$("#project_name_window").val(project['projectname']);
 			$("#project_desc_window").val(project['description']);
-			$("#projec_start_date").val(project['plannedstartdate']);
-			$("#projec_end_date").val(project['plannedenddate']);
-			$("#projec_dead_date").val(project['deadline_date']);
-			//$("#institute_name").text(project['projectname']);
+			$("#projec_start_date").val(project['plannedstartdate_string']);
+			$("#projec_end_date").val(project['plannedenddate_string']);
+			$("#projec_dead_date").val(project['deadline_date_string']);
+			$("#institute_name").val(project['institute_name']);
 			$("#cost_field").val(project['cost']);
+			$("#stage_name").val(project['stage_name']);
+			if (project['project_update_progress'].length == 0) {
+				$("#project_updates_range_value").text(0);
+				$("#project_updates_range").val(0);
+			}
+			else {
+
+				$("#project_updates_range_value").text(project['project_update_progress'][0].progress);
+				$("#project_updates_range").val(project['project_update_progress'][0].progress);
+				$("#project_update_status").val(project['project_update_progress'][0].status_name);
+			}
+
+			var tags = @Html.Raw(Json.Encode(Model.tags));
+
+
+			var tags_edit_choices = tags.map(t => {
+				let obj = {}
+				obj.value = t.tag_id;
+				obj.label = t.tagname;
+				obj.selected = false;
+				obj.id = t.tag_id;
+				return obj
+			});
+
+			$.each(tags_edit_choices, function (index, value) {
+
+
+				if (project['project_tags'].some(e => e.tag_id === value.id)) {
+
+					value.selected = true;
+				}
+
+			});
+
+
+			if (!("p" in choices_cache)) {
+
+				t_choices = new Choices(document.getElementById("tags_choices"), { choices: tags_edit_choices, removeItemButton: true });
+				//t_choices.choices = tags_edit_choices;
+
+				choices_cache["p"] = t_choices;
+
+			}
+			else {
+				t_choices = choices_cache["p"]
+
+				t_choices.clearStore();
+
+				t_choices.setChoices(
+					tags_edit_choices,
+					'value',
+					'label',
+					false
+				);
+			}
 
 
 
+			$.ajax({
+				type: 'GET',
+				url: `../Admin/project_total_margin/`,
+				dataType: 'json',
+				data: { id: id },
+				success: function (data) {
+
+					$("#total_margin").val(data);
+
+
+				}
+
+			});
 
 
 			//project logs
@@ -621,7 +961,6 @@
 					dataSrc: function (data) {
 
 
-						console.log("SERVER DATA : " , data )
 						return data.data
 					},
 					"datatype": "json"
@@ -652,7 +991,7 @@
 
 			//project_gross_marign
 
-			$("#gross_marign").empty();
+			$("#gross_data_table_div").empty();
 			var gross_table = document.createElement("table");
 			gross_table.setAttribute("id", "project_gross_table");
 			var gross_heads = document.createElement("tr");
@@ -688,9 +1027,10 @@
 
 			gross_thead.append(gross_heads);
 			gross_table.append(gross_thead);
-			$("#gross_marign").append(gross_table);
+			$("#gross_data_table_div").append(gross_table);
 
-			$("#project_gross_table").DataTable({
+			var gross_table;
+			gross_table = $("#project_gross_table").DataTable({
 				"processing": true, // for show progress bar
 				"serverSide": true, // for process server side
 				"filter": true,// this is for disable filter (search box)
@@ -708,6 +1048,7 @@
 					//	console.log("SERVER DATA : ", data)
 					//	return data.data
 					//},
+
 					"datatype": "json"
 				},
 
@@ -722,7 +1063,7 @@
 				"columns": [
 					{ "data": "description", "name": "description", "autoWidth": true },
 					{ "data": "gross_margin_id", "name": "gross_margin_id", "autoWidth": true },
-					{ "data": "gross_date", "name": "gross_date", "autoWidth": true },
+					{ "data": "gross_date_string", "name": "gross_date_string", "autoWidth": true },
 					{ "data": "quantity", "name": "quantity", "autoWidth": true },
 					{ "data": "Amount", "name": "Amount", "autoWidth": true },
 					{ "data": "gross_margin_typename", "name": "gross_margin_typename", "autoWidth": true },
@@ -801,7 +1142,6 @@
 					{
 						data: null,
 						render: function (data, type, row) {
-							console.log(row);
 							return `<a class='text-decoration-none me-3' href='../project_attachments/${row.attachment_name}' target='_blank' data-gallery='attachment-bg'><div class='bg-attachment'><div class='bg-holder rounded' target='_blank' style='background-image: url(../project_attachments/${row.attachment_name});'></div></div></a>`;
 
 						}
@@ -815,6 +1155,90 @@
 				]
 
 			});
+
+
+
+
+			//project logs
+			$("#project_update_table_div").empty();
+			var updates_table = document.createElement("table");
+			updates_table.setAttribute("id", "project_update_table");
+			var updates_thead = document.createElement("thead");
+
+			var updates_heads = document.createElement('tr');
+			var uheading_1 = document.createElement('th');
+			uheading_1.innerHTML = "Update Name";
+			var uheading_2 = document.createElement('th');
+			uheading_2.innerHTML = "Update ID";
+			var uheading_3 = document.createElement('th');
+			uheading_3.innerHTML = "Date";
+			var uheading_4 = document.createElement('th');
+			uheading_4.innerHTML = "Status";
+			var uheading_5 = document.createElement('th');
+			uheading_5.innerHTML = "Progress";
+			var uheading_6 = document.createElement('th');
+			uheading_6.innerHTML = "Updater";
+			var uheading_7 = document.createElement('th');
+			uheading_7.innerHTML = "Description";
+			var uheading_8 = document.createElement('th');
+			uheading_8.innerHTML = "";
+
+			updates_heads.append(uheading_1);
+			updates_heads.append(uheading_2);
+			updates_heads.append(uheading_3);
+			updates_heads.append(uheading_4);
+			updates_heads.append(uheading_5);
+			updates_heads.append(uheading_6);
+			updates_heads.append(uheading_7);
+			updates_heads.append(uheading_8);
+
+			updates_thead.append(updates_heads);
+			updates_table.append(updates_thead);
+
+			$("#project_update_table_div").append(updates_table);
+			$("#project_update_table").DataTable({
+				"processing": true, // for show progress bar
+				"serverSide": true, // for process server side
+				"filter": true,// this is for disable filter (search box)
+				"orderMulti": false, // for disable multiple column at once
+				"pageLength": 10,
+				"language": {
+					"emptyTable": "لا يوجد بيانات"
+				},
+				"ajax": {
+					"url": "/Admin/project_updates?project_id=" + id,
+					"type": "POST",
+					"datatype": "json"
+				},
+
+				"columnDefs":
+					[{
+						"targets": [0],
+						"searchable": true,
+						"orderable": true
+					}],
+
+
+				"columns": [
+					{ "data": "update_name", "name": "update_name", "autoWidth": true },
+					{ "data": "update_id", "name": "update_id", "autoWidth": true },
+					{ "data": "update_date_string", "name": "update_date_string", "autoWidth": true },
+					{ "data": "status_name", "name": "status_name", "autoWidth": true },
+					{ "data": "progress", "name": "progress", "autoWidth": true },
+					{ "data": "updater_name", "name": "updater_name", "autoWidth": true },
+					{ "data": "description", "name": "description", "autoWidth": true },
+
+					{
+						data: null,
+						render: function (data, type, row) {
+							return `<a class="btn btn-danger" onclick=delete_update(${row.update_id}); >Delete</a>`;
+
+						}
+					}]
+
+
+			});
+
 
 		}
 
@@ -945,7 +1369,6 @@
 		function save_field(element_id) {
 			var value = $(`#${element_id}`).val();
 			var project_id = $("#project_id").val();
-			console.log('project_id',project_id)
 			//if (!alert("are you sure you want to update institute?")) {
 			//	return false;
 			//}
@@ -956,6 +1379,26 @@
 				dataType: 'json',
 				success: function (data) {
 					alert('project has been updated successfully!');
+
+				}
+
+			});
+
+		}
+
+		function save_tags() {
+			var tags_ids = $('#tags_choices').val();
+			var project_id = $("#project_id").val();
+			console.log(tags_ids);
+
+			$.ajax({
+				type: 'POST',
+				url: `../Admin/save_project_tags`,
+				dataType: 'json',
+				data: { 'tags_ids':tags_ids,'project_id':project_id },
+				success: function (data) {
+					alert('project has been updated successfully!');
+
 
 				}
 
@@ -1037,6 +1480,247 @@
 			$("#cost_cancel_button").hide();
 			$("#cost_edit").hide();
 			$("#cost_edit_button").show();
+
+		}
+
+		function show_dropdown_stage() {
+			$("#stage_save_button").show();
+			$("#stage_cancel_button").show();
+			$("#stage_edit").show();
+			$("#stage_edit_button").hide();
+
+
+		}
+
+		function cancel_stage() {
+			$("#stage_save_button").hide();
+			$("#stage_cancel_button").hide();
+			$("#stage_edit").hide();
+			$("#stage_edit_button").show();
+
+		}
+
+		function show_add_new_margin() {
+			$("#add_new_margin_div").show();
+			$("#cancel_new_margin_button").show();
+			$("#save_new_margin_button").show();
+			$("#add_new_margin_button").hide();
+
+		}
+
+		function cancel_new_margin() {
+			$("#add_new_margin_div").hide();
+			$("#cancel_new_margin_button").hide();
+			$("#save_new_margin_button").hide();
+			$("#add_new_margin_button").show();
+		}
+
+		function edit_update() {
+			$("#update_save_button").show();
+			$("#update_edit_button").hide();
+			$("#update_name_div").show();
+			$("#update_cancel_button").show();
+			$("#update_status_dropdown").show();
+
+		}
+
+		function cancel_update() {
+			$("#update_save_button").hide();
+			$("#update_edit_button").show();
+			$("#update_name_div").hide();
+			$("#update_cancel_button").hide();
+			$("#update_status_dropdown").hide();
+
+		}
+
+		function show_project_manager() {
+			$("#project_manager_choices_div").show();
+			$("#project_manager_edit_button").hide();
+			$("#project_manager_save_button").show();
+			$("#project_manager_cancel_button").show();
+
+
+
+		}
+
+		function cancel_project_manager() {
+			$("#project_manager_choices_div").hide();
+			$("#project_manager_edit_button").show();
+			$("#project_manager_save_button").hide();
+			$("#project_manager_cancel_button").hide();
+
+
+
+		}
+
+
+
+		function save_new_margin() {
+			var project_id = $("#project_id").val();
+
+			var description = $("#description_text_area").val();
+			var quantity = $("#quantity_input").val();
+			var amount = $("#amount_input").val();
+			var type_id = $("#gross_type_input").val();
+			var date = $("#date_input").val();
+			var funder = $("#gross_funder_input").val();
+
+			var obj = {};
+			obj.description = description;
+			obj.quantity = quantity;
+			obj.Amount = amount;
+			obj.gross_type = type_id;
+			obj.user_associated = funder;
+			obj.gross_date = date;
+			obj.project_id = project_id;
+
+			if (description == "" || date == "" || project_id == "") {
+				return alert("can't leave description or date or project id EMPTY!");
+			}
+
+			console.log(obj);
+
+
+			$.ajax({
+				type: 'POST',
+				url: `../Admin/save_gross_margin/`,
+				dataType: 'json',
+				data: JSON.stringify({ gross_obj: obj }),
+				contentType: "application/json; charset=utf-8",
+				success: function (data) {
+					console.log(data);
+					var g = $("#project_gross_table").DataTable();
+					g.draw();
+
+				}
+
+			});
+
+
+		}
+
+		function load_more() {
+
+			var project_id = $("#project_id").val();
+			var skip = $("#load_more_button").val();
+			console.log(skip);
+
+
+			$.ajax({
+				type: 'GET',
+				url: `../Admin/load_more`,
+				dataType: 'json',
+				data: { 'skip': skip },
+				success: function (data) {
+					console.log('load_more', data);
+					$("#load_more_button").val(parseInt(skip) + 2);
+					if (data.projects.length != 0) {
+						draw(all_projects = null,all_stages = null,loaded_projects = data,search = false);
+					}
+
+
+
+				}
+
+			});
+
+		}
+
+
+		function change_range(value) {
+			$("#project_updates_range_value").text(value);
+
+		}
+
+		function save_update_range() {
+			var update_number = $("#project_updates_range_value").text();
+			alert(`are you sure to save progress to ${update_number} ?`);
+			var project_id = $("#project_id").val();
+			var status_id = $("#update_status_dropdown").val();
+			var update_name = $("#project_update_name").val();
+			var status_name = $("#update_status_dropdown option:selected").text();
+			console.log(status_name);
+
+			var data = JSON.stringify({
+				'project_id': project_id,
+				'status_id': status_id,
+				'update_name': update_name,
+				'update_progress': update_number,
+				'status_name': status_name
+			});
+
+			$.ajax({
+				type: 'POST',
+				url: `../Admin/save_progress`,
+				dataType: 'json',
+				data: data,
+				contentType: 'application/json',
+				success: function (data) {
+					console.log('data', data);
+
+					$("#project_updates_range_value").text(data['progress']);
+					$("#project_updates_range").val(data['progress']);
+					$("#project_update_status").val(data['status_name']);
+					$("#update_save_button").hide();
+					$("#update_edit_button").show();
+					$("#update_name_div").hide();
+					$("#update_cancel_button").hide();
+					$("#update_status_dropdown").hide();
+
+
+
+
+				}
+
+			});
+
+
+
+		}
+
+		function add_new_manager() {
+
+			$("#add_new_manager_popup").modal("show")
+			/*$("#newFORM").modal("hide")*/
+		}
+
+		function save_new_project_manager() {
+
+			if (!confirm('are you sure to save the new manager ?')) {
+				return false;
+			}
+
+			var username = $("#project_manager_username").val();
+			var password = $("#project_manager_password").val();
+			var level_code = $("#project_manager_level_code").val();
+			var institute_id = $("#project_manager_institute").val();
+
+			if (username == '' || password == '' || level_code == '' || institute_id == '') {
+				return alert('Please fill all the required fields!');
+			}
+
+
+			var data = {};
+			data.username = username;
+			data.pass = password;
+			data.level_code = level_code;
+			data.institute_id = institute_id;
+
+			console.log(typeof data)
+
+			$.ajax({
+				type: 'POST',
+				url: `../Admin/save_new_manager`,
+				dataType: 'json',
+				data: '{project_manager: ' + JSON.stringify(data) + '}',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data) {
+					alert(`Manager ${data.username} has been added successfully.`);
+
+
+				}
+
+			});
 
 		}
 

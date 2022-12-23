@@ -56,6 +56,7 @@ namespace PM.Models
         public virtual ICollection<project_attachment> project_attachment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<project_tag> project_tag { get; set; }
+        public virtual user user1 { get; set; }
         public virtual status status { get; set; }
         public virtual project_stage project_stage { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
